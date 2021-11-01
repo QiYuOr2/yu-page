@@ -1,0 +1,8 @@
+:root {
+  --x-color-primary: #7740e0;
+  --x-color-primary-black: #000;
+
+  --x-shadow-small: 0 5px 10px rgba(0, 0, 0, 0.12);
+  --x-shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.12);
+  --x-shadow-large: 0 30px 60px rgba(0, 0, 0, 0.12);
+}
