@@ -39,7 +39,6 @@ export default defineComponent({
 <style lang="less" scoped>
 .navbar {
   box-sizing: border-box;
-  display: flex;
   padding: 0 1rem;
   height: 64px;
   box-shadow: var(--x-shadow-small);
@@ -48,7 +47,7 @@ export default defineComponent({
     h1 {
       padding-left: 1.2rem;
       text-align: left;
-      color: var(--x-color-primary-black)
+      color: var(--x-color-primary-black);
     }
   }
 
@@ -69,7 +68,7 @@ export default defineComponent({
         color: var(--x-color-primary-black);
 
         &.active {
-          color: var(--x-color-primary)
+          color: var(--x-color-primary);
         }
       }
     }
