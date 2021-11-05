@@ -1,5 +1,5 @@
 <template>
-  <fe-row class="navbar" align="middle">
+  <fe-row class="navbar" align="middle" v-if="isNavShow">
     <fe-col class="navbar__logo" :span="4">
       <fe-link to="/">
         <h1>Yu Page</h1>
@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
 
 const routes = [
@@ -31,7 +31,11 @@ export default defineComponent({
       return r.currentRoute.value.name === name ? 'active' : '';
     };
 
-    return { routes, isActive };
+    const isNavShow = computed(() => {
+      return routes.map((item) => item.to.name).includes(r.currentRoute.value.name as string);
+    });
+
+    return { routes, isActive, isNavShow };
   },
 });
 </script>
@@ -42,6 +46,13 @@ export default defineComponent({
   padding: 0 1rem;
   height: 64px;
   box-shadow: var(--x-shadow-small);
+  background: #fff;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
 
   &__logo {
     h1 {

@@ -1,25 +1,43 @@
 <template>
   <div class="mine-page">
     <fe-grid class="mine-page__list" container>
-      <fe-card class="page" v-for="i in 10" :key="i" hoverable>
-        <fe-image :src="require('../assets/f6-bg4.png')"></fe-image>
+      <fe-card class="page" hoverable @click="toEditor">
+        <div class="create">
+          <plus />
+          <span>创建新页面</span>
+        </div>
       </fe-card>
+      <page-card class="page" v-for="i in 10" :key="i" :title="'页面标题页面标题页面标题页面标题页面标题页面标题'"></page-card>
     </fe-grid>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useRouter } from 'vue-router';
+import { plus } from '@fect-ui/vue-icons';
+import PageCard from '@/components/PageCard.vue';
 
 export default defineComponent({
+  components: {
+    plus,
+    PageCard,
+  },
   setup() {
-    return {};
+    const r = useRouter();
+
+    const toEditor = () => {
+      r.push({ name: 'editor' });
+    };
+
+    return { toEditor };
   },
 });
 </script>
 
 <style lang="less" scoped>
 .mine-page {
+  margin-top: 64px;
   &__list {
     padding: 2rem 3rem;
     .page {
@@ -29,6 +47,25 @@ export default defineComponent({
 
       &:nth-child(4n) {
         margin-right: 0;
+      }
+
+      & .create {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+
+        height: 100%;
+
+        color: #8b8b8b;
+        cursor: pointer;
+        > span {
+          margin-top: 1rem;
+        }
+      }
+
+      /deep/ .fect-card__content {
+        height: 100%;
       }
     }
   }
