@@ -4,13 +4,16 @@
       <span>
         {{ title }}
       </span>
-      <share class="share" />
+      <trash2 class="trash" />
     </div>
     <fe-card hoverable>
       <fe-img :src="require('../assets/f6-bg4.png')"></fe-img>
     </fe-card>
     <div class="page-card__footer">
       <fe-button type="success" @click="toEditor">编辑页面</fe-button>
+      <fe-button class="share-btn">
+        <share class="share-btn__icon" />
+      </fe-button>
     </div>
   </div>
 </template>
@@ -19,12 +22,10 @@
 import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
 import { Image } from '@fect-ui/vue';
-import { share } from '@fect-ui/vue-icons';
 
 export default defineComponent({
   components: {
     'fe-img': Image,
-    share,
   },
   props: {
     id: { type: String },
@@ -70,20 +71,20 @@ export default defineComponent({
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .share {
-      width: 14px;
+    .trash {
+      width: 16px;
       margin-left: auto;
       cursor: pointer;
       transition: stroke 0.3s;
       &:hover {
-        stroke: var(--x-color-primary);
+        stroke: var(--error-default);
         transition: stroke 0.3s;
       }
     }
   }
   &__footer {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
 
     background: #fff;
     border-radius: 0 0 5px 5px;
@@ -98,6 +99,18 @@ export default defineComponent({
 
     opacity: 0;
     transition: opacity 0.3s;
+
+    .share-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 20px;
+      padding: 0 13px;
+
+      &__icon {
+        width: 16px;
+      }
+    }
   }
 
   &:hover &__header {

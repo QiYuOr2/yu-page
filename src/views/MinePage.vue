@@ -1,5 +1,5 @@
 <template>
-  <div class="mine-page">
+  <div class="mine-page main-route">
     <fe-grid class="mine-page__list" container>
       <fe-card class="page" hoverable @click="toEditor">
         <div class="create">
@@ -15,12 +15,10 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
-import { plus } from '@fect-ui/vue-icons';
 import PageCard from '@/components/PageCard.vue';
 
 export default defineComponent({
   components: {
-    plus,
     PageCard,
   },
   setup() {
@@ -37,7 +35,6 @@ export default defineComponent({
 
 <style lang="less" scoped>
 .mine-page {
-  margin-top: 64px;
   &__list {
     padding: 2rem 3rem;
     .page {

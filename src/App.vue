@@ -26,4 +26,8 @@ h1 {
   text-align: center;
   color: var(--x-color-primary-black);
 }
+
+.main-route {
+  margin-top: 64px;
+}
 </style>

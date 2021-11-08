@@ -6,7 +6,18 @@
     </div>
     <div class="editor__container">
       <div class="aside__left">
-        <!-- <fe-collapse title="基础组件"></fe-collapse> -->
+        <collapse :title="'通用组件'">
+          <fe-grid container justify="space-between">
+            <shortcut />
+            <shortcut />
+          </fe-grid>
+        </collapse>
+        <collapse :title="'业务组件'">
+          <fe-grid container justify="space-between">
+            <shortcut />
+            <shortcut />
+          </fe-grid>
+        </collapse>
       </div>
       <div class="main">
         <div class="workbench"></div>
@@ -18,11 +29,12 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { chevronLeft } from '@fect-ui/vue-icons';
 import { useRouter } from 'vue-router';
+import Collapse from '@/components/Collapse.vue';
+import Shortcut from '@/components/Shortcut.vue';
 
 export default defineComponent({
-  components: { chevronLeft },
+  components: { Shortcut, Collapse },
   setup() {
     const r = useRouter();
 
@@ -57,7 +69,7 @@ export default defineComponent({
       box-sizing: border-box;
       width: 240px;
       height: 100%;
-      padding: 1rem;
+      // padding: 1rem 0;
       box-shadow: var(--x-shadow-small);
     }
     .main {
