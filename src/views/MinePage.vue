@@ -1,6 +1,6 @@
 <template>
   <div class="mine-page main-route">
-    <fe-grid class="mine-page__list" container>
+    <div class="mine-page__list">
       <fe-card class="page" hoverable @click="toEditor">
         <div class="create">
           <plus />
@@ -8,7 +8,7 @@
         </div>
       </fe-card>
       <page-card class="page" v-for="i in 10" :key="i" :title="'页面标题页面标题页面标题页面标题页面标题页面标题'"></page-card>
-    </fe-grid>
+    </div>
   </div>
 </template>
 
@@ -36,6 +36,8 @@ export default defineComponent({
 <style lang="less" scoped>
 .mine-page {
   &__list {
+    display: flex;
+    flex-wrap: wrap;
     padding: 2rem 3rem;
     .page {
       width: 280px;

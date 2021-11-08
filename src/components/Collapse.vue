@@ -7,14 +7,14 @@
       <chevronDown size="14" v-if="!computedVisible" />
       <chevronUp size="14" v-else />
     </div>
-    <div ref="collapseContent" :class="['x-collapse__content', { close: !computedVisible }]">
+    <div ref="collapseContent" :class="['x-collapse__content', { close: !computedVisible }]" :style="{ height }">
       <slot></slot>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import { computed, defineComponent, onMounted, ref } from 'vue';
 
 export default defineComponent({
   props: {
@@ -23,6 +23,7 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const collapseContent = ref<InstanceType<typeof Element> | null>(null);
+
     const innerVisible = ref(true);
     const computedVisible = computed({
       get: () => {
@@ -41,7 +42,15 @@ export default defineComponent({
       computedVisible.value = !computedVisible.value;
     };
 
-    return { computedVisible, toggle };
+    const contentHeight = ref(0);
+    onMounted(() => {
+      contentHeight.value = collapseContent.value?.scrollHeight ?? 0;
+    });
+    const height = computed(() => {
+      return computedVisible.value ? contentHeight.value + 'px' : '0px';
+    });
+
+    return { computedVisible, toggle, height, collapseContent };
   },
 });
 </script>
@@ -61,15 +70,13 @@ export default defineComponent({
   &__content {
     padding: 16px 14px;
     border-bottom: 1px solid var(--accents-2);
-    transition: all 0.3s;
     overflow: hidden;
+    transition: height 0.3s;
 
     &.close {
       padding: 0;
       border-bottom: 0;
-      transform-origin: top 0 left 50%;
-      transform: scaleY(0);
-      transition: all 0.3s;
+      transition: height 0.3s, padding 0s 0.2s;
     }
   }
 }

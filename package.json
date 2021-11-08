@@ -9,7 +9,7 @@
     "test:e2e": "vue-cli-service test:e2e"
   },
   "dependencies": {
-    "@fect-ui/vue": "^1.0.4",
+    "@fect-ui/vue": "^1.0.5-rc.0",
     "@fect-ui/vue-icons": "^0.1.7",
     "core-js": "^3.6.5",
     "vue": "^3.0.0",
