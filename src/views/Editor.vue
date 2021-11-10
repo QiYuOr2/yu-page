@@ -2,7 +2,10 @@
   <div class="editor">
     <div class="editor__header">
       <chevronLeft class="back" @click="backToHome" />
-      <fe-button type="success" size="mini">保存</fe-button>
+      <div>
+        <fe-button size="mini" style="margin-right: 0.5rem">预览</fe-button>
+        <fe-button type="success" size="mini">保存</fe-button>
+      </div>
     </div>
     <div class="editor__container">
       <div class="aside__left">
@@ -18,9 +21,16 @@
         <div class="workbench"></div>
       </div>
       <div class="aside__right">
-        <collapse v-for="item in optionsList" :key="item.name" :title="item.label">
-          <style-options :options="item.options" />
-        </collapse>
+        <div class="settings">
+          <collapse v-for="item in optionsList" :key="item.name" :title="item.label">
+            <style-options :options="item.options" />
+          </collapse>
+        </div>
+        <div class="tabbar">
+          <div class="tabbar-item active">组件设置</div>
+          <div class="divider"></div>
+          <div class="tabbar-item">页面设置</div>
+        </div>
       </div>
     </div>
   </div>
@@ -34,6 +44,7 @@ import Collapse from '@/components/Collapse.vue';
 import Shortcut from '@/components/Shortcut.vue';
 import StyleOptions from '@/components/StyleOptions.vue';
 
+// TODO 组件设置和commonStyle设置合并后展示，需要有一个组件ID区分各个组件
 export default defineComponent({
   components: { Shortcut, Collapse, StyleOptions },
   setup() {
@@ -76,7 +87,10 @@ export default defineComponent({
       {
         name: 'props',
         label: '属性设置',
-        options: [{ name: 'type', label: '类型' }],
+        options: [
+          // { name: 'size', label: '大小', preset: ['mini', 'small', 'medium', 'large'], defaultVal: 'medium' },
+          { name: 'type', label: '类型', preset: ['default', 'success', 'error', 'warn'], defaultVal: 'default' },
+        ],
       },
     ]);
 
@@ -111,6 +125,32 @@ export default defineComponent({
       // padding: 1rem 0;
       box-shadow: var(--x-shadow-small);
       overflow: scroll;
+
+      &.aside__right {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        .settings {
+          flex: 1;
+          overflow: scroll;
+        }
+        .tabbar {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 0.5rem;
+          box-shadow: var(--x-shadow-small-reverse);
+          position: relative;
+          z-index: 100;
+          &-item {
+            padding: 0.8rem 1.2rem;
+            cursor: pointer;
+            &.active {
+              color: var(--x-color-primary);
+            }
+          }
+        }
+      }
     }
     .main {
       display: flex;
@@ -120,9 +160,10 @@ export default defineComponent({
       flex: 1;
       background: rgba(0, 0, 0, 0.05);
       .workbench {
+        --base-width: 30vw;
         margin: 1rem;
-        width: 375px;
-        min-height: 100%;
+        width: calc(var(--base-width) * 1.2);
+        min-height: calc(var(--base-width) * (16 / 9));
         background: #fff;
         box-shadow: var(--x-shadow-small);
       }

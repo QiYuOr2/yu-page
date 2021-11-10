@@ -1,28 +1,10 @@
 <template>
   <div class="options">
     <div v-for="(item, i) in options" :key="i">
-      <fe-row gutter="10" v-if="!item.children">
-        <fe-col span="16">
-          <fe-input style="width: 100%" size="mini" :prefix="item.label" :value="item.preset" />
-        </fe-col>
-        <fe-col span="8">
-          <fe-select size="small" style="min-width: 60px" :value="String(item.selectUnitIdx)">
-            <fe-option v-for="(u, uIdx) in item.unit" :key="uIdx" :label="u" :value="String(uIdx)"></fe-option>
-          </fe-select>
-        </fe-col>
-      </fe-row>
+      <option-item v-if="!item.children" :item="item" />
       <div v-else>
         <div class="options-subtitle">{{ item.label }}</div>
-        <fe-row gutter="10" v-for="(subItem, subIdx) in item.children" :key="subIdx">
-          <fe-col span="16">
-            <fe-input style="width: 100%" size="mini" :prefix="subItem.label" :value="subItem.preset" />
-          </fe-col>
-          <fe-col span="8">
-            <fe-select size="small" style="min-width: 60px" :value="String(item.selectUnitIdx)">
-              <fe-option v-for="(u, uIdx) in item.unit" :key="uIdx" :label="u" :value="String(uIdx)"></fe-option>
-            </fe-select>
-          </fe-col>
-        </fe-row>
+        <option-item v-for="(subItem, subIdx) in item.children" :key="subIdx" :item="subItem" />
       </div>
     </div>
   </div>
@@ -32,8 +14,11 @@
 import { RawStyle } from '@/hooks/useCommonStyles';
 import { defineComponent, PropType } from 'vue';
 
+import OptionItem from './OptionItem.vue';
+
 export default defineComponent({
-  props: { options: Array as PropType<Array<RawStyle<any>>> },
+  components: { OptionItem },
+  props: { options: Array as PropType<Array<RawStyle>> },
   setup() {
     return {};
   },
@@ -43,7 +28,7 @@ export default defineComponent({
 <style lang="less" scoped>
 .options {
   &-subtitle {
-    margin: 1rem 0 0.5rem 0;
+    margin: 0.5em 0;
     font-size: 14px;
     color: var(--accents-6);
   }

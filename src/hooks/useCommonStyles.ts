@@ -1,21 +1,22 @@
-import { reactive, provide, inject } from 'vue';
+// TODO 如何区分是哪个组件的样式，这个玩意可能没用
 
-// const commonStylesSymbol = Symbol();
+import { reactive } from 'vue';
+import { cloneDeep, reduce, includes } from 'lodash';
 
 const linkPxUnitList = ['px'];
 
 const commonStyle = {
-  width: { name: 'width', label: '宽', preset: 40, unit: linkPxUnitList, selectUnitIdx: 0, finialType: '' },
-  height: { name: 'height', label: '高', preset: 40, unit: linkPxUnitList, selectUnitIdx: 0, finialType: '' },
+  width: { name: 'width', label: '宽', defaultVal: 40, unit: linkPxUnitList, selectUnitIdx: 0, finialType: '' },
+  height: { name: 'height', label: '高', defaultVal: 40, unit: linkPxUnitList, selectUnitIdx: 0, finialType: '' },
   padding: {
     name: 'padding',
     label: '内边距',
     finialType: '',
     children: {
-      top: { name: 'pt', label: '上', preset: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
-      bottom: { name: 'pb', label: '下', preset: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
-      left: { name: 'pl', label: '左', preset: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
-      right: { name: 'pr', label: '右', preset: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
+      top: { name: 'pt', label: '上', defaultVal: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
+      bottom: { name: 'pb', label: '下', defaultVal: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
+      left: { name: 'pl', label: '左', defaultVal: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
+      right: { name: 'pr', label: '右', defaultVal: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
     },
   },
   margin: {
@@ -23,24 +24,38 @@ const commonStyle = {
     label: '外边距',
     finialType: '',
     children: {
-      top: { name: 'mt', label: '上', preset: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
-      bottom: { name: 'mb', label: '下', preset: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
-      left: { name: 'ml', label: '左', preset: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
-      right: { name: 'mr', label: '右', preset: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
+      top: { name: 'mt', label: '上', defaultVal: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
+      bottom: { name: 'mb', label: '下', defaultVal: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
+      left: { name: 'ml', label: '左', defaultVal: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
+      right: { name: 'mr', label: '右', defaultVal: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
+    },
+  },
+  border: {
+    name: 'border',
+    label: '边框',
+    finialType: '',
+    children: {
+      top: { name: 'bt', label: '上', defaultVal: 1, unit: linkPxUnitList, selectUnitIdx: 0 },
+      bottom: { name: 'bb', label: '下', defaultVal: 1, unit: linkPxUnitList, selectUnitIdx: 0 },
+      left: { name: 'bl', label: '左', defaultVal: 1, unit: linkPxUnitList, selectUnitIdx: 0 },
+      right: { name: 'br', label: '右', defaultVal: 1, unit: linkPxUnitList, selectUnitIdx: 0 },
+      color: { name: 'bc', label: '颜色', defaultVal: '#999999', type: 'color' },
     },
   },
 };
 
 //#region 屁用都没的类型体操
-export type RawStyle<T> = {
+export type RawStyle = {
   name: string;
   label: string;
-  preset?: string | number | boolean;
-  finialType?: T;
+  preset?: Array<string | number | boolean>;
+  defaultVal?: string | number | boolean;
+  finialType?: string | number | boolean;
   unit?: Array<string>;
   selectUnitIdx?: number;
+  type?: string;
   children?: {
-    [K: string]: RawStyle<T>;
+    [K: string]: RawStyle;
   };
 };
 
@@ -75,8 +90,24 @@ export function useCommonStyle() {
     (styles as any)[name].selectUnitIdx = value;
   };
 
+  const getStyles = (keys: StyleKey[]): Partial<Style> => {
+    return cloneDeep(
+      reduce(
+        Object.keys(styles) as StyleKey[],
+        (result, curr) => {
+          if (includes(keys, curr)) {
+            (result as any)[curr] = styles[curr];
+          }
+          return result;
+        },
+        {}
+      )
+    );
+  };
+
   return {
     styles,
+    getStyles,
     setStyle,
     setUnit,
   };
