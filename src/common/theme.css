@@ -19,3 +19,13 @@
   margin: 1rem 0;
   background: var(--accents-3);
 }
+
+.divider--x {
+  --divider-width: 1px;
+  box-sizing: border-box;
+  width: 100%;
+  height: var(--divider-width);
+  line-height: 100%;
+  margin: 1rem 0;
+  background: var(--accents-3);
+}

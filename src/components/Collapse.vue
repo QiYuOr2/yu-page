@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref } from 'vue';
+import { computed, defineComponent, onMounted, onUpdated, ref } from 'vue';
 
 export default defineComponent({
   props: {
@@ -44,6 +44,9 @@ export default defineComponent({
 
     const contentHeight = ref(0);
     onMounted(() => {
+      contentHeight.value = collapseContent.value?.scrollHeight ?? 0;
+    });
+    onUpdated(() => {
       contentHeight.value = collapseContent.value?.scrollHeight ?? 0;
     });
     const height = computed(() => {

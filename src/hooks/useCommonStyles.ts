@@ -60,7 +60,7 @@ export type RawStyle = {
 };
 
 type Style = typeof commonStyle;
-type StyleKey = keyof Style;
+export type StyleKey = keyof Style;
 type ChildrenKey<T extends StyleKey> = 'children' extends keyof Style[T] ? keyof Style[T]['children'] : StyleKey;
 type HasChildrenStyleKey = 'margin' | 'padding';
 
@@ -69,9 +69,8 @@ type SetStyleKey<T> = T extends HasChildrenStyleKey
   : keyof Omit<Style, HasChildrenStyleKey>;
 //#endregion
 
-export function useCommonStyle() {
-  const styles = reactive(commonStyle);
-
+export function useCommonStyle(incomeStyles: Record<string, RawStyle>) {
+  const styles = reactive(incomeStyles);
   const setStyle = <K extends StyleKey>(name: SetStyleKey<K>, value: Style[K]['finialType']) => {
     if (name.indexOf('-') !== -1) {
       const [mainKey, subKey] = name.split('-');
@@ -90,25 +89,31 @@ export function useCommonStyle() {
     (styles as any)[name].selectUnitIdx = value;
   };
 
-  const getStyles = (keys: StyleKey[]): Partial<Style> => {
-    return cloneDeep(
-      reduce(
-        Object.keys(styles) as StyleKey[],
-        (result, curr) => {
-          if (includes(keys, curr)) {
-            (result as any)[curr] = styles[curr];
-          }
-          return result;
-        },
-        {}
-      )
-    );
-  };
-
   return {
     styles,
-    getStyles,
     setStyle,
     setUnit,
   };
+}
+
+/**
+ * 拷贝一份通用样式
+ * @param keys 要获取的样式
+ * @returns
+ */
+export function cloneStyles(keys?: StyleKey[]): Partial<Style> {
+  return cloneDeep(
+    keys
+      ? reduce(
+          Object.keys(commonStyle) as StyleKey[],
+          (result, curr) => {
+            if (includes(keys, curr)) {
+              (result as any)[curr] = commonStyle[curr];
+            }
+            return result;
+          },
+          {}
+        )
+      : commonStyle
+  );
 }

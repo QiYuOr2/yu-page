@@ -3,7 +3,13 @@
     <div v-for="(item, i) in options" :key="i">
       <option-item v-if="!item.children" :item="item" />
       <div v-else>
-        <div class="options-subtitle">{{ item.label }}</div>
+        <div class="options-subtitle">
+          <span class="divider--x"></span>
+          <span class="text">
+            {{ item.label }}
+          </span>
+          <span class="divider--x"></span>
+        </div>
         <option-item v-for="(subItem, subIdx) in item.children" :key="subIdx" :item="subItem" />
       </div>
     </div>
@@ -31,6 +37,15 @@ export default defineComponent({
     margin: 0.5em 0;
     font-size: 14px;
     color: var(--accents-6);
+    display: flex;
+    align-items: center;
+    & .text {
+      flex: 1;
+      text-align: center;
+    }
+    & .divider--x {
+      width: 60px;
+    }
   }
 }
 </style>

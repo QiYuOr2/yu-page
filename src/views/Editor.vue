@@ -12,13 +12,13 @@
         <collapse v-for="parent in componentList" :key="parent.name" :title="parent.label">
           <fe-grid-group justify="space-between" :gap="1" :col="2" :count="parent.children">
             <template #grid="component">
-              <shortcut :title="component.label" :icon="component.icon" />
+              <shortcut :title="component.label" :icon="component.icon" @click="addComponent(component)" />
             </template>
           </fe-grid-group>
         </collapse>
       </div>
       <div class="main">
-        <div class="workbench"></div>
+        <workbench :componentList="editorComponentList.value" />
       </div>
       <div class="aside__right">
         <div class="settings">
@@ -37,16 +37,18 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, reactive } from 'vue';
+import { computed, defineComponent, ref, reactive, provide, watch, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
-import { useCommonStyle } from '@/hooks/useCommonStyles';
+import { useEditorComponents } from '@/hooks/useEditorComponents';
 import Collapse from '@/components/Collapse.vue';
 import Shortcut from '@/components/Shortcut.vue';
 import StyleOptions from '@/components/StyleOptions.vue';
+import Workbench from '@/components/Workbench.vue';
+import { RawStyle } from '@/hooks/useCommonStyles';
 
 // TODO 组件设置和commonStyle设置合并后展示，需要有一个组件ID区分各个组件
 export default defineComponent({
-  components: { Shortcut, Collapse, StyleOptions },
+  components: { Shortcut, Collapse, StyleOptions, Workbench },
   setup() {
     const r = useRouter();
 
@@ -59,9 +61,21 @@ export default defineComponent({
         name: 'common',
         label: '通用组件',
         children: [
-          { name: 'text', label: '文本', icon: 'alignJustify' },
-          { name: 'button', label: '按钮', icon: 'triangle' },
-          { name: 'image', label: '图片', icon: 'map' },
+          {
+            name: 'text',
+            label: '文本',
+            icon: 'alignJustify',
+            commonStyleKeys: ['width', 'height'],
+            props: { inner: { name: 'inner', label: '内容', defaultVal: '文本' } },
+          },
+          {
+            name: 'button',
+            label: '按钮',
+            icon: 'triangle',
+            commonStyleKeys: ['width', 'height', 'border'],
+            props: { inner: { name: 'inner', label: '内容', defaultVal: '按钮' } },
+          },
+          { name: 'img', label: '图片', icon: 'map', commonStyleKeys: ['width', 'height'] },
         ],
       },
       {
@@ -74,15 +88,29 @@ export default defineComponent({
       },
     ]);
 
-    const { styles } = useCommonStyle();
-    const commonStyleList = computed(() => {
-      return Object.entries(styles).map((item) => item[1]);
-    });
+    //#region 组件编辑
+    // const { activeId, provideActiveComponent } = useActiveComponent();
+    // provideActiveComponent();
+    const activeId = ref('');
+    const updateActiveId = (id: string) => {
+      activeId.value = id;
+    };
+    provide('activeId', activeId);
+    provide('updateActiveId', updateActiveId);
+
+    const {
+      componentList: editorComponentList,
+      addComponent,
+      removeComponent,
+      useCommonStyle,
+      getComponent,
+    } = useEditorComponents();
+
     const optionsList = reactive([
       {
         name: 'base',
         label: '通用样式',
-        options: commonStyleList.value,
+        options: [],
       },
       {
         name: 'props',
@@ -94,7 +122,16 @@ export default defineComponent({
       },
     ]);
 
-    return { backToHome, componentList, optionsList };
+    let commonStyleList: RawStyle[] = [];
+    watchEffect(() => {
+      const currentComponent = getComponent(activeId.value);
+      commonStyleList = currentComponent ? Object.entries(currentComponent.styles).map((item) => item[1]) : [];
+      (optionsList[0].options as any[]) = commonStyleList;
+    });
+
+    //#endregion
+
+    return { backToHome, componentList, optionsList, addComponent, editorComponentList: editorComponentList, activeId };
   },
 });
 </script>
