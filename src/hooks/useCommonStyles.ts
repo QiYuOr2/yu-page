@@ -3,7 +3,7 @@
 import { reactive } from 'vue';
 import { cloneDeep, reduce, includes } from 'lodash';
 
-const linkPxUnitList = ['px'];
+const linkPxUnitList = ['px', 'em'];
 
 const commonStyle = {
   width: { name: 'width', label: '宽', defaultVal: 40, unit: linkPxUnitList, selectUnitIdx: 0, finialType: '' },
@@ -52,7 +52,7 @@ export type RawStyle = {
   defaultVal?: string | number | boolean;
   finialType?: string | number | boolean;
   unit?: Array<string>;
-  selectUnitIdx?: number;
+  selectUnitIdx?: number | string;
   type?: string;
   children?: {
     [K: string]: RawStyle;

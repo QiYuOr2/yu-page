@@ -15,6 +15,7 @@
 
 <script lang="ts">
 import { Schema } from '@/hooks/useEditorComponents';
+import useStore from '@/hooks/useStore';
 import { defineComponent, inject, PropType, ref } from 'vue';
 
 export default defineComponent({
@@ -24,12 +25,11 @@ export default defineComponent({
     },
   },
   setup() {
-    const activeId = inject('activeId', '');
-    const updateActiveId = inject<(id: string) => void>('updateActiveId');
+    const { activeId } = useStore();
 
     const choose = (e: MouseEvent, id: string) => {
       e.stopPropagation();
-      updateActiveId?.(id);
+      activeId.value = id;
     };
 
     return { choose, activeId };
@@ -49,7 +49,7 @@ export default defineComponent({
       right: 0;
       bottom: 0;
       left: 0;
-      border: 1px solid #369;
+      border: 1px solid var(--x-color-primary);
     }
   }
 }

@@ -29,13 +29,16 @@
 
 <script lang="ts">
 import { RawStyle } from '@/hooks/useCommonStyles';
+import useStore from '@/hooks/useStore';
 import { defineComponent, PropType } from 'vue';
 
 export default defineComponent({
   props: {
     item: { type: Object as PropType<RawStyle>, required: true },
   },
-  setup() {},
+  setup() {
+    const { activeId } = useStore();
+  },
 });
 </script>
 

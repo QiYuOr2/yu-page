@@ -45,6 +45,7 @@ import Shortcut from '@/components/Shortcut.vue';
 import StyleOptions from '@/components/StyleOptions.vue';
 import Workbench from '@/components/Workbench.vue';
 import { RawStyle } from '@/hooks/useCommonStyles';
+import useStore from '@/hooks/useStore';
 
 // TODO 组件设置和commonStyle设置合并后展示，需要有一个组件ID区分各个组件
 export default defineComponent({
@@ -91,12 +92,7 @@ export default defineComponent({
     //#region 组件编辑
     // const { activeId, provideActiveComponent } = useActiveComponent();
     // provideActiveComponent();
-    const activeId = ref('');
-    const updateActiveId = (id: string) => {
-      activeId.value = id;
-    };
-    provide('activeId', activeId);
-    provide('updateActiveId', updateActiveId);
+    const { activeId } = useStore();
 
     const {
       componentList: editorComponentList,
