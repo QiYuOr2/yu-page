@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@fect-ui/vue": "^1.0.5-rc.1",
+    "@fect-ui/vue-hooks": "0.0.3-rc.0",
     "@fect-ui/vue-icons": "^0.1.7",
     "core-js": "^3.6.5",
     "lodash": "^4.17.21",

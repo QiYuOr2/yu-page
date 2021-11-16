@@ -6,16 +6,16 @@
       :key="item.id"
       @click="choose($event, item.id)"
     >
-      <component :is="item.name">
-        {{ item?.props?.inner?.defaultVal || '' }}
+      <component :is="item.name" v-bind="{ style: transferStyle(item.styles) }">
+        {{ item?.props?.inner?.val || '' }}
       </component>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Schema } from '@/hooks/useEditorComponents';
-import useStore from '@/hooks/useStore';
+import { transferStyle } from '@/hooks/useCommonStyles';
+import useStore, { Schema } from '@/hooks/useStore';
 import { defineComponent, inject, PropType, ref } from 'vue';
 
 export default defineComponent({
@@ -32,7 +32,7 @@ export default defineComponent({
       activeId.value = id;
     };
 
-    return { choose, activeId };
+    return { choose, activeId, transferStyle };
   },
 });
 </script>

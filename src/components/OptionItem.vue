@@ -6,21 +6,22 @@
         style="width: 100%"
         size="mini"
         :prefix="item.label"
-        :value="item.defaultVal"
+        :value="item.val"
+        @change="changeHandler($event.target.value, item.name, item.from)"
       />
       <div class="custom-option-wrapper" v-else-if="item.type === 'color'">
         <div class="custom-option-label">{{ item.label }}</div>
-        <input class="field" type="color" :value="item.defaultVal" />
+        <input class="field" type="color" :value="item.val" @change="changeHandler($event, item.name, item.from)" />
       </div>
       <div class="custom-option-wrapper" v-else>
         <div class="custom-option-label">{{ item.label }}</div>
-        <fe-select size="small" :value="String(item.defaultVal)">
+        <fe-select size="small" :value="String(item.val)" @change="changeHandler($event, item.name, item.from)">
           <fe-option v-for="(p, pIdx) in item.preset" :key="pIdx" :label="p" :value="String(p)"></fe-option>
         </fe-select>
       </div>
     </fe-col>
     <fe-col v-if="item.unit" span="8" style="text-align: right">
-      <fe-select size="small" style="min-width: 60px" :value="String(item.selectUnitIdx)">
+      <fe-select size="small" style="min-width: 60px" :value="String(item.selectUnitIdx)" @change="selectUnit($event, item.name)">
         <fe-option v-for="(u, uIdx) in item.unit" :key="uIdx" :label="u" :value="String(uIdx)"></fe-option>
       </fe-select>
     </fe-col>
@@ -28,9 +29,10 @@
 </template>
 
 <script lang="ts">
-import { RawStyle } from '@/hooks/useCommonStyles';
-import useStore from '@/hooks/useStore';
 import { defineComponent, PropType } from 'vue';
+import { RawStyle, useCommonStyle } from '@/hooks/useCommonStyles';
+import { useEditorComponents } from '@/hooks/useEditorComponents';
+import useStore from '@/hooks/useStore';
 
 export default defineComponent({
   props: {
@@ -38,6 +40,40 @@ export default defineComponent({
   },
   setup() {
     const { activeId } = useStore();
+    const { getComponent, setComponentStyle, setComponentProp } = useEditorComponents();
+
+    const selectUnit = (val: string, name: string) => {
+      const { styles, setUnit } = useCommonStyle(getComponent(activeId.value).styles);
+      setUnit(name, Number(val));
+      setComponentStyle(activeId.value, styles);
+    };
+
+    const changeStyle = (val: string | any, name: string) => {
+      const { styles, setStyle } = useCommonStyle(getComponent(activeId.value).styles);
+      if (typeof val === 'string') {
+        setStyle(name, val);
+        setComponentStyle(activeId.value, styles);
+        return;
+      }
+      setStyle(name, val.target.value);
+      setComponentStyle(activeId.value, styles);
+    };
+
+    const changeProp = (val: string, name: string) => {
+      const { styles, setStyle } = useCommonStyle(getComponent(activeId.value).props);
+      setStyle(name, val);
+      setComponentProp(activeId.value, styles);
+    };
+
+    const changeHandler = (val: string | any, name: string, from: string = 'style') => {
+      if (from === 'style') return changeStyle(val, name);
+      return changeProp(val, name);
+    };
+
+    return {
+      selectUnit,
+      changeHandler,
+    };
   },
 });
 </script>

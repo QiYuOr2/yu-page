@@ -22,7 +22,7 @@
       </div>
       <div class="aside__right">
         <div class="settings">
-          <collapse v-for="item in optionsList" :key="item.name" :title="item.label">
+          <collapse v-for="item in optionsList" :key="item.name" :title="item.label" :empty="item.options.length === 0">
             <style-options :options="item.options" />
           </collapse>
         </div>
@@ -67,14 +67,17 @@ export default defineComponent({
             label: '文本',
             icon: 'alignJustify',
             commonStyleKeys: ['width', 'height'],
-            props: { inner: { name: 'inner', label: '内容', defaultVal: '文本' } },
+            props: {
+              inner: { name: 'inner', label: '内容', val: '文本' },
+              type: { name: 'type', label: '类型', preset: ['default', 'success', 'error', 'warn'], val: 'default' },
+            },
           },
           {
             name: 'button',
             label: '按钮',
             icon: 'triangle',
-            commonStyleKeys: ['width', 'height', 'border'],
-            props: { inner: { name: 'inner', label: '内容', defaultVal: '按钮' } },
+            commonStyleKeys: ['width', 'height', 'border', 'color'],
+            props: { inner: { name: 'inner', label: '内容', val: '按钮' } },
           },
           { name: 'img', label: '图片', icon: 'map', commonStyleKeys: ['width', 'height'] },
         ],
@@ -90,17 +93,9 @@ export default defineComponent({
     ]);
 
     //#region 组件编辑
-    // const { activeId, provideActiveComponent } = useActiveComponent();
-    // provideActiveComponent();
     const { activeId } = useStore();
 
-    const {
-      componentList: editorComponentList,
-      addComponent,
-      removeComponent,
-      useCommonStyle,
-      getComponent,
-    } = useEditorComponents();
+    const { componentList: editorComponentList, addComponent, removeComponent, getComponent } = useEditorComponents();
 
     const optionsList = reactive([
       {
@@ -111,23 +106,26 @@ export default defineComponent({
       {
         name: 'props',
         label: '属性设置',
-        options: [
-          // { name: 'size', label: '大小', preset: ['mini', 'small', 'medium', 'large'], defaultVal: 'medium' },
-          { name: 'type', label: '类型', preset: ['default', 'success', 'error', 'warn'], defaultVal: 'default' },
-        ],
+        options: [],
       },
     ]);
 
     let commonStyleList: RawStyle[] = [];
-    watchEffect(() => {
+    let propList: RawStyle[] = [];
+
+    watch([() => activeId.value, editorComponentList], () => {
       const currentComponent = getComponent(activeId.value);
-      commonStyleList = currentComponent ? Object.entries(currentComponent.styles).map((item) => item[1]) : [];
+      commonStyleList = currentComponent
+        ? Object.entries(currentComponent.styles).map((item) => ({ ...item[1], from: 'style' }))
+        : [];
+      propList = currentComponent ? Object.entries(currentComponent.props).map((item) => ({ ...item[1], from: 'prop' })) : [];
       (optionsList[0].options as any[]) = commonStyleList;
+      (optionsList[1].options as any[]) = propList;
     });
 
     //#endregion
 
-    return { backToHome, componentList, optionsList, addComponent, editorComponentList: editorComponentList, activeId };
+    return { backToHome, componentList, optionsList, addComponent, editorComponentList: editorComponentList };
   },
 });
 </script>

@@ -6,40 +6,38 @@ import { cloneDeep, reduce, includes } from 'lodash';
 const linkPxUnitList = ['px', 'em'];
 
 const commonStyle = {
-  width: { name: 'width', label: '宽', defaultVal: 40, unit: linkPxUnitList, selectUnitIdx: 0, finialType: '' },
-  height: { name: 'height', label: '高', defaultVal: 40, unit: linkPxUnitList, selectUnitIdx: 0, finialType: '' },
+  width: { name: 'width', label: '宽', val: 40, unit: linkPxUnitList, selectUnitIdx: 0 },
+  height: { name: 'height', label: '高', val: 40, unit: linkPxUnitList, selectUnitIdx: 0 },
+  color: { name: 'color', label: '字体颜色', val: '#000000', type: 'color' },
   padding: {
     name: 'padding',
     label: '内边距',
-    finialType: '',
     children: {
-      top: { name: 'pt', label: '上', defaultVal: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
-      bottom: { name: 'pb', label: '下', defaultVal: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
-      left: { name: 'pl', label: '左', defaultVal: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
-      right: { name: 'pr', label: '右', defaultVal: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
+      top: { name: 'padding-top', label: '上', val: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
+      bottom: { name: 'padding-bottom', label: '下', val: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
+      left: { name: 'padding-left', label: '左', val: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
+      right: { name: 'padding-right', label: '右', val: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
     },
   },
   margin: {
     name: 'margin',
     label: '外边距',
-    finialType: '',
     children: {
-      top: { name: 'mt', label: '上', defaultVal: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
-      bottom: { name: 'mb', label: '下', defaultVal: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
-      left: { name: 'ml', label: '左', defaultVal: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
-      right: { name: 'mr', label: '右', defaultVal: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
+      top: { name: 'margin-top', label: '上', val: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
+      bottom: { name: 'margin-bottom', label: '下', val: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
+      left: { name: 'margin-left', label: '左', val: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
+      right: { name: 'margin-right', label: '右', val: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
     },
   },
   border: {
     name: 'border',
     label: '边框',
-    finialType: '',
     children: {
-      top: { name: 'bt', label: '上', defaultVal: 1, unit: linkPxUnitList, selectUnitIdx: 0 },
-      bottom: { name: 'bb', label: '下', defaultVal: 1, unit: linkPxUnitList, selectUnitIdx: 0 },
-      left: { name: 'bl', label: '左', defaultVal: 1, unit: linkPxUnitList, selectUnitIdx: 0 },
-      right: { name: 'br', label: '右', defaultVal: 1, unit: linkPxUnitList, selectUnitIdx: 0 },
-      color: { name: 'bc', label: '颜色', defaultVal: '#999999', type: 'color' },
+      top: { name: 'border-top', label: '上', val: 1, unit: linkPxUnitList, selectUnitIdx: 0 },
+      bottom: { name: 'border-bottom', label: '下', val: 1, unit: linkPxUnitList, selectUnitIdx: 0 },
+      left: { name: 'border-left', label: '左', val: 1, unit: linkPxUnitList, selectUnitIdx: 0 },
+      right: { name: 'border-right', label: '右', val: 1, unit: linkPxUnitList, selectUnitIdx: 0 },
+      color: { name: 'border-color', label: '颜色', val: '#999999', type: 'color' },
     },
   },
 };
@@ -49,11 +47,12 @@ export type RawStyle = {
   name: string;
   label: string;
   preset?: Array<string | number | boolean>;
-  defaultVal?: string | number | boolean;
+  val?: string | number | boolean;
   finialType?: string | number | boolean;
   unit?: Array<string>;
   selectUnitIdx?: number | string;
   type?: string;
+  from?: string;
   children?: {
     [K: string]: RawStyle;
   };
@@ -61,17 +60,11 @@ export type RawStyle = {
 
 type Style = typeof commonStyle;
 export type StyleKey = keyof Style;
-type ChildrenKey<T extends StyleKey> = 'children' extends keyof Style[T] ? keyof Style[T]['children'] : StyleKey;
-type HasChildrenStyleKey = 'margin' | 'padding';
-
-type SetStyleKey<T> = T extends HasChildrenStyleKey
-  ? `${T}-${ChildrenKey<T> extends string ? ChildrenKey<T> : ''}`
-  : keyof Omit<Style, HasChildrenStyleKey>;
 //#endregion
 
 export function useCommonStyle(incomeStyles: Record<string, RawStyle>) {
   const styles = reactive(incomeStyles);
-  const setStyle = <K extends StyleKey>(name: SetStyleKey<K>, value: Style[K]['finialType']) => {
+  const setStyle = (name: string, value: string | number | boolean) => {
     if (name.indexOf('-') !== -1) {
       const [mainKey, subKey] = name.split('-');
       (styles as any)[mainKey].children[subKey].val = value;
@@ -80,7 +73,7 @@ export function useCommonStyle(incomeStyles: Record<string, RawStyle>) {
     (styles as any)[name].val = value;
   };
 
-  const setUnit = <K extends StyleKey>(name: SetStyleKey<K>, value: number) => {
+  const setUnit = (name: string, value: number) => {
     if (name.indexOf('-') !== -1) {
       const [mainKey, subKey] = name.split('-');
       (styles as any)[mainKey].children[subKey].selectUnitIdx = value;
@@ -94,6 +87,34 @@ export function useCommonStyle(incomeStyles: Record<string, RawStyle>) {
     setStyle,
     setUnit,
   };
+}
+
+export function transferStyle(styles: Record<string, RawStyle>) {
+  const getUnit = (style: RawStyle) => style.unit?.[Number(style.selectUnitIdx)];
+  if (!styles) {
+    return '';
+  }
+  return Object.keys(styles)
+    .map((styleKey) => {
+      const style = styles[styleKey];
+      if (!style) {
+        return '';
+      }
+      if (!style.children) {
+        const unit = getUnit(style);
+        return `${style.name}: ${style.val}${unit ?? ''}`;
+      }
+      return Object.keys(style.children).map((childStyleKey) => {
+        const currentStyle = style.children?.[childStyleKey];
+        if (!currentStyle) {
+          return '';
+        }
+        const unit = getUnit(currentStyle);
+        return `${currentStyle.name}: ${currentStyle.val}${unit ?? ''}`;
+      });
+    })
+    .flat()
+    .join(';');
 }
 
 /**

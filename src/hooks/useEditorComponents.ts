@@ -1,18 +1,9 @@
-import { reactive, Ref } from 'vue';
 import { filter, map } from 'lodash';
 import { cloneStyles, RawStyle, StyleKey, useCommonStyle as _useCommonStyle } from './useCommonStyles';
-
-export type Schema = {
-  id: string;
-  name: string;
-  label: string;
-  commonStyleKeys: StyleKey[];
-  styles: Record<string, RawStyle>;
-  props: Record<string, RawStyle>;
-};
+import useStore, { Schema } from './useStore';
 
 export function useEditorComponents() {
-  const componentList = reactive<{ value: Schema[] }>({ value: [] });
+  const { componentList, activeId } = useStore();
 
   const addComponent = (schema: Omit<Schema, 'id'>) => {
     const openSchema = (schema as any).value ? (schema as any).value : schema;
@@ -34,11 +25,10 @@ export function useEditorComponents() {
     );
   };
 
-  const useCommonStyle = (schemaId: string) => {
-    const currComponent = getComponent(schemaId);
-    const { styles, setStyle, setUnit } = _useCommonStyle(currComponent.styles);
-    setComponentStyle(schemaId, styles);
-    return { setStyle, setUnit };
+  const setComponentProp = (schemaId: string, props: Record<string, RawStyle>) => {
+    componentList.value = map(componentList.value, (component) =>
+      component.id === schemaId ? { ...component, props } : component
+    );
   };
 
   return {
@@ -46,6 +36,7 @@ export function useEditorComponents() {
     addComponent,
     getComponent,
     removeComponent,
-    useCommonStyle,
+    setComponentStyle,
+    setComponentProp,
   };
 }
