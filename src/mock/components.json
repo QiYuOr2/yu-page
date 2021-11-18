@@ -1,0 +1,46 @@
+{
+  "status": {
+    "code": 0,
+    "message": "success",
+    "description": ""
+  },
+  "result": {
+    "data": [
+      {
+        "type": { "name": "common", "label": "通用组件" },
+        "name": "text",
+        "label": "文本",
+        "icon": "alignJustify",
+        "commonStyleKeys": ["width", "height"],
+        "props": { "inner": { "name": "inner", "label": "内容", "val": "文本" } }
+      },
+      {
+        "type": { "name": "common", "label": "通用组件" },
+        "name": "button",
+        "label": "按钮",
+        "icon": "triangle",
+        "commonStyleKeys": ["width", "height", "border", "color", "background"],
+        "props": { "inner": { "name": "inner", "label": "内容", "val": "按钮" } }
+      },
+      {
+        "type": { "name": "common", "label": "通用组件" },
+        "name": "img",
+        "label": "图片",
+        "icon": "map",
+        "commonStyleKeys": ["width", "height"]
+      },
+      {
+        "type": { "name": "business", "label": "业务组件" },
+        "name": "button",
+        "label": "按钮",
+        "icon": "triangle"
+      },
+      {
+        "type": { "name": "business", "label": "业务组件" },
+        "name": "slide",
+        "label": "轮播图",
+        "icon": "layers"
+      }
+    ]
+  }
+}

@@ -10,11 +10,13 @@
     <div class="editor__container">
       <div class="aside__left">
         <collapse v-for="parent in componentList" :key="parent.name" :title="parent.label">
-          <fe-grid-group justify="space-between" :gap="1" :col="2" :count="parent.children">
-            <template #grid="component">
-              <shortcut :title="component.label" :icon="component.icon" @click="addComponent(component)" />
-            </template>
-          </fe-grid-group>
+          <div style="padding: 16px 14px">
+            <fe-grid-group justify="space-between" :gap="1" :col="2" :count="parent.children">
+              <template #grid="component">
+                <shortcut :title="component.label" :icon="component.icon" @click="addComponent(component)" />
+              </template>
+            </fe-grid-group>
+          </div>
         </collapse>
       </div>
       <div class="main">
@@ -23,7 +25,9 @@
       <div class="aside__right">
         <div class="settings">
           <collapse v-for="item in optionsList" :key="item.name" :title="item.label" :empty="item.options.length === 0">
-            <style-options :options="item.options" />
+            <div style="padding: 16px 14px">
+              <style-options :options="item.options" />
+            </div>
           </collapse>
         </div>
         <div class="tabbar">
@@ -37,17 +41,28 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, reactive, provide, watch, watchEffect } from 'vue';
-import { useRouter } from 'vue-router';
-import { useEditorComponents } from '@/hooks/useEditorComponents';
+import { defineComponent, reactive, watch, onMounted } from 'vue';
+
+// Components
 import Collapse from '@/components/Collapse.vue';
 import Shortcut from '@/components/Shortcut.vue';
 import StyleOptions from '@/components/StyleOptions.vue';
 import Workbench from '@/components/Workbench.vue';
+
+// Hooks
+import { useRouter } from 'vue-router';
+import { useEditorComponents } from '@/hooks/useEditorComponents';
 import { RawStyle } from '@/hooks/useCommonStyles';
 import useStore from '@/hooks/useStore';
 
-// TODO 组件设置和commonStyle设置合并后展示，需要有一个组件ID区分各个组件
+// Requests
+import { fetchComponents } from '@/api';
+
+// Types
+import { FormattedComponent } from '@/types';
+import { componentsFormatter } from '@/common/utils';
+
+// TODO merge 各个component的自定义样式或者减少可自定义程度
 export default defineComponent({
   components: { Shortcut, Collapse, StyleOptions, Workbench },
   setup() {
@@ -57,40 +72,13 @@ export default defineComponent({
       r.push('/');
     };
 
-    const componentList = reactive([
-      {
-        name: 'common',
-        label: '通用组件',
-        children: [
-          {
-            name: 'text',
-            label: '文本',
-            icon: 'alignJustify',
-            commonStyleKeys: ['width', 'height'],
-            props: {
-              inner: { name: 'inner', label: '内容', val: '文本' },
-              type: { name: 'type', label: '类型', preset: ['default', 'success', 'error', 'warn'], val: 'default' },
-            },
-          },
-          {
-            name: 'button',
-            label: '按钮',
-            icon: 'triangle',
-            commonStyleKeys: ['width', 'height', 'border', 'color'],
-            props: { inner: { name: 'inner', label: '内容', val: '按钮' } },
-          },
-          { name: 'img', label: '图片', icon: 'map', commonStyleKeys: ['width', 'height'] },
-        ],
-      },
-      {
-        name: 'business',
-        label: '业务组件',
-        children: [
-          { name: 'button', label: '按钮', icon: 'triangle' },
-          { name: 'slide', label: '轮播图', icon: 'layers' },
-        ],
-      },
-    ]);
+    const componentList = reactive<FormattedComponent[]>([]);
+    onMounted(async () => {
+      const { status, result } = await fetchComponents();
+      if (status.code === 0) {
+        componentList.push(...componentsFormatter(result.data));
+      }
+    });
 
     //#region 组件编辑
     const { activeId } = useStore();

@@ -9,7 +9,7 @@
         :value="item.val"
         @change="changeHandler($event.target.value, item.name, item.from)"
       />
-      <div class="custom-option-wrapper" v-else-if="item.type === 'color'">
+      <div class="custom-option-wrapper" v-else-if="item.type?.includes('color')">
         <div class="custom-option-label">{{ item.label }}</div>
         <input class="field" type="color" :value="item.val" @change="changeHandler($event, item.name, item.from)" />
       </div>

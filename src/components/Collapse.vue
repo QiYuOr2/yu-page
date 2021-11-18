@@ -71,7 +71,6 @@ export default defineComponent({
     cursor: pointer;
   }
   &__content {
-    padding: 16px 14px;
     border-bottom: 1px solid var(--accents-2);
     overflow: hidden;
     transition: height 0.3s;

@@ -9,6 +9,13 @@ const commonStyle = {
   width: { name: 'width', label: '宽', val: 40, unit: linkPxUnitList, selectUnitIdx: 0 },
   height: { name: 'height', label: '高', val: 40, unit: linkPxUnitList, selectUnitIdx: 0 },
   color: { name: 'color', label: '字体颜色', val: '#000000', type: 'color' },
+  background: {
+    name: 'background',
+    label: '背景',
+    children: {
+      color: { name: 'background-color', label: '颜色', val: '#ffffff', type: 'color' },
+    },
+  },
   padding: {
     name: 'padding',
     label: '内边距',
@@ -38,6 +45,7 @@ const commonStyle = {
       left: { name: 'border-left', label: '左', val: 1, unit: linkPxUnitList, selectUnitIdx: 0 },
       right: { name: 'border-right', label: '右', val: 1, unit: linkPxUnitList, selectUnitIdx: 0 },
       color: { name: 'border-color', label: '颜色', val: '#999999', type: 'color' },
+      style: { name: 'border-style', label: '样式', preset: ['solid'], val: 'solid' },
     },
   },
 };

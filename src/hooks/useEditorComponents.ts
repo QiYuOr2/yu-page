@@ -1,14 +1,14 @@
-import { filter, map } from 'lodash';
-import { cloneStyles, RawStyle, StyleKey, useCommonStyle as _useCommonStyle } from './useCommonStyles';
+import { cloneDeep, filter, map } from 'lodash';
+import { cloneStyles, RawStyle, useCommonStyle as _useCommonStyle } from './useCommonStyles';
 import useStore, { Schema } from './useStore';
 
 export function useEditorComponents() {
-  const { componentList, activeId } = useStore();
+  const { componentList } = useStore();
 
   const addComponent = (schema: Omit<Schema, 'id'>) => {
     const openSchema = (schema as any).value ? (schema as any).value : schema;
     schema.styles = cloneStyles(openSchema.commonStyleKeys) as Record<string, RawStyle>;
-    componentList.value.push({ id: String(Date.now()), ...openSchema });
+    componentList.value.push(cloneDeep({ id: String(Date.now()), ...openSchema }));
   };
 
   const removeComponent = (schemaId: string) => {

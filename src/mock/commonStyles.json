@@ -1,0 +1,45 @@
+{
+  "status": {
+    "code": 0,
+    "message": "success",
+    "description": ""
+  },
+  "result": {
+    "data": [
+      { "name": "width", "label": "宽", "val": 40, "unit": ["px", "em"], "selectUnitIdx": 0 },
+      { "name": "height", "label": "高", "val": 40, "unit": ["px", "em"], "selectUnitIdx": 0 },
+      { "name": "color", "label": "字体颜色", "val": "#000000", "type": "color" },
+      {
+        "name": "padding",
+        "label": "内边距",
+        "children": {
+          "top": { "name": "padding-top", "label": "上", "val": 10, "unit": ["px", "em"], "selectUnitIdx": 0 },
+          "bottom": { "name": "padding-bottom", "label": "下", "val": 10, "unit": ["px", "em"], "selectUnitIdx": 0 },
+          "left": { "name": "padding-left", "label": "左", "val": 10, "unit": ["px", "em"], "selectUnitIdx": 0 },
+          "right": { "name": "padding-right", "label": "右", "val": 10, "unit": ["px", "em"], "selectUnitIdx": 0 }
+        }
+      },
+      {
+        "name": "margin",
+        "label": "外边距",
+        "children": {
+          "top": { "name": "margin-top", "label": "上", "val": 10, "unit": ["px", "em"], "selectUnitIdx": 0 },
+          "bottom": { "name": "margin-bottom", "label": "下", "val": 10, "unit": ["px", "em"], "selectUnitIdx": 0 },
+          "left": { "name": "margin-left", "label": "左", "val": 10, "unit": ["px", "em"], "selectUnitIdx": 0 },
+          "right": { "name": "margin-right", "label": "右", "val": 10, "unit": ["px", "em"], "selectUnitIdx": 0 }
+        }
+      },
+      {
+        "name": "border",
+        "label": "边框",
+        "children": {
+          "top": { "name": "border-top", "label": "上", "val": 1, "unit": ["px", "em"], "selectUnitIdx": 0 },
+          "bottom": { "name": "border-bottom", "label": "下", "val": 1, "unit": ["px", "em"], "selectUnitIdx": 0 },
+          "left": { "name": "border-left", "label": "左", "val": 1, "unit": ["px", "em"], "selectUnitIdx": 0 },
+          "right": { "name": "border-right", "label": "右", "val": 1, "unit": ["px", "em"], "selectUnitIdx": 0 },
+          "color": { "name": "border-color", "label": "颜色", "val": "#999999", "type": "color" }
+        }
+      }
+    ]
+  }
+}
