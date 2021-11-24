@@ -15,8 +15,9 @@
 
 <script lang="ts">
 import { transferStyle } from '@/hooks/useCommonStyles';
-import useStore, { Schema } from '@/hooks/useStore';
-import { defineComponent, inject, PropType, ref } from 'vue';
+import useStore from '@/hooks/useStore';
+import { Schema } from '@/types';
+import { defineComponent, PropType } from 'vue';
 
 export default defineComponent({
   props: {

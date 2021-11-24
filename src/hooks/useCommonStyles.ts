@@ -2,72 +2,11 @@
 
 import { reactive } from 'vue';
 import { cloneDeep, reduce, includes } from 'lodash';
+import { StyleDto } from '@/types/dto';
 
-const linkPxUnitList = ['px', 'em'];
+type CommonStyle = Record<string, StyleDto>;
 
-const commonStyle = {
-  width: { name: 'width', label: '宽', val: 40, unit: linkPxUnitList, selectUnitIdx: 0 },
-  height: { name: 'height', label: '高', val: 40, unit: linkPxUnitList, selectUnitIdx: 0 },
-  color: { name: 'color', label: '字体颜色', val: '#000000', type: 'color' },
-  background: {
-    name: 'background',
-    label: '背景',
-    children: {
-      color: { name: 'background-color', label: '颜色', val: '#ffffff', type: 'color' },
-    },
-  },
-  padding: {
-    name: 'padding',
-    label: '内边距',
-    children: {
-      top: { name: 'padding-top', label: '上', val: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
-      bottom: { name: 'padding-bottom', label: '下', val: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
-      left: { name: 'padding-left', label: '左', val: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
-      right: { name: 'padding-right', label: '右', val: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
-    },
-  },
-  margin: {
-    name: 'margin',
-    label: '外边距',
-    children: {
-      top: { name: 'margin-top', label: '上', val: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
-      bottom: { name: 'margin-bottom', label: '下', val: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
-      left: { name: 'margin-left', label: '左', val: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
-      right: { name: 'margin-right', label: '右', val: 10, unit: linkPxUnitList, selectUnitIdx: 0 },
-    },
-  },
-  border: {
-    name: 'border',
-    label: '边框',
-    children: {
-      top: { name: 'border-top', label: '上', val: 1, unit: linkPxUnitList, selectUnitIdx: 0 },
-      bottom: { name: 'border-bottom', label: '下', val: 1, unit: linkPxUnitList, selectUnitIdx: 0 },
-      left: { name: 'border-left', label: '左', val: 1, unit: linkPxUnitList, selectUnitIdx: 0 },
-      right: { name: 'border-right', label: '右', val: 1, unit: linkPxUnitList, selectUnitIdx: 0 },
-      color: { name: 'border-color', label: '颜色', val: '#999999', type: 'color' },
-      style: { name: 'border-style', label: '样式', preset: ['solid'], val: 'solid' },
-    },
-  },
-};
-
-export type RawStyle = {
-  name: string;
-  label: string;
-  preset?: Array<string | number | boolean>;
-  val?: string | number | boolean;
-  finialType?: string | number | boolean;
-  unit?: Array<string>;
-  selectUnitIdx?: number | string;
-  type?: string;
-  from?: string;
-  children?: {
-    [K: string]: RawStyle;
-  };
-};
-
-type Style = typeof commonStyle;
-
-export function useCommonStyle(incomeStyles: Record<string, RawStyle>) {
+export function useCommonStyle(incomeStyles: CommonStyle) {
   const styles = reactive(incomeStyles);
   const setStyle = (name: string, value: string | number | boolean) => {
     if (name.indexOf('-') !== -1) {
@@ -94,8 +33,8 @@ export function useCommonStyle(incomeStyles: Record<string, RawStyle>) {
   };
 }
 
-export function transferStyle(styles: Record<string, RawStyle>) {
-  const getUnit = (style: RawStyle) => style.unit?.[Number(style.selectUnitIdx)];
+export function transferStyle(styles: CommonStyle) {
+  const getUnit = (style: StyleDto) => style.unit?.[Number(style.selectUnitIdx)];
   if (!styles) {
     return '';
   }
@@ -127,19 +66,19 @@ export function transferStyle(styles: Record<string, RawStyle>) {
  * @param keys 要获取的样式
  * @returns
  */
-export function cloneStyles(keys?: string[]): Partial<Style> {
+export function cloneStyles(source: CommonStyle, keys?: string[]): CommonStyle {
   return cloneDeep(
     keys
-      ? reduce(
-          Object.keys(commonStyle),
+      ? reduce<string, CommonStyle>(
+          Object.keys(source),
           (result, curr) => {
             if (includes(keys, curr)) {
-              (result as any)[curr] = (commonStyle as any)[curr];
+              result[curr] = source[curr];
             }
             return result;
           },
           {}
         )
-      : commonStyle
+      : source
   );
 }

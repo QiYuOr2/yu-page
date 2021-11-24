@@ -41,8 +41,6 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, watch, onMounted } from 'vue';
-
 // Components
 import Collapse from '@/components/Collapse.vue';
 import Shortcut from '@/components/Shortcut.vue';
@@ -52,7 +50,6 @@ import Workbench from '@/components/Workbench.vue';
 // Hooks
 import { useRouter } from 'vue-router';
 import { useEditorComponents } from '@/hooks/useEditorComponents';
-import { RawStyle } from '@/hooks/useCommonStyles';
 import useStore from '@/hooks/useStore';
 
 // Requests
@@ -61,19 +58,26 @@ import { fetchComponents } from '@/api';
 // Types
 import { FormattedComponent } from '@/types';
 import { componentsFormatter } from '@/common/utils';
+import { StyleDto } from '@/types/dto';
+
+// Utils
+import { defineComponent, reactive, watch, onMounted } from 'vue';
 
 // TODO merge 各个component的自定义样式或者减少可自定义程度
 export default defineComponent({
   components: { Shortcut, Collapse, StyleOptions, Workbench },
   setup() {
     const r = useRouter();
+    const { activeId, setCommonStylesAction } = useStore();
 
     const backToHome = () => {
       r.push('/');
     };
 
     const componentList = reactive<FormattedComponent[]>([]);
+
     onMounted(async () => {
+      setCommonStylesAction();
       const { status, result } = await fetchComponents();
       if (status.code === 0) {
         componentList.push(...componentsFormatter(result.data));
@@ -81,7 +85,6 @@ export default defineComponent({
     });
 
     //#region 组件编辑
-    const { activeId } = useStore();
 
     const { componentList: editorComponentList, addComponent, removeComponent, getComponent } = useEditorComponents();
 
@@ -98,8 +101,8 @@ export default defineComponent({
       },
     ]);
 
-    let commonStyleList: RawStyle[] = [];
-    let propList: RawStyle[] = [];
+    let commonStyleList: StyleDto[] = [];
+    let propList: StyleDto[] = [];
 
     watch([() => activeId.value, editorComponentList], () => {
       const currentComponent = getComponent(activeId.value);
@@ -110,7 +113,6 @@ export default defineComponent({
       (optionsList[0].options as any[]) = commonStyleList;
       (optionsList[1].options as any[]) = propList;
     });
-
     //#endregion
 
     return { backToHome, componentList, optionsList, addComponent, editorComponentList: editorComponentList };

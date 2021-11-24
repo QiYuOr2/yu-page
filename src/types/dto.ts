@@ -15,5 +15,6 @@ export type StyleDto = {
   selectUnitIdx?: number;
   type?: string;
   preset?: (string | number)[];
+  from?: string;
   children: Record<string, StyleDto>;
 };

@@ -1,20 +1,47 @@
-import { ref, reactive } from 'vue';
-import { RawStyle } from './useCommonStyles';
+// Requests
+import { fetchCommonStyles } from '@/api';
 
-export type Schema = {
-  id: string;
-  name: string;
-  label: string;
-  commonStyleKeys: string[];
-  styles: Record<string, RawStyle>;
-  props: Record<string, RawStyle>;
-};
+// Types
+import { Schema } from '@/types';
+import { StyleDto } from '@/types/dto';
+
+// Utils
+import { ref, reactive, computed } from 'vue';
+import { reduce } from 'lodash';
+
+
 
 function createContext() {
   const activeId = ref('');
   const componentList = reactive<{ value: Schema[] }>({ value: [] });
 
-  return () => ({ activeId, componentList });
+  const commonStyles = reactive<{ value: Record<string, StyleDto> }>({ value: {} });
+
+  const setCommonStyles = (styles: Record<string, StyleDto>) => {
+    commonStyles.value = styles;
+  };
+
+  const setCommonStylesAction = async () => {
+    const { status, result } = await fetchCommonStyles();
+    if (status.code === 0) {
+      const resultStyles = reduce<StyleDto, Record<string, StyleDto>>(
+        result.data,
+        (total, curr) => {
+          total[curr.name] = curr;
+          return total;
+        },
+        {}
+      );
+      setCommonStyles(resultStyles);
+    }
+  };
+
+  return () => ({
+    activeId,
+    componentList,
+    commonStyles: computed(() => commonStyles.value),
+    setCommonStylesAction,
+  });
 }
 
 export default createContext();

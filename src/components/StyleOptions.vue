@@ -17,14 +17,14 @@
 </template>
 
 <script lang="ts">
-import { RawStyle } from '@/hooks/useCommonStyles';
+import { StyleDto } from '@/types/dto';
 import { defineComponent, PropType } from 'vue';
 
 import OptionItem from './OptionItem.vue';
 
 export default defineComponent({
   components: { OptionItem },
-  props: { options: Array as PropType<Array<RawStyle>> },
+  props: { options: Array as PropType<Array<StyleDto>> },
   setup() {
     return {};
   },

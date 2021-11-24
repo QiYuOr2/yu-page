@@ -30,13 +30,14 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { RawStyle, useCommonStyle } from '@/hooks/useCommonStyles';
+import {  useCommonStyle } from '@/hooks/useCommonStyles';
 import { useEditorComponents } from '@/hooks/useEditorComponents';
 import useStore from '@/hooks/useStore';
+import { StyleDto } from '@/types/dto';
 
 export default defineComponent({
   props: {
-    item: { type: Object as PropType<RawStyle>, required: true },
+    item: { type: Object as PropType<StyleDto>, required: true },
   },
   setup() {
     const { activeId } = useStore();
