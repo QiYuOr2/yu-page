@@ -6,3 +6,14 @@ export type ComponentDto = {
   commonStyleKeys: string[];
   props: Record<string, any>;
 };
+
+export type StyleDto = {
+  name: string;
+  label: string;
+  val: string | number;
+  unit?: string[];
+  selectUnitIdx?: number;
+  type?: string;
+  preset?: (string | number)[];
+  children: Record<string, StyleDto>;
+};

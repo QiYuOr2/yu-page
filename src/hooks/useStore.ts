@@ -1,11 +1,11 @@
 import { ref, reactive } from 'vue';
-import { RawStyle, StyleKey } from './useCommonStyles';
+import { RawStyle } from './useCommonStyles';
 
 export type Schema = {
   id: string;
   name: string;
   label: string;
-  commonStyleKeys: StyleKey[];
+  commonStyleKeys: string[];
   styles: Record<string, RawStyle>;
   props: Record<string, RawStyle>;
 };

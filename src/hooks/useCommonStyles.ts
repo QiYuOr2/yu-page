@@ -50,7 +50,6 @@ const commonStyle = {
   },
 };
 
-//#region 屁用都没的类型体操
 export type RawStyle = {
   name: string;
   label: string;
@@ -67,8 +66,6 @@ export type RawStyle = {
 };
 
 type Style = typeof commonStyle;
-export type StyleKey = keyof Style;
-//#endregion
 
 export function useCommonStyle(incomeStyles: Record<string, RawStyle>) {
   const styles = reactive(incomeStyles);
@@ -130,14 +127,14 @@ export function transferStyle(styles: Record<string, RawStyle>) {
  * @param keys 要获取的样式
  * @returns
  */
-export function cloneStyles(keys?: StyleKey[]): Partial<Style> {
+export function cloneStyles(keys?: string[]): Partial<Style> {
   return cloneDeep(
     keys
       ? reduce(
-          Object.keys(commonStyle) as StyleKey[],
+          Object.keys(commonStyle),
           (result, curr) => {
             if (includes(keys, curr)) {
-              (result as any)[curr] = commonStyle[curr];
+              (result as any)[curr] = (commonStyle as any)[curr];
             }
             return result;
           },

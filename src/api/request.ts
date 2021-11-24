@@ -1,11 +1,12 @@
+import { YuResponse } from '@/types';
 import axios from 'axios';
 
 const baseURL = process.env.BASE_URL;
-const axiosRequest = axios.create({
+const _axiosRequest = axios.create({
   baseURL,
 });
 
-axiosRequest.interceptors.request.use(
+_axiosRequest.interceptors.request.use(
   (config) => {
     return config;
   },
@@ -14,7 +15,7 @@ axiosRequest.interceptors.request.use(
   }
 );
 
-axiosRequest.interceptors.response.use(
+_axiosRequest.interceptors.response.use(
   (response) => {
     return response;
   },
@@ -23,12 +24,17 @@ axiosRequest.interceptors.response.use(
   }
 );
 
-const mockRequest = (url: string, ...args: any[]) => Promise.resolve(require(`../mock${url}.json`));
+const axiosRequest = async <T>(url: string, ...args: any[]): Promise<YuResponse<T>> => {
+  const axiosResponse = await _axiosRequest({ url, ...args });
+  return axiosResponse.data;
+};
 
-export const request = (url: string, ...args: any[]) => {
+const mockRequest = <T>(url: string, ...args: any[]): Promise<YuResponse<T>> => Promise.resolve(require(`../mock${url}.json`));
+
+export const request = <T>(url: string, ...args: any[]): Promise<YuResponse<T>> => {
   url = url.slice(0, 1) === '/' ? url : `/${url}`;
   if (process.env.NODE_ENV === 'mock') {
     return mockRequest(url, ...args);
   }
-  return axiosRequest({ url, ...args });
+  return axiosRequest(url, ...args);
 };
