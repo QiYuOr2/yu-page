@@ -9,11 +9,29 @@ import { StyleDto } from '@/types/dto';
 import { ref, reactive, computed } from 'vue';
 import { reduce } from 'lodash';
 
-
-
 function createContext() {
   const activeId = ref('');
+  const setActiveId = (val: string) => {
+    activeId.value = val;
+  };
+
+  //#region workbench内活动的组件
   const componentList = reactive<{ value: Schema[] }>({ value: [] });
+  const setComponentList = (val: Schema | Schema[] | (() => Schema[])) => {
+    if (Array.isArray(val)) {
+      componentList.value = val;
+      return;
+    }
+    if (typeof val === 'function') {
+      componentList.value = val();
+      return;
+    }
+    componentList.value.push(val);
+  };
+  const insertComponentList = (val: Schema, index: number) => {
+    componentList.value.splice(index, 0, val);
+  };
+  //#endregion
 
   const commonStyles = reactive<{ value: Record<string, StyleDto> }>({ value: {} });
 
@@ -37,8 +55,11 @@ function createContext() {
   };
 
   return () => ({
-    activeId,
-    componentList,
+    activeId: computed(() => activeId.value),
+    setActiveId,
+    componentList: computed(() => componentList.value),
+    setComponentList,
+    insertComponentList,
     commonStyles: computed(() => commonStyles.value),
     setCommonStylesAction,
   });

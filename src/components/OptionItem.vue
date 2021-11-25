@@ -32,7 +32,7 @@
 import { defineComponent, PropType } from 'vue';
 import {  useCommonStyle } from '@/hooks/useCommonStyles';
 import { useEditorComponents } from '@/hooks/useEditorComponents';
-import useStore from '@/hooks/useStore';
+import useStore from '@/store';
 import { StyleDto } from '@/types/dto';
 
 export default defineComponent({

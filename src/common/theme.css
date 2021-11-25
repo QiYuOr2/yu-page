@@ -1,5 +1,6 @@
 :root {
   --x-color-primary: #7740e0;
+  --x-color-primary-opacity: #7740e0c0;
   --x-color-primary-black: #000;
 
   --x-shadow-small: 0 5px 10px rgba(0, 0, 0, 0.12);

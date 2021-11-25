@@ -20,10 +20,17 @@
         </collapse>
       </div>
       <div class="main">
-        <workbench :componentList="editorComponentList.value" />
+        <workbench :componentList="editorComponentList" />
       </div>
       <div class="aside__right">
-        <div class="settings">
+        <div v-if="true" class="settings">
+          <collapse v-for="item in optionsList" :key="item.name" :title="item.label" :empty="item.options.length === 0">
+            <div style="padding: 16px 14px">
+              <style-options :options="item.options" />
+            </div>
+          </collapse>
+        </div>
+        <div v-else class="settings">
           <collapse v-for="item in optionsList" :key="item.name" :title="item.label" :empty="item.options.length === 0">
             <div style="padding: 16px 14px">
               <style-options :options="item.options" />
@@ -50,7 +57,7 @@ import Workbench from '@/components/Workbench.vue';
 // Hooks
 import { useRouter } from 'vue-router';
 import { useEditorComponents } from '@/hooks/useEditorComponents';
-import useStore from '@/hooks/useStore';
+import useStore from '@/store';
 
 // Requests
 import { fetchComponents } from '@/api';
@@ -86,7 +93,7 @@ export default defineComponent({
 
     //#region 组件编辑
 
-    const { componentList: editorComponentList, addComponent, removeComponent, getComponent } = useEditorComponents();
+    const { componentList: editorComponentList, addComponent, getComponent } = useEditorComponents();
 
     const optionsList = reactive([
       {
