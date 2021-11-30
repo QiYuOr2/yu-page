@@ -19,8 +19,20 @@
         "name": "button",
         "label": "按钮",
         "icon": "triangle",
-        "commonStyleKeys": ["width", "height", "border", "color", "background"],
-        "props": { "inner": { "name": "inner", "label": "内容", "val": "按钮" } }
+        "commonStyleKeys": ["width", "height", "font-size"],
+        "props": {
+          "type": {
+            "name": "type",
+            "label": "类型",
+            "val": "default",
+            "preset": [
+              { "name": "default", "previewStyles": {}, "styles": {} },
+              { "name": "primary", "previewStyles": {}, "styles": {} },
+              { "name": "success", "previewStyles": {}, "styles": {} }
+            ]
+          },
+          "inner": { "name": "inner", "label": "内容", "val": "按钮" }
+        }
       },
       {
         "type": { "name": "common", "label": "通用组件" },

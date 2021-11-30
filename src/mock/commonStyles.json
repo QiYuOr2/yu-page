@@ -8,6 +8,7 @@
     "data": [
       { "name": "width", "label": "宽", "val": 40, "unit": ["px", "em"], "selectUnitIdx": 0 },
       { "name": "height", "label": "高", "val": 40, "unit": ["px", "em"], "selectUnitIdx": 0 },
+      { "name": "font-size", "label": "字体大小", "val": 16, "unit": ["px"], "selectUnitIdx": 0 },
       { "name": "color", "label": "字体颜色", "val": "#000000", "type": "color" },
       {
         "name": "background",

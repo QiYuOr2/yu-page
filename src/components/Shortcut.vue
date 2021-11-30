@@ -1,6 +1,6 @@
 <template>
   <div class="shortcut">
-    <component :is="icon" size="16"></component>
+    <component :is="icon" sizze="16"></component>
     <div class="title">{{ title }}</div>
   </div>
 </template>

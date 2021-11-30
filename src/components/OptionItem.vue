@@ -15,9 +15,15 @@
       </div>
       <div class="custom-option-wrapper" v-else>
         <div class="custom-option-label">{{ item.label }}</div>
-        <fe-select size="small" :value="String(item.val)" @change="changeHandler($event, item.name, item.from)">
+        <fe-select
+          v-if="!shouldPreview(item.preset)"
+          size="small"
+          :value="String(item.val)"
+          @change="changeHandler($event, item.name, item.from)"
+        >
           <fe-option v-for="(p, pIdx) in item.preset" :key="pIdx" :label="p" :value="String(p)"></fe-option>
         </fe-select>
+        <preview-radio v-else />
       </div>
     </fe-col>
     <fe-col v-if="item.unit" span="8" style="text-align: right">
@@ -29,13 +35,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import {  useCommonStyle } from '@/hooks/useCommonStyles';
+// Components
+import PreviewRadio from './PreviewRadio.vue';
+
+// Hooks
+import { useCommonStyle } from '@/hooks/useCommonStyles';
 import { useEditorComponents } from '@/hooks/useEditorComponents';
 import useStore from '@/store';
+
+// Types
 import { StyleDto } from '@/types/dto';
 
+// Utils
+import { defineComponent, PropType } from 'vue';
+
 export default defineComponent({
+  components: { PreviewRadio },
   props: {
     item: { type: Object as PropType<StyleDto>, required: true },
   },
@@ -71,9 +86,12 @@ export default defineComponent({
       return changeProp(val, name);
     };
 
+    const shouldPreview = (preset: (string | number | StyleDto)[] | undefined) => typeof preset?.[0] === 'object';
+
     return {
       selectUnit,
       changeHandler,
+      shouldPreview,
     };
   },
 });
