@@ -7,14 +7,20 @@ export type ComponentDto = {
   props: Record<string, any>;
 };
 
+export type PresetType = {
+  name: string;
+  previewStyles: Record<string, string[]>;
+  styles: Record<string, string[]>;
+};
+
 export type StyleDto = {
   name: string;
   label: string;
   val: string | number;
   unit?: string[];
-  selectUnitIdx?: number;
+  selectUnit?: string;
   type?: string;
-  preset?: (string | number | StyleDto)[];
+  preset?: (string | number | StyleDto | PresetType)[];
   from?: string;
   children: Record<string, StyleDto>;
 };

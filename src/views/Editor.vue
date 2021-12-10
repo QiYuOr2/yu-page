@@ -65,10 +65,12 @@ import { fetchComponents } from '@/api';
 // Types
 import { FormattedComponent } from '@/types';
 import { componentsFormatter } from '@/common/utils';
-import { StyleDto } from '@/types/dto';
+import { PresetType, StyleDto } from '@/types/dto';
 
 // Utils
 import { defineComponent, reactive, watch, onMounted } from 'vue';
+import { useCommonStyle } from '@/hooks/useCommonStyles';
+import { useChangeStyle } from '@/hooks/useChangeStyle';
 
 // TODO merge 各个component的自定义样式或者减少可自定义程度
 export default defineComponent({
@@ -111,13 +113,32 @@ export default defineComponent({
     let commonStyleList: StyleDto[] = [];
     let propList: StyleDto[] = [];
 
+    const { selectUnit, changeStyle } = useChangeStyle();
+
+    const mergePreset = (styles: StyleDto[], props: StyleDto[]) => {
+      const isValEmpty = (val: number | string | undefined) =>
+        typeof val === 'number' ? val === 0 : typeof val === 'string' ? val === '' : true;
+      const type = props.filter((prop) => prop.name === 'type')[0];
+      if (!type) {
+        return styles;
+      }
+      return styles.map((style) => {
+        const typeStyles = (type.preset?.filter((p: any) => p.name === type.val)[0] as PresetType).styles;
+        if (typeStyles[style.name]) {
+          isValEmpty(style.val) && changeStyle(typeStyles[style.name][0], style.name);
+          isValEmpty(style.selectUnit) && selectUnit(typeStyles[style.name][1], style.name);
+        }
+        return style;
+      });
+    };
+
     watch([() => activeId.value, editorComponentList], () => {
       const currentComponent = getComponent(activeId.value);
       commonStyleList = currentComponent
         ? Object.entries(currentComponent.styles).map((item) => ({ ...item[1], from: 'style' }))
         : [];
       propList = currentComponent ? Object.entries(currentComponent.props).map((item) => ({ ...item[1], from: 'prop' })) : [];
-      (optionsList[0].options as any[]) = commonStyleList;
+      (optionsList[0].options as any[]) = mergePreset(commonStyleList, propList);
       (optionsList[1].options as any[]) = propList;
     });
     //#endregion

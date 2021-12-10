@@ -13,7 +13,7 @@
   "icon": "alignJustify",
   "commonStyleKeys": ["width", "height"],
   "props": { "inner": { "name": "inner", "label": "内容", "val": "文本" } },
-  "styles": { "width": { "name": "width", "label": "宽", "val": 40, "unit": ["px", "em"], "selectUnitIdx": 0 } }
+  "styles": { "width": { "name": "width", "label": "宽", "val": 40, "unit": ["px", "em"], "selectUnit": "px" } }
 }
 ```
 

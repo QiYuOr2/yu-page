@@ -6,47 +6,47 @@
   },
   "result": {
     "data": [
-      { "name": "width", "label": "宽", "val": 40, "unit": ["px", "em"], "selectUnitIdx": 0 },
-      { "name": "height", "label": "高", "val": 40, "unit": ["px", "em"], "selectUnitIdx": 0 },
-      { "name": "font-size", "label": "字体大小", "val": 16, "unit": ["px"], "selectUnitIdx": 0 },
-      { "name": "color", "label": "字体颜色", "val": "#000000", "type": "color" },
+      { "name": "width", "label": "宽", "val": 0, "unit": ["px", "em"], "selectUnit": "px" },
+      { "name": "height", "label": "高", "val": 0, "unit": ["px", "em"], "selectUnit": "px" },
+      { "name": "font-size", "label": "字体大小", "val": 0, "unit": ["px"], "selectUnit": "px" },
+      { "name": "color", "label": "字体颜色", "val": "", "type": "color" },
       {
         "name": "background",
         "label": "背景",
         "children": {
-          "color": { "name": "background-color", "label": "颜色", "val": "#ffffff", "type": "color" }
+          "color": { "name": "background-color", "label": "颜色", "val": "", "type": "color" }
         }
       },
       {
         "name": "padding",
         "label": "内边距",
         "children": {
-          "top": { "name": "padding-top", "label": "上", "val": 10, "unit": ["px", "em"], "selectUnitIdx": 0 },
-          "bottom": { "name": "padding-bottom", "label": "下", "val": 10, "unit": ["px", "em"], "selectUnitIdx": 0 },
-          "left": { "name": "padding-left", "label": "左", "val": 10, "unit": ["px", "em"], "selectUnitIdx": 0 },
-          "right": { "name": "padding-right", "label": "右", "val": 10, "unit": ["px", "em"], "selectUnitIdx": 0 }
+          "top": { "name": "padding-top", "label": "上", "val": 0, "unit": ["px", "em"], "selectUnit": "px" },
+          "bottom": { "name": "padding-bottom", "label": "下", "val": 0, "unit": ["px", "em"], "selectUnit": "px" },
+          "left": { "name": "padding-left", "label": "左", "val": 0, "unit": ["px", "em"], "selectUnit": "px" },
+          "right": { "name": "padding-right", "label": "右", "val": 0, "unit": ["px", "em"], "selectUnit": "px" }
         }
       },
       {
         "name": "margin",
         "label": "外边距",
         "children": {
-          "top": { "name": "margin-top", "label": "上", "val": 10, "unit": ["px", "em"], "selectUnitIdx": 0 },
-          "bottom": { "name": "margin-bottom", "label": "下", "val": 10, "unit": ["px", "em"], "selectUnitIdx": 0 },
-          "left": { "name": "margin-left", "label": "左", "val": 10, "unit": ["px", "em"], "selectUnitIdx": 0 },
-          "right": { "name": "margin-right", "label": "右", "val": 10, "unit": ["px", "em"], "selectUnitIdx": 0 }
+          "top": { "name": "margin-top", "label": "上", "val": 0, "unit": ["px", "em"], "selectUnit": "px" },
+          "bottom": { "name": "margin-bottom", "label": "下", "val": 0, "unit": ["px", "em"], "selectUnit": "px" },
+          "left": { "name": "margin-left", "label": "左", "val": 0, "unit": ["px", "em"], "selectUnit": "px" },
+          "right": { "name": "margin-right", "label": "右", "val": 0, "unit": ["px", "em"], "selectUnit": "px" }
         }
       },
       {
         "name": "border",
         "label": "边框",
         "children": {
-          "top": { "name": "border-top", "label": "上", "val": 1, "unit": ["px", "em"], "selectUnitIdx": 0 },
-          "bottom": { "name": "border-bottom", "label": "下", "val": 1, "unit": ["px", "em"], "selectUnitIdx": 0 },
-          "left": { "name": "border-left", "label": "左", "val": 1, "unit": ["px", "em"], "selectUnitIdx": 0 },
-          "right": { "name": "border-right", "label": "右", "val": 1, "unit": ["px", "em"], "selectUnitIdx": 0 },
-          "color": { "name": "border-color", "label": "颜色", "val": "#999999", "type": "color" },
-          "style": { "name": "border-style", "label": "样式", "preset": ["solid"], "val": "solid" }
+          "top": { "name": "border-top", "label": "上", "val": 0, "unit": ["px", "em"], "selectUnit": "px" },
+          "bottom": { "name": "border-bottom", "label": "下", "val": 0, "unit": ["px", "em"], "selectUnit": "px" },
+          "left": { "name": "border-left", "label": "左", "val": 0, "unit": ["px", "em"], "selectUnit": "px" },
+          "right": { "name": "border-right", "label": "右", "val": 0, "unit": ["px", "em"], "selectUnit": "px" },
+          "color": { "name": "border-color", "label": "颜色", "val": "", "type": "color" },
+          "style": { "name": "border-style", "label": "样式", "preset": ["solid"], "val": "" }
         }
       }
     ]

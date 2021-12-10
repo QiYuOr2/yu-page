@@ -9,6 +9,10 @@ type CommonStyle = Record<string, StyleDto>;
 export function useCommonStyle(incomeStyles: CommonStyle) {
   const styles = reactive(incomeStyles);
   const setStyle = (name: string, value: string | number | boolean) => {
+    if ((styles as any)[name]) {
+      (styles as any)[name].val = value;
+      return;
+    }
     if (name.indexOf('-') !== -1) {
       const [mainKey, subKey] = name.split('-');
       (styles as any)[mainKey].children[subKey].val = value;
@@ -17,13 +21,17 @@ export function useCommonStyle(incomeStyles: CommonStyle) {
     (styles as any)[name].val = value;
   };
 
-  const setUnit = (name: string, value: number) => {
-    if (name.indexOf('-') !== -1) {
-      const [mainKey, subKey] = name.split('-');
-      (styles as any)[mainKey].children[subKey].selectUnitIdx = value;
+  const setUnit = (name: string, value: string) => {
+    if ((styles as any)[name]) {
+      (styles as any)[name].selectUnit = value;
       return;
     }
-    (styles as any)[name].selectUnitIdx = value;
+    if (name.indexOf('-') !== -1) {
+      const [mainKey, subKey] = name.split('-');
+      (styles as any)[mainKey].children[subKey].selectUnit = value;
+      return;
+    }
+    (styles as any)[name].selectUnit = value;
   };
 
   return {
@@ -34,31 +42,35 @@ export function useCommonStyle(incomeStyles: CommonStyle) {
 }
 
 export function transferStyle(styles: CommonStyle) {
-  const getUnit = (style: StyleDto) => style.unit?.[Number(style.selectUnitIdx)];
+  const getUnit = (style: StyleDto) => style.selectUnit;
   if (!styles) {
-    return '';
+    return {};
   }
-  return Object.keys(styles)
-    .map((styleKey) => {
+  return reduce<string, Record<string, string>>(
+    Object.keys(styles),
+    (total, styleKey) => {
       const style = styles[styleKey];
       if (!style) {
-        return '';
+        return total;
       }
       if (!style.children) {
         const unit = getUnit(style);
-        return `${style.name}: ${style.val}${unit ?? ''}`;
-      }
-      return Object.keys(style.children).map((childStyleKey) => {
-        const currentStyle = style.children?.[childStyleKey];
-        if (!currentStyle) {
-          return '';
+        if (style.val) {
+          total[style.name] = `${style.val}${unit ?? ''}`;
         }
-        const unit = getUnit(currentStyle);
-        return `${currentStyle.name}: ${currentStyle.val}${unit ?? ''}`;
+        return total;
+      }
+      Object.keys(style.children).forEach((childStyleKey) => {
+        const currentStyle = style.children?.[childStyleKey];
+        if (currentStyle && currentStyle.val) {
+          const unit = getUnit(currentStyle);
+          total[currentStyle.name] = `${currentStyle.val}${unit ?? ''}`;
+        }
       });
-    })
-    .flat()
-    .join(';');
+      return total;
+    },
+    {}
+  );
 }
 
 /**

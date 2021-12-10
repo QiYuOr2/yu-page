@@ -27,8 +27,8 @@
       </div>
     </fe-col>
     <fe-col v-if="item.unit" span="8" style="text-align: right">
-      <fe-select size="small" style="min-width: 60px" :value="String(item.selectUnitIdx)" @change="selectUnit($event, item.name)">
-        <fe-option v-for="(u, uIdx) in item.unit" :key="uIdx" :label="u" :value="String(uIdx)"></fe-option>
+      <fe-select size="small" style="min-width: 60px" :value="item.selectUnit" @change="selectUnit($event, item.name)">
+        <fe-option v-for="u in item.unit" :key="u" :label="u" :value="u"></fe-option>
       </fe-select>
     </fe-col>
   </fe-row>
@@ -39,12 +39,10 @@
 import PreviewRadio from './PreviewRadio.vue';
 
 // Hooks
-import { useCommonStyle } from '@/hooks/useCommonStyles';
-import { useEditorComponents } from '@/hooks/useEditorComponents';
-import useStore from '@/store';
+import { useChangeStyle } from '@/hooks/useChangeStyle';
 
 // Types
-import { StyleDto } from '@/types/dto';
+import { PresetType, StyleDto } from '@/types/dto';
 
 // Utils
 import { defineComponent, PropType } from 'vue';
@@ -55,38 +53,14 @@ export default defineComponent({
     item: { type: Object as PropType<StyleDto>, required: true },
   },
   setup() {
-    const { activeId } = useStore();
-    const { getComponent, setComponentStyle, setComponentProp } = useEditorComponents();
-
-    const selectUnit = (val: string, name: string) => {
-      const { styles, setUnit } = useCommonStyle(getComponent(activeId.value).styles);
-      setUnit(name, Number(val));
-      setComponentStyle(activeId.value, styles);
-    };
-
-    const changeStyle = (val: string | any, name: string) => {
-      const { styles, setStyle } = useCommonStyle(getComponent(activeId.value).styles);
-      if (typeof val === 'string') {
-        setStyle(name, val);
-        setComponentStyle(activeId.value, styles);
-        return;
-      }
-      setStyle(name, val.target.value);
-      setComponentStyle(activeId.value, styles);
-    };
-
-    const changeProp = (val: string, name: string) => {
-      const { styles, setStyle } = useCommonStyle(getComponent(activeId.value).props);
-      setStyle(name, val);
-      setComponentProp(activeId.value, styles);
-    };
+    const { selectUnit, changeProp, changeStyle } = useChangeStyle();
 
     const changeHandler = (val: string | any, name: string, from: string = 'style') => {
       if (from === 'style') return changeStyle(val, name);
       return changeProp(val, name);
     };
 
-    const shouldPreview = (preset: (string | number | StyleDto)[] | undefined) => typeof preset?.[0] === 'object';
+    const shouldPreview = (preset: (string | number | StyleDto | PresetType)[] | undefined) => typeof preset?.[0] === 'object';
 
     return {
       selectUnit,

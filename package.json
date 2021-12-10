@@ -10,9 +10,9 @@
     "test:e2e": "vue-cli-service test:e2e"
   },
   "dependencies": {
-    "@fect-ui/vue": "^1.0.5-rc.2",
+    "@fect-ui/vue": "^1.1.0-rc.0",
     "@fect-ui/vue-hooks": "0.0.3-rc.0",
-    "@fect-ui/vue-icons": "^0.1.7",
+    "@fect-ui/vue-icons": "^2.0.0",
     "axios": "^0.24.0",
     "core-js": "^3.6.5",
     "lodash": "^4.17.21",

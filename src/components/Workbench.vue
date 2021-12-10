@@ -6,7 +6,7 @@
       :key="item.id"
       @click="choose($event, item.id)"
     >
-      <component :is="item.name" v-bind="{ style: transferStyle(item.styles) }">
+      <component :is="item.name" v-bind="{ style: mergeStyle(transferStyle(item.styles), item.props.type) }">
         {{ item?.props?.inner?.val || '' }}
       </component>
       <div v-if="activeId === item.id" class="operations">
@@ -32,6 +32,7 @@ import { transferStyle } from '@/hooks/useCommonStyles';
 import { useEditorComponents } from '@/hooks/useEditorComponents';
 import useStore from '@/store';
 import { Schema } from '@/types';
+import { reduce } from 'lodash';
 import { defineComponent, PropType } from 'vue';
 
 export default defineComponent({
@@ -61,7 +62,25 @@ export default defineComponent({
       moveComponent(activeId.value, 'down');
     };
 
-    return { choose, activeId, transferStyle, removeHandler, moveUpHandler, moveDownHandler };
+    // TODO 类型或许会完善
+    const mergeStyle = (styles: Record<string, string>, type?: { preset: any[]; val: string }) => {
+      if (type) {
+        const presetStyles = type.preset.filter((p: { name: string }) => p.name === type.val)[0].styles;
+        const formattedPresetStyles = reduce<string, Record<string, string>>(
+          Object.keys(presetStyles),
+          (total, styleKey) => {
+            const v = presetStyles[styleKey];
+            total[styleKey] = v.join('');
+            return total;
+          },
+          {}
+        );
+        return { ...formattedPresetStyles, ...styles };
+      }
+      return styles;
+    };
+
+    return { choose, activeId, transferStyle, mergeStyle, removeHandler, moveUpHandler, moveDownHandler };
   },
 });
 </script>

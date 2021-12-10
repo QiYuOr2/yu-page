@@ -26,7 +26,15 @@
             "label": "类型",
             "val": "default",
             "preset": [
-              { "name": "default", "previewStyles": {}, "styles": {} },
+              {
+                "name": "default",
+                "previewStyles": {},
+                "styles": {
+                  "width": ["120", "px"],
+                  "height": ["30", "px"],
+                  "font-size": ["14", "px"]
+                }
+              },
               { "name": "primary", "previewStyles": {}, "styles": {} },
               { "name": "success", "previewStyles": {}, "styles": {} }
             ]
