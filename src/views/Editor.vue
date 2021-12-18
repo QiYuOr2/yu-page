@@ -55,9 +55,10 @@ import StyleOptions from '@/components/StyleOptions.vue';
 import Workbench from '@/components/Workbench.vue';
 
 // Hooks
+import useStore from '@/store';
 import { useRouter } from 'vue-router';
 import { useEditorComponents } from '@/hooks/useEditorComponents';
-import useStore from '@/store';
+import { useChangeStyle } from '@/hooks/useChangeStyle';
 
 // Requests
 import { fetchComponents } from '@/api';
@@ -69,8 +70,6 @@ import { PresetType, StyleDto } from '@/types/dto';
 
 // Utils
 import { defineComponent, reactive, watch, onMounted } from 'vue';
-import { useCommonStyle } from '@/hooks/useCommonStyles';
-import { useChangeStyle } from '@/hooks/useChangeStyle';
 
 // TODO merge 各个component的自定义样式或者减少可自定义程度
 export default defineComponent({
@@ -115,6 +114,7 @@ export default defineComponent({
 
     const { selectUnit, changeStyle } = useChangeStyle();
 
+    // 合并预设样式
     const mergePreset = (styles: StyleDto[], props: StyleDto[]) => {
       const isValEmpty = (val: number | string | undefined) =>
         typeof val === 'number' ? val === 0 : typeof val === 'string' ? val === '' : true;
@@ -132,6 +132,8 @@ export default defineComponent({
       });
     };
 
+    // 监听活动组件ID和编辑器中的组件列表
+    // 任何一个发生改变就重新计算右侧选项菜单
     watch([() => activeId.value, editorComponentList], () => {
       const currentComponent = getComponent(activeId.value);
       commonStyleList = currentComponent

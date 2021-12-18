@@ -23,7 +23,7 @@
         >
           <fe-option v-for="(p, pIdx) in item.preset" :key="pIdx" :label="p" :value="String(p)"></fe-option>
         </fe-select>
-        <preview-radio v-else />
+        <preview-radio v-else :presetStyles="item.preset" />
       </div>
     </fe-col>
     <fe-col v-if="item.unit" span="8" style="text-align: right">

@@ -6,12 +6,14 @@ export function useChangeStyle() {
   const { activeId } = useStore();
   const { getComponent, setComponentProp, setComponentStyle } = useEditorComponents();
 
+  // 修改活动组件的单位
   const selectUnit = (val: string, name: string) => {
     const { styles, setUnit } = useCommonStyle(getComponent(activeId.value).styles);
     setUnit(name, val);
     setComponentStyle(activeId.value, styles);
   };
 
+  // 修改活动组件的样式
   const changeStyle = (val: string | any, name: string) => {
     const { styles, setStyle } = useCommonStyle(getComponent(activeId.value).styles);
     if (typeof val === 'string') {
@@ -23,6 +25,7 @@ export function useChangeStyle() {
     setComponentStyle(activeId.value, styles);
   };
 
+  // 修改活动组件的props
   const changeProp = (val: string, name: string) => {
     const { styles, setStyle } = useCommonStyle(getComponent(activeId.value).props);
     setStyle(name, val);

@@ -28,18 +28,34 @@
             "preset": [
               {
                 "name": "default",
-                "previewStyles": {},
+                "previewStyles": {
+                  "width": ["160", "px"],
+                  "height": ["40", "px"],
+                  "font-size": ["14", "px"],
+                  "background-color": ["#7740e0"],
+                  "color": ["#ffffff"],
+                  "border": ["none"],
+                  "border-radius": ["5", "px"]
+                },
                 "styles": {
-                  "width": ["120", "px"],
-                  "height": ["30", "px"],
-                  "font-size": ["14", "px"]
+                  "width": ["160", "px"],
+                  "height": ["40", "px"],
+                  "font-size": ["14", "px"],
+                  "background-color": ["#7740e0"],
+                  "color": ["#ffffff"],
+                  "border": ["none"],
+                  "border-radius": ["5", "px"],
+                  "margin": ["auto"],
+                  "margin-top": ["10", "px"],
+                  "margin-bottom": ["10", "px"]
                 }
               },
               { "name": "primary", "previewStyles": {}, "styles": {} },
               { "name": "success", "previewStyles": {}, "styles": {} }
             ]
           },
-          "inner": { "name": "inner", "label": "内容", "val": "按钮" }
+          "inner": { "name": "inner", "label": "内容", "val": "按钮" },
+          "align": { "name": "align", "label": "相对位置", "preset": ["center", "left", "right"], "val": "center" }
         }
       },
       {

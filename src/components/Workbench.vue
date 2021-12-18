@@ -6,9 +6,11 @@
       :key="item.id"
       @click="choose($event, item.id)"
     >
-      <component :is="item.name" v-bind="{ style: mergeStyle(transferStyle(item.styles), item.props.type) }">
-        {{ item?.props?.inner?.val || '' }}
-      </component>
+      <div :style="`text-align: ${getAlign(item.id)}`">
+        <component :is="item.name" v-bind="{ style: mergeStyle(transferStyle(item.styles), item.props.type) }">
+          {{ item?.props?.inner?.val || '' }}
+        </component>
+      </div>
       <div v-if="activeId === item.id" class="operations">
         <div class="operations-item" @click="moveUpHandler">
           <chevronUp />
@@ -33,7 +35,7 @@ import { useEditorComponents } from '@/hooks/useEditorComponents';
 import useStore from '@/store';
 import { Schema } from '@/types';
 import { reduce } from 'lodash';
-import { defineComponent, PropType } from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 
 export default defineComponent({
   props: {
@@ -43,7 +45,7 @@ export default defineComponent({
   },
   setup() {
     const { activeId, setActiveId } = useStore();
-    const { removeComponent, moveComponent } = useEditorComponents();
+    const { removeComponent, moveComponent, getComponent } = useEditorComponents();
 
     const choose = (e: MouseEvent, id: string) => {
       e.stopPropagation();
@@ -80,7 +82,12 @@ export default defineComponent({
       return styles;
     };
 
-    return { choose, activeId, transferStyle, mergeStyle, removeHandler, moveUpHandler, moveDownHandler };
+    const getAlign = (schemaId: string) => {
+      const { props } = getComponent(schemaId);
+      return props.align.val || 'center';
+    };
+
+    return { choose, activeId, transferStyle, mergeStyle, removeHandler, moveUpHandler, moveDownHandler, getAlign };
   },
 });
 </script>
