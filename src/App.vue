@@ -30,4 +30,8 @@ h1 {
 .main-route {
   margin-top: 64px;
 }
+
+::-webkit-scrollbar {
+  display: none;
+}
 </style>

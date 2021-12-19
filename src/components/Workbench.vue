@@ -84,7 +84,7 @@ export default defineComponent({
 
     const getAlign = (schemaId: string) => {
       const { props } = getComponent(schemaId);
-      return props.align.val || 'center';
+      return props.align?.val || 'center';
     };
 
     return { choose, activeId, transferStyle, mergeStyle, removeHandler, moveUpHandler, moveDownHandler, getAlign };

@@ -6,12 +6,12 @@
 </template>
 
 <script lang="ts">
-import { PresetType } from '@/types/dto';
+import { PresetType, StyleDto } from '@/types/dto';
 import { defineComponent, PropType } from 'vue';
 
 export default defineComponent({
   props: {
-    presetStyles: { type: [] as PropType<PresetType[]> },
+    presetStyles: { type: [] as PropType<(string | number | PresetType | StyleDto)[] | undefined> },
   },
   setup(props) {},
 });

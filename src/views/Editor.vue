@@ -9,11 +9,24 @@
     </div>
     <div class="editor__container">
       <div class="aside__left">
-        <collapse v-for="parent in componentList" :key="parent.name" :title="parent.label">
+        <collapse
+          v-for="parent in componentList"
+          :key="parent.name"
+          :title="parent.label"
+        >
           <div style="padding: 16px 14px">
-            <fe-grid-group justify="space-between" :gap="1" :col="2" :count="parent.children">
+            <fe-grid-group
+              justify="space-between"
+              :gap="1"
+              :col="2"
+              :count="parent.children"
+            >
               <template #grid="component">
-                <shortcut :title="component.label" :icon="component.icon" @click="addComponent(component)" />
+                <shortcut
+                  :title="component.label"
+                  :icon="component.icon"
+                  @click="addComponent(component)"
+                />
               </template>
             </fe-grid-group>
           </div>
@@ -24,14 +37,24 @@
       </div>
       <div class="aside__right">
         <div v-if="true" class="settings">
-          <collapse v-for="item in optionsList" :key="item.name" :title="item.label" :empty="item.options.length === 0">
+          <collapse
+            v-for="item in optionsList"
+            :key="item.name"
+            :title="item.label"
+            :empty="item.options.length === 0"
+          >
             <div style="padding: 16px 14px">
               <style-options :options="item.options" />
             </div>
           </collapse>
         </div>
         <div v-else class="settings">
-          <collapse v-for="item in optionsList" :key="item.name" :title="item.label" :empty="item.options.length === 0">
+          <collapse
+            v-for="item in optionsList"
+            :key="item.name"
+            :title="item.label"
+            :empty="item.options.length === 0"
+          >
             <div style="padding: 16px 14px">
               <style-options :options="item.options" />
             </div>
@@ -94,7 +117,11 @@ export default defineComponent({
 
     //#region 组件编辑
 
-    const { componentList: editorComponentList, addComponent, getComponent } = useEditorComponents();
+    const {
+      componentList: editorComponentList,
+      addComponent,
+      getComponent,
+    } = useEditorComponents();
 
     const optionsList = reactive([
       {
@@ -117,16 +144,24 @@ export default defineComponent({
     // 合并预设样式
     const mergePreset = (styles: StyleDto[], props: StyleDto[]) => {
       const isValEmpty = (val: number | string | undefined) =>
-        typeof val === 'number' ? val === 0 : typeof val === 'string' ? val === '' : true;
+        typeof val === 'number'
+          ? val === 0
+          : typeof val === 'string'
+          ? val === ''
+          : true;
       const type = props.filter((prop) => prop.name === 'type')[0];
       if (!type) {
         return styles;
       }
       return styles.map((style) => {
-        const typeStyles = (type.preset?.filter((p: any) => p.name === type.val)[0] as PresetType).styles;
+        const typeStyles = (
+          type.preset?.filter((p: any) => p.name === type.val)[0] as PresetType
+        ).styles;
         if (typeStyles[style.name]) {
-          isValEmpty(style.val) && changeStyle(typeStyles[style.name][0], style.name);
-          isValEmpty(style.selectUnit) && selectUnit(typeStyles[style.name][1], style.name);
+          isValEmpty(style.val) &&
+            changeStyle(typeStyles[style.name][0], style.name);
+          isValEmpty(style.selectUnit) &&
+            selectUnit(typeStyles[style.name][1], style.name);
         }
         return style;
       });
@@ -137,15 +172,32 @@ export default defineComponent({
     watch([() => activeId.value, editorComponentList], () => {
       const currentComponent = getComponent(activeId.value);
       commonStyleList = currentComponent
-        ? Object.entries(currentComponent.styles).map((item) => ({ ...item[1], from: 'style' }))
+        ? Object.entries(currentComponent.styles).map((item) => ({
+            ...item[1],
+            from: 'style',
+          }))
         : [];
-      propList = currentComponent ? Object.entries(currentComponent.props).map((item) => ({ ...item[1], from: 'prop' })) : [];
-      (optionsList[0].options as any[]) = mergePreset(commonStyleList, propList);
+      propList = currentComponent
+        ? Object.entries(currentComponent.props).map((item) => ({
+            ...item[1],
+            from: 'prop',
+          }))
+        : [];
+      (optionsList[0].options as any[]) = mergePreset(
+        commonStyleList,
+        propList
+      );
       (optionsList[1].options as any[]) = propList;
     });
     //#endregion
 
-    return { backToHome, componentList, optionsList, addComponent, editorComponentList: editorComponentList };
+    return {
+      backToHome,
+      componentList,
+      optionsList,
+      addComponent,
+      editorComponentList: editorComponentList,
+    };
   },
 });
 </script>
@@ -176,14 +228,17 @@ export default defineComponent({
       // padding: 1rem 0;
       box-shadow: var(--x-shadow-small);
       overflow: scroll;
+      overflow-x: hidden;
 
       &.aside__right {
         display: flex;
         flex-direction: column;
         overflow: hidden;
+        overflow-x: hidden;
         .settings {
           flex: 1;
           overflow: scroll;
+          overflow-x: hidden;
         }
         .tabbar {
           display: flex;
@@ -210,6 +265,8 @@ export default defineComponent({
       overflow: scroll;
       flex: 1;
       background: rgba(0, 0, 0, 0.05);
+
+      overflow-x: hidden;
       .workbench {
         --base-width: 30vw;
         margin: 1rem;
