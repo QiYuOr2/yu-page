@@ -1,5 +1,10 @@
 <template>
-  <fe-row class="option" gutter="8" justify="space-between" v-if="!item.children">
+  <fe-row
+    class="option"
+    gutter="8"
+    justify="space-between"
+    v-if="!item.children"
+  >
     <fe-col :span="item.unit ? 16 : 24">
       <fe-input
         v-if="!Array.isArray(item.preset) && item.type !== 'color'"
@@ -9,11 +14,25 @@
         :value="item.val"
         @change="changeHandler($event.target.value, item.name, item.from)"
       />
-      <div class="custom-option-wrapper" v-else-if="item.type?.includes('color')">
+      <div
+        class="custom-option-wrapper"
+        v-else-if="item.type?.includes('color')"
+      >
         <div class="custom-option-label">{{ item.label }}</div>
-        <input class="field" type="color" :value="item.val" @change="changeHandler($event, item.name, item.from)" />
+        <input
+          class="field"
+          type="color"
+          :value="item.val"
+          @change="changeHandler($event, item.name, item.from)"
+        />
       </div>
-      <div class="custom-option-wrapper" v-else>
+      <div
+        :class="[
+          'custom-option-wrapper',
+          { 'custom-option-wrapper--preview': shouldPreview(item.preset) },
+        ]"
+        v-else
+      >
         <div class="custom-option-label">{{ item.label }}</div>
         <fe-select
           v-if="!shouldPreview(item.preset)"
@@ -21,14 +40,29 @@
           :value="String(item.val)"
           @change="changeHandler($event, item.name, item.from)"
         >
-          <fe-option v-for="(p, pIdx) in item.preset" :key="pIdx" :label="p" :value="String(p)"></fe-option>
+          <fe-option
+            v-for="(p, pIdx) in item.preset"
+            :key="pIdx"
+            :label="p"
+            :value="String(p)"
+          ></fe-option>
         </fe-select>
-        <preview-radio v-else :presetStyles="item.preset" />
+        <preview-radios v-else :presetStyles="returnPreset(item)" />
       </div>
     </fe-col>
     <fe-col v-if="item.unit" span="8" style="text-align: right">
-      <fe-select size="small" style="min-width: 60px" :value="item.selectUnit" @change="selectUnit($event, item.name)">
-        <fe-option v-for="u in item.unit" :key="u" :label="u" :value="u"></fe-option>
+      <fe-select
+        size="small"
+        style="min-width: 60px"
+        :value="item.selectUnit"
+        @change="selectUnit($event, item.name)"
+      >
+        <fe-option
+          v-for="u in item.unit"
+          :key="u"
+          :label="u"
+          :value="u"
+        ></fe-option>
       </fe-select>
     </fe-col>
   </fe-row>
@@ -36,7 +70,7 @@
 
 <script lang="ts">
 // Components
-import PreviewRadio from './PreviewRadio.vue';
+import PreviewRadios from './PreviewRadios.vue';
 
 // Hooks
 import { useChangeStyle } from '@/hooks/useChangeStyle';
@@ -48,24 +82,35 @@ import { PresetType, StyleDto } from '@/types/dto';
 import { defineComponent, PropType } from 'vue';
 
 export default defineComponent({
-  components: { PreviewRadio },
+  components: { PreviewRadios },
   props: {
     item: { type: Object as PropType<StyleDto>, required: true },
   },
   setup() {
     const { selectUnit, changeProp, changeStyle } = useChangeStyle();
 
-    const changeHandler = (val: string | any, name: string, from: string = 'style') => {
+    const changeHandler = (
+      val: string | any,
+      name: string,
+      from: string = 'style'
+    ) => {
       if (from === 'style') return changeStyle(val, name);
       return changeProp(val, name);
     };
 
-    const shouldPreview = (preset: (string | number | StyleDto | PresetType)[] | undefined) => typeof preset?.[0] === 'object';
+    const shouldPreview = (
+      preset: (string | number | StyleDto | PresetType)[] | undefined
+    ) => typeof preset?.[0] === 'object';
+
+    const returnPreset = (style: StyleDto) => {
+      return style.preset as PresetType[];
+    };
 
     return {
       selectUnit,
       changeHandler,
       shouldPreview,
+      returnPreset,
     };
   },
 });
@@ -82,6 +127,11 @@ export default defineComponent({
       /deep/ .fect-select,
       .field {
         flex: 1;
+      }
+
+      &--preview {
+        flex-direction: column;
+        align-items: flex-start;
       }
     }
     &-label {
