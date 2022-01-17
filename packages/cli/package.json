@@ -1,0 +1,17 @@
+{
+  "name": "@yu-page/cli",
+  "version": "1.0.0",
+  "description": "",
+  "bin": {
+    "yup": "bin/index.js"
+  },
+  "scripts": {
+    "start": "node bin/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "yargs": "^17.3.1"
+  }
+}
