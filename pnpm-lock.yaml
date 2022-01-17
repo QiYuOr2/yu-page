@@ -6,12 +6,14 @@ importers:
     specifiers:
       '@vue/cli-plugin-babel': ~4.5.0
       '@vue/cli-service': ~4.5.0
+      cross-env: ^7.0.3
       less: ^3.0.4
       less-loader: ^5.0.0
       typescript: ^4.5.4
     devDependencies:
       '@vue/cli-plugin-babel': 4.5.15_@vue+cli-service@4.5.15
       '@vue/cli-service': 4.5.15_f8f3a61443052b23dd57c742d271e489
+      cross-env: 7.0.3
       less: 3.13.1
       less-loader: 5.0.0_less@3.13.1
       typescript: 4.5.4
@@ -3203,6 +3205,14 @@ packages:
       ripemd160: 2.0.2
       safe-buffer: 5.2.1
       sha.js: 2.4.11
+    dev: true
+
+  /cross-env/7.0.3:
+    resolution: {integrity: sha1-hlJkspZ33AFbqEGJGJZd0jL8VM8=, tarball: cross-env/download/cross-env-7.0.3.tgz?cache=0&sync_timestamp=1633330267640&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fcross-env%2Fdownload%2Fcross-env-7.0.3.tgz}
+    engines: {node: '>=10.14', npm: '>=6', yarn: '>=1'}
+    hasBin: true
+    dependencies:
+      cross-spawn: 7.0.3
     dev: true
 
   /cross-spawn/5.1.0:
