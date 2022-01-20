@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es2016",
+    "target": "esnext",
     "module": "commonjs",
-    "lib": ["es2016", "dom"],
+    "lib": ["esnext", "dom"],
     "outDir": "./dist"
   },
   "exclude": ["node_modules"]
