@@ -7,13 +7,18 @@
         <fe-button type="success" size="mini">保存</fe-button>
       </div>
     </header>
-    <main>
-      <iframe
-        src="http://localhost:3090/template"
-        id="editorFrame"
-        @load="onFrameLoaded"
-      ></iframe>
-    </main>
+    <div class="workbanch__main">
+      <aside class="aside">left</aside>
+      <main>
+        <iframe
+          class="preview"
+          src="http://localhost:3090/template"
+          id="editorFrame"
+          @load="onFrameLoaded"
+        ></iframe>
+      </main>
+      <aside class="aside">right</aside>
+    </div>
   </div>
 </template>
 
@@ -55,6 +60,35 @@ export default defineComponent({
     z-index: 1000;
     .back {
       cursor: pointer;
+    }
+  }
+
+  &__main {
+    display: flex;
+    justify-content: space-between;
+
+    height: calc(100vh - 44px);
+    .preview {
+      height: 667px;
+      width: 375px;
+      border-width: 1px;
+      border-color: rgba(0, 0, 0, 0.2);
+      transform: scale(0.95);
+    }
+
+    .aside {
+      box-sizing: border-box;
+      width: 240px;
+      height: 100%;
+      padding: 1rem;
+      box-shadow: var(--x-shadow-small);
+      overflow: scroll;
+    }
+
+    main {
+      flex: 1;
+      text-align: center;
+      overflow-y: scroll;
     }
   }
 }

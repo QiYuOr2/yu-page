@@ -2,6 +2,10 @@
 
 使用 monorepo 管理项目
 
+## 启动
+
+前端项目需要依次执行`pnpm run template`，`pnpm run editor`，`pnpm run dev`这三个命令
+
 ## 组件 Schema 设计
 
 ```json

@@ -4,10 +4,12 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 const app = Express();
 
 const createVueProxy = (target, host) => {
-  app.use(createProxyMiddleware(`/${target}`, { target: host }));
-  app.use(createProxyMiddleware(`/${target}/img`, { target: `${host}/img` }));
-  app.use(createProxyMiddleware(`/${target}/css`, { target: `${host}/css` }));
-  app.use(createProxyMiddleware(`/${target}/js`, { target: `${host}/js` }));
+  app.use(
+    createProxyMiddleware(`/${target}`, { target: host }),
+    createProxyMiddleware(`/${target}/img`, { target: `${host}/img` }),
+    createProxyMiddleware(`/${target}/css`, { target: `${host}/css` }),
+    createProxyMiddleware(`/${target}/js`, { target: `${host}/js` })
+  );
 };
 
 // @yu-page/editor
