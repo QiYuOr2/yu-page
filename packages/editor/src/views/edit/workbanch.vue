@@ -3,19 +3,48 @@
     <header class="workbanch__header">
       <chevronLeft class="back" @click="backHome" />
       <div>
-        <fe-button size="mini" style="margin-right: 0.5rem">预览</fe-button>
-        <fe-button type="success" size="mini">保存</fe-button>
+        <fe-button size="mini" style="margin-right: 0.5rem" @click="preview">
+          预览
+        </fe-button>
+        <fe-button type="success" size="mini" @click="release">发布</fe-button>
       </div>
     </header>
     <div class="workbanch__main">
-      <aside class="aside">left</aside>
+      <aside class="aside">
+        <component-selector />
+      </aside>
       <main>
-        <iframe
-          class="preview"
-          src="http://localhost:3090/template"
-          id="editorFrame"
-          @load="onFrameLoaded"
-        ></iframe>
+        <!-- 预览窗口 -->
+        <div class="preview">
+          <iframe
+            class="preview__core"
+            src="http://localhost:3090/template"
+            id="editorFrame"
+            @load="onFrameLoaded"
+          ></iframe>
+          <!-- 点击高亮 -->
+          <div :style="activeStyle" class="active-heightlight"></div>
+          <!-- 悬浮高亮 -->
+          <div :style="hoverStyle" class="hover-heightlight"></div>
+          <!-- 悬浮工具 -->
+          <div
+            v-show="toolStyle.top"
+            :style="{ top: toolStyle.top }"
+            class="tools"
+            :id="toolId"
+          >
+            <div class="tools__move">
+              <span><arrow-up /></span>
+              <span><arrow-down /></span>
+            </div>
+            <div class="tools__copy">
+              <copy />
+            </div>
+            <div class="tools__copy">
+              <clipboard />
+            </div>
+          </div>
+        </div>
       </main>
       <aside class="aside">right</aside>
     </div>
@@ -23,25 +52,53 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, reactive, toRefs } from 'vue';
 import { useFrameAction, useNav } from '@/hooks';
+import { MESSAGE_TYPE, FRAME } from '@/common/constants';
+
+// Components
+import { ArrowDown, ArrowUp, Clipboard, Copy } from '@fect-ui/vue-icons';
+import ComponentSelector from './components/component-selector.vue';
 
 const postMessage = <T>(msg: T) => {
   window.frames[0] && window.frames[0].postMessage(msg, '*');
 };
 
 export default defineComponent({
+  components: { ComponentSelector, ArrowDown, ArrowUp, Clipboard, Copy },
   setup() {
-    const { injectEventListener } = useFrameAction('editorFrame');
+    const state = reactive({
+      data: {},
+      name: '',
+      url: '',
+      showUrl: '',
+      visible: true,
+      spinning: true,
+    });
+
+    const { injectEventListener, editorState } = useFrameAction('editorFrame');
     const { backHome } = useNav();
 
     const onFrameLoaded = () => {
-      injectEventListener();
+      injectEventListener((index) => {
+        // editorState.current = index
+        postMessage({ type: MESSAGE_TYPE.CHANGE_INDEX, data: index });
+      });
+      state.spinning = false;
     };
 
+    const preview = () => {};
+    const release = () => {};
+
     return {
+      ...toRefs(editorState),
+
       backHome,
       onFrameLoaded,
+      preview,
+      release,
+
+      toolId: FRAME.TOOL_ID,
     };
   },
 });
@@ -68,19 +125,10 @@ export default defineComponent({
     justify-content: space-between;
 
     height: calc(100vh - 44px);
-    .preview {
-      height: 667px;
-      width: 375px;
-      border-width: 1px;
-      border-color: rgba(0, 0, 0, 0.2);
-      transform: scale(0.95);
-    }
-
     .aside {
       box-sizing: border-box;
       width: 240px;
       height: 100%;
-      padding: 1rem;
       box-shadow: var(--x-shadow-small);
       overflow: scroll;
     }
@@ -89,6 +137,73 @@ export default defineComponent({
       flex: 1;
       text-align: center;
       overflow-y: scroll;
+
+      .preview {
+        display: inline-block;
+        height: 667px;
+        width: 375px;
+        transform: scale(0.95);
+        position: relative;
+
+        &__core {
+          height: 667px;
+          width: 375px;
+          border-width: 0;
+          box-shadow: var(--x-shadow-small);
+        }
+      }
+      .active-heightlight {
+        background: #ddd;
+        position: absolute;
+        z-index: -1;
+        left: 0;
+        right: 0;
+        width: 100%;
+        // border: 2px solid var(--x-color-primary);
+      }
+      .hover-heightlight {
+        background: #ededef;
+        position: absolute;
+        z-index: -1;
+        left: 0;
+        right: 0;
+        width: 100%;
+      }
+
+      .tools {
+        position: absolute;
+        right: -2.6rem;
+        &__move {
+          display: flex;
+          flex-direction: column;
+
+          margin-bottom: 1rem;
+          background: #fff;
+          box-shadow: var(--x-shadow-small);
+          border-radius: 2rem;
+
+          > span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 2rem;
+            height: 2rem;
+          }
+        }
+
+        &__copy {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 2rem;
+          height: 2rem;
+          margin-bottom: 0.5rem;
+          background: #fff;
+          box-shadow: var(--x-shadow-small);
+          border-radius: 2rem;
+        }
+      }
     }
   }
 }

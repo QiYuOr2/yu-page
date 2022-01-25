@@ -1,10 +1,13 @@
 # YU PAGE 可视化搭建
 
-使用 monorepo 管理项目
+- `@yu-page/editor` 编辑器
+- `@yu-page/template` 存放页面模板/组件，用于预览页面
+- `@yu-page/server` 服务端
+- `@yu-page/cli` 命令行工具
 
 ## 启动
 
-前端项目需要依次执行`pnpm run template`，`pnpm run editor`，`pnpm run dev`这三个命令
+前端项目需要依次执行`pnpm run template`，`pnpm run editor`，`pnpm run dev`这三个命令用来分别启动`@yu-page/template`，`@yu-page/editor`和端口代理
 
 ## 组件 Schema 设计
 

@@ -1,7 +1,7 @@
 {
   "name": "yu-banner",
   "description": "banner 组件",
-  "snapshot": "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
+  "snapshot": "https://cdn.jsdelivr.net/gh/xmy6364/blog-image/img/evening.JPG",
   "schema": {
     "type": "object",
     "properties": {
@@ -16,11 +16,9 @@
         "format": "url"
       }
     },
-    "required": [
-      "src"
-    ]
+    "required": ["src"]
   },
   "data": {
-    "src": "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+    "src": "https://cdn.jsdelivr.net/gh/xmy6364/blog-image/img/evening.JPG"
   }
 }

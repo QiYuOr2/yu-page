@@ -1,6 +1,9 @@
 import * as Express from 'express';
+import { MockController } from './controller/mock';
 
 const app = Express();
+
+app.use(MockController);
 
 app.get('/', (req, res) => {
   res.send('12');

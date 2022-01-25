@@ -1,19 +1,19 @@
 <template>
-  <van-form @submit="onSubmit">
-    <van-field
+  <form @submit.prevent="onSubmit">
+    <input
       v-model="username"
       name="用户名"
       label="用户名"
       placeholder="用户名"
     />
-    <van-field
+    <input
       v-model="phone"
       type="phone"
       name="手机号"
       label="手机号"
       placeholder="手机号"
     />
-    <van-field
+    <input
       v-model="address"
       type="address"
       name="地址"
@@ -21,11 +21,11 @@
       placeholder="地址"
     />
     <div style="margin: 16px">
-      <van-button round block type="info" native-type="submit">
+      <button round block type="info" native-type="submit">
         {{ obj.btnText }}
-      </van-button>
+      </button>
     </div>
-  </van-form>
+  </form>
 </template>
 
 <script>
