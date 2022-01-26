@@ -20,6 +20,10 @@ createVueProxy('editor', EDITOR_HOST);
 const TEMPLATE_HOST = 'http://localhost:63641';
 createVueProxy('template', TEMPLATE_HOST);
 
+app.get('/', (req, res) => {
+  res.redirect('/editor');
+});
+
 app.listen(3090, () => {
   console.log('http://localhost:3090');
 });

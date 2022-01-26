@@ -34,8 +34,8 @@
             :id="toolId"
           >
             <div class="tools__move">
-              <span><arrow-up /></span>
-              <span><arrow-down /></span>
+              <span @click="moveComponent(-1)"><arrow-up /></span>
+              <span @click="moveComponent(1)"><arrow-down /></span>
             </div>
             <div class="tools__copy">
               <copy />
@@ -52,17 +52,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from 'vue';
+import { defineComponent, onMounted, reactive, toRefs, watch } from 'vue';
 import { useFrameAction, useNav } from '@/hooks';
 import { MESSAGE_TYPE, FRAME } from '@/common/constants';
 
 // Components
 import { ArrowDown, ArrowUp, Clipboard, Copy } from '@fect-ui/vue-icons';
 import ComponentSelector from './components/component-selector.vue';
-
-const postMessage = <T>(msg: T) => {
-  window.frames[0] && window.frames[0].postMessage(msg, '*');
-};
 
 export default defineComponent({
   components: { ComponentSelector, ArrowDown, ArrowUp, Clipboard, Copy },
@@ -76,17 +72,38 @@ export default defineComponent({
       spinning: true,
     });
 
-    const { injectEventListener, editorState } = useFrameAction('editorFrame');
+    const {
+      injectEventListener,
+      initState,
+      editorState,
+      postMessage,
+      injectIframeMessageListener,
+      editStore,
+    } = useFrameAction('editorFrame');
     const { backHome } = useNav();
+
+    onMounted(() => {
+      injectIframeMessageListener();
+    });
+
+    watch([() => editStore.editConfig.currentIndex], (values) => {
+      initState(values[0]);
+    });
 
     const onFrameLoaded = () => {
       injectEventListener((index) => {
-        // editorState.current = index
+        editorState.current = index;
         postMessage({ type: MESSAGE_TYPE.CHANGE_INDEX, data: index });
       });
       state.spinning = false;
     };
 
+    const moveComponent = (action: number) => {
+      postMessage({
+        type: MESSAGE_TYPE.SORT_COMPONENT,
+        data: { action, index: editorState.current },
+      });
+    };
     const preview = () => {};
     const release = () => {};
 
@@ -97,6 +114,8 @@ export default defineComponent({
       onFrameLoaded,
       preview,
       release,
+
+      moveComponent,
 
       toolId: FRAME.TOOL_ID,
     };
@@ -130,7 +149,7 @@ export default defineComponent({
       width: 240px;
       height: 100%;
       box-shadow: var(--x-shadow-small);
-      overflow: scroll;
+      overflow-y: scroll;
     }
 
     main {
@@ -189,6 +208,8 @@ export default defineComponent({
 
             width: 2rem;
             height: 2rem;
+
+            cursor: pointer;
           }
         }
 
@@ -202,6 +223,7 @@ export default defineComponent({
           background: #fff;
           box-shadow: var(--x-shadow-small);
           border-radius: 2rem;
+          cursor: pointer;
         }
       }
     }

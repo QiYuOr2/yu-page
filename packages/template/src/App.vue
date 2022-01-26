@@ -4,7 +4,7 @@
       <div
         v-for="(component, $i) in components"
         :key="$i"
-        :data-layout="component.props && component.props._layout"
+        :data-layout="component?.props?._layout"
         :id="`yu-render-id_component_${$i}`"
       >
         <component
@@ -20,8 +20,12 @@
 </template>
 
 <script>
+import { ref } from 'vue';
+import { MESSAGE_TYPE } from './common/constants';
+import { fork } from './common/utils';
 import YuBanner from './components/yu-banner/index.vue';
 import YuForm from './components/yu-form/index.vue';
+import { useFrame } from './hooks';
 
 window.__yu_config__ = {
   components: [
@@ -79,21 +83,52 @@ window.__yu_config__ = {
 
 export default {
   components: { YuBanner, YuForm },
-  data() {
-    return {
-      components: window.__yu_config__.components,
+  setup() {
+    const { postMessage } = useFrame();
+
+    const components = ref(fork(window.__yu_config__.components));
+    const currentIndex = ref(0);
+
+    const actions = {
+      [MESSAGE_TYPE.GET_CONFIG]() {
+        postMessage({
+          type: MESSAGE_TYPE.RETURN_CONFIG,
+          data: {
+            currentIndex: currentIndex.value,
+          },
+        });
+      },
+      [MESSAGE_TYPE.CHANGE_INDEX](index) {
+        currentIndex.value = index;
+        actions[MESSAGE_TYPE.GET_CONFIG]();
+      },
+      [MESSAGE_TYPE.SORT_COMPONENT]({ action, index }) {
+        const source = fork(components.value);
+        const nextIndex = index + action;
+
+        const temp = source[index];
+        source[index] = source[nextIndex];
+        source[nextIndex] = temp;
+
+        components.value = source;
+        actions[MESSAGE_TYPE.CHANGE_INDEX](nextIndex);
+      },
     };
-  },
-  created() {
+
     window.addEventListener('message', (e) => {
       // 不接受消息源来自于当前窗口的消息
       if (e.source === window || e.data === 'loaded') {
         return;
       }
+
+      actions[e.data.type]?.(e.data.data);
     });
-  },
-  methods: {
-    remoteComponentLoad() {},
+
+    return {
+      remoteComponentLoad() {},
+      components,
+      currentIndex,
+    };
   },
 };
 </script>

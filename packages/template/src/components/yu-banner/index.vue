@@ -1,5 +1,5 @@
 <template>
-  <a :href="obj.link">
+  <a class="yu-banner" :href="obj.link">
     <img :src="obj.src" style="width: 100%" alt="图片" />
   </a>
 </template>
@@ -15,3 +15,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.yu-banner {
+  display: inline-block;
+}
+</style>

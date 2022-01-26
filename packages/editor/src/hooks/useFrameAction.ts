@@ -1,5 +1,6 @@
 import { reactive, nextTick } from 'vue';
-import { FRAME } from '@/common/constants';
+import { FRAME, MESSAGE_TYPE } from '@/common/constants';
+import { useEditStore } from '@/store';
 
 function el(element: HTMLElement) {
   return {
@@ -112,7 +113,9 @@ export function useFrameAction(id: string) {
     currentId: string,
     afterSelect?: (index: number) => void
   ) => {
-    const components = Array.from(nodesWrapper.childNodes);
+    const components = Array.from(
+      nodesWrapper.querySelectorAll(`[id^=${FRAME.YU_COMPONENT_ID_PREFIX}]`)
+    );
     components.forEach((_node, index) => {
       const id = (_node as HTMLElement).getAttribute?.('id');
       if (currentId === id) {
@@ -154,6 +157,20 @@ export function useFrameAction(id: string) {
     });
   };
 
+  const editStore = useEditStore();
+  const injectIframeMessageListener = () => {
+    addEventListener('message', (e) => {
+      if (!e.data.type) return;
+
+      if (e.source === window || e.data === 'loaded') {
+        return;
+      }
+      if (e.data.type === MESSAGE_TYPE.RETURN_CONFIG) {
+        editStore.updateEditConfig(e.data.data);
+      }
+    });
+  };
+
   const initState = (index: number) => {
     const contentInFrame = frameView();
 
@@ -173,7 +190,11 @@ export function useFrameAction(id: string) {
 
     // 初始化activeStyle
     if (index === -1) return;
-    const node = contentInFrame.childNodes[index] as HTMLElement;
+    // const node = contentInFrame.childNodes[index] as HTMLElement;
+    const node = contentInFrame.querySelectorAll(
+      `[id^=${FRAME.YU_COMPONENT_ID_PREFIX}]`
+    )[index] as HTMLElement;
+
     const currentId = node?.getAttribute('id') ?? '';
     setStyle(StyleType.Active, el(node).height(), el(node).top());
 
@@ -225,11 +246,20 @@ export function useFrameAction(id: string) {
     });
   };
 
+  const postMessage = <T>(msg: T) => {
+    const iframe = (document.getElementById(id) as HTMLIFrameElement)
+      .contentWindow;
+    iframe?.postMessage(msg);
+  };
+
   return {
     injectEventListener,
     initState,
     getIndex,
     setFixedStyle,
     editorState,
+    postMessage,
+    editStore,
+    injectIframeMessageListener,
   };
 }
