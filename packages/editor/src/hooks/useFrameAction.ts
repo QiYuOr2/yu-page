@@ -1,6 +1,7 @@
 import { reactive, nextTick } from 'vue';
 import { FRAME, MESSAGE_TYPE } from '@/common/constants';
 import { useEditStore } from '@/store';
+import { fork } from '@/common/utils';
 
 function el(element: HTMLElement) {
   return {
@@ -38,7 +39,7 @@ function useStyle(
   Record<string, string | number>,
   (styles: Record<string, string | number>) => void
 ] {
-  const style = reactive({ ...initial });
+  const style = reactive(fork(initial));
   const setStyle = (styles: Record<string, string | number>) => {
     Object.keys(styles).forEach((key) => {
       style[key] = styles[key];
@@ -167,6 +168,7 @@ export function useFrameAction(id: string) {
       }
       if (e.data.type === MESSAGE_TYPE.RETURN_CONFIG) {
         editStore.updateEditConfig(e.data.data);
+        editStore.updatePageConfig(e.data.data);
       }
     });
   };
@@ -190,13 +192,12 @@ export function useFrameAction(id: string) {
 
     // 初始化activeStyle
     if (index === -1) return;
-    // const node = contentInFrame.childNodes[index] as HTMLElement;
     const node = contentInFrame.querySelectorAll(
       `[id^=${FRAME.YU_COMPONENT_ID_PREFIX}]`
     )[index] as HTMLElement;
 
     const currentId = node?.getAttribute('id') ?? '';
-    setStyle(StyleType.Active, el(node).height(), el(node).top());
+    // setStyle(StyleType.Active, el(node).height(), el(node).top());
 
     // 初始化state
     setCurrentComponent(contentInFrame, currentId);

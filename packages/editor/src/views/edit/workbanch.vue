@@ -99,6 +99,12 @@ export default defineComponent({
     };
 
     const moveComponent = (action: number) => {
+      if (
+        (editorState.isBottom && action === 1) ||
+        (editorState.isTop && action === -1)
+      )
+        return;
+
       postMessage({
         type: MESSAGE_TYPE.SORT_COMPONENT,
         data: { action, index: editorState.current },
@@ -146,7 +152,7 @@ export default defineComponent({
     height: calc(100vh - 44px);
     .aside {
       box-sizing: border-box;
-      width: 240px;
+      width: 300px;
       height: 100%;
       box-shadow: var(--x-shadow-small);
       overflow-y: scroll;

@@ -20,11 +20,9 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { onMounted, ref, toRaw } from 'vue';
 import { MESSAGE_TYPE } from './common/constants';
-import { fork } from './common/utils';
-import YuBanner from './components/yu-banner/index.vue';
-import YuForm from './components/yu-form/index.vue';
+import { fork, getComponents } from './common/utils';
 import { useFrame } from './hooks';
 
 window.__yu_config__ = {
@@ -82,26 +80,36 @@ window.__yu_config__ = {
 };
 
 export default {
-  components: { YuBanner, YuForm },
   setup() {
     const { postMessage } = useFrame();
 
     const components = ref(fork(window.__yu_config__.components));
+    const componentsConfig = ref(getComponents());
     const currentIndex = ref(0);
 
     const actions = {
+      // setConfig
+      [MESSAGE_TYPE.SET_CONFIG](config) {
+        components.value = config.userSelectComponents;
+        actions[MESSAGE_TYPE.GET_CONFIG]();
+      },
+      // getConfig
       [MESSAGE_TYPE.GET_CONFIG]() {
         postMessage({
           type: MESSAGE_TYPE.RETURN_CONFIG,
           data: {
             currentIndex: currentIndex.value,
+            components: toRaw(componentsConfig.value),
+            userSelectComponents: toRaw(components.value),
           },
         });
       },
+      // changeIndex
       [MESSAGE_TYPE.CHANGE_INDEX](index) {
         currentIndex.value = index;
         actions[MESSAGE_TYPE.GET_CONFIG]();
       },
+      // sortComponent
       [MESSAGE_TYPE.SORT_COMPONENT]({ action, index }) {
         const source = fork(components.value);
         const nextIndex = index + action;
@@ -114,6 +122,10 @@ export default {
         actions[MESSAGE_TYPE.CHANGE_INDEX](nextIndex);
       },
     };
+
+    onMounted(() => {
+      actions[MESSAGE_TYPE.GET_CONFIG]();
+    });
 
     window.addEventListener('message', (e) => {
       // 不接受消息源来自于当前窗口的消息

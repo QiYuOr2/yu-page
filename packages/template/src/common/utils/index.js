@@ -1,1 +1,2 @@
-export * from './fork'
+export * from './fork';
+export * from './getConfig';

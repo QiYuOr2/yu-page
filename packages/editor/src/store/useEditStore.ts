@@ -5,16 +5,36 @@ type EditConfig = {
   currentIndex: number;
 };
 
+type PageConfig = {
+  userSelectComponents: any[];
+  components: any[];
+  config: any;
+};
+
+type StoreState = {
+  pageConfig: PageConfig;
+  editConfig: EditConfig;
+};
+
 export const useEditStore = defineStore(STATE.EDIT, {
-  state: () => ({
-    editConfig: {
-      currentIndex: -1,
-    },
-  }),
+  state: () =>
+    ({
+      pageConfig: {
+        userSelectComponents: [],
+        components: [],
+        config: {},
+      },
+      editConfig: {
+        currentIndex: -1,
+      },
+    } as StoreState),
 
   actions: {
-    updateEditConfig(config: EditConfig) {
-      this.editConfig = { ...config };
+    updatePageConfig({ userSelectComponents, components, config }: PageConfig) {
+      this.pageConfig = { userSelectComponents, components, config };
+    },
+    updateEditConfig({ currentIndex }: EditConfig) {
+      this.editConfig = { currentIndex };
     },
   },
 });
