@@ -22,26 +22,36 @@
             id="editorFrame"
             @load="onFrameLoaded"
           ></iframe>
-          <!-- 点击高亮 -->
-          <div :style="activeStyle" class="active-heightlight"></div>
-          <!-- 悬浮高亮 -->
-          <div :style="hoverStyle" class="hover-heightlight"></div>
-          <!-- 悬浮工具 -->
+          <!-- 戳拽事件响应蒙层 -->
           <div
-            v-show="toolStyle.top"
-            :style="{ top: toolStyle.top }"
-            class="tools"
-            :id="toolId"
-          >
-            <div class="tools__move">
-              <span @click="moveComponent(-1)"><arrow-up /></span>
-              <span @click="moveComponent(1)"><arrow-down /></span>
-            </div>
-            <div class="tools__copy">
-              <copy />
-            </div>
-            <div class="tools__copy">
-              <clipboard />
+            v-show="showDragMask"
+            class="drag-mask"
+            @dragover.prevent="dragOverHandler"
+            @drop.prevent="dropHandler"
+          ></div>
+          <!-- 悬浮工具组 -->
+          <div>
+            <!-- 点击高亮 -->
+            <div :style="activeStyle" class="active-heightlight"></div>
+            <!-- 悬浮高亮 -->
+            <div :style="hoverStyle" class="hover-heightlight"></div>
+            <!-- 悬浮工具 -->
+            <div
+              v-show="toolStyle.top"
+              :style="{ top: toolStyle.top }"
+              class="tools"
+              :id="toolId"
+            >
+              <div class="tools__move">
+                <span @click="moveComponent(-1)"><arrow-up /></span>
+                <span @click="moveComponent(1)"><arrow-down /></span>
+              </div>
+              <div class="tools__copy">
+                <copy />
+              </div>
+              <div class="tools__copy">
+                <clipboard />
+              </div>
             </div>
           </div>
         </div>
@@ -52,7 +62,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, toRefs, watch } from 'vue';
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  reactive,
+  toRefs,
+  watch,
+} from 'vue';
 import { useFrameAction, useNav } from '@/hooks';
 import { MESSAGE_TYPE, FRAME } from '@/common/constants';
 
@@ -79,6 +96,7 @@ export default defineComponent({
       postMessage,
       injectIframeMessageListener,
       editStore,
+      getIndex,
     } = useFrameAction('editorFrame');
     const { backHome } = useNav();
 
@@ -113,6 +131,23 @@ export default defineComponent({
     const preview = () => {};
     const release = () => {};
 
+    const addComponents = (data: string, index: number) => {
+      postMessage({
+        type: MESSAGE_TYPE.ADD_COMPONENT,
+        data: { data: JSON.parse(data), index },
+      });
+    };
+
+    const dragOverHandler = (e: DragEvent) => {
+      // console.log(e);
+    };
+    const dropHandler = (event: DragEvent) => {
+      const data = event.dataTransfer?.getData('text/plain')!;
+      const { layerY } = event as any;
+      const index = getIndex(layerY);
+      addComponents(data, index);
+    };
+
     return {
       ...toRefs(editorState),
 
@@ -122,6 +157,10 @@ export default defineComponent({
       release,
 
       moveComponent,
+
+      showDragMask: computed(() => editStore.uiConfig.dragStart),
+      dragOverHandler,
+      dropHandler,
 
       toolId: FRAME.TOOL_ID,
     };
@@ -175,6 +214,15 @@ export default defineComponent({
           width: 375px;
           border-width: 0;
           box-shadow: var(--x-shadow-small);
+        }
+
+        .drag-mask {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          z-index: 2000;
         }
       }
       .active-heightlight {

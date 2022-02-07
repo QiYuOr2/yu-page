@@ -121,6 +121,10 @@ export default {
         components.value = source;
         actions[MESSAGE_TYPE.CHANGE_INDEX](nextIndex);
       },
+      // addComponent
+      [MESSAGE_TYPE.ADD_COMPONENT]({ data, index }) {
+        console.log('add component', data, index);
+      },
     };
 
     onMounted(() => {

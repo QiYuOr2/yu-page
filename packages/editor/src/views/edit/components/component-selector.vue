@@ -4,9 +4,17 @@
       <div class="component-selector__title">模板组件</div>
       <div class="component-selector__content">
         <div class="list">
-          <fe-card class="snippet" v-for="(c, $i) in components" :key="$i">
-            <fe-img :src="c.snapshot" />
-            <p>{{ c.description }}</p>
+          <fe-card
+            v-for="(c, $i) in components"
+            :key="$i"
+            @dragstart="setDragStart($event, true, c)"
+            @dragend="setDragStart($event, false)"
+            :draggable="true"
+          >
+            <div class="snippet">
+              <fe-img :src="c.snapshot" />
+              <p>{{ c.description }}</p>
+            </div>
           </fe-card>
         </div>
       </div>
@@ -16,7 +24,7 @@
 
 <script lang="ts">
 import { useEditStore } from '@/store';
-import { defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
 import { Image } from '@fect-ui/vue';
 
 export default defineComponent({
@@ -25,7 +33,8 @@ export default defineComponent({
     const editStore = useEditStore();
 
     return {
-      components: editStore.pageConfig.components,
+      components: computed(() => editStore.pageConfig.components),
+      setDragStart: editStore.updateDragStart,
     };
   },
 });
@@ -45,12 +54,28 @@ export default defineComponent({
       display: flex;
       gap: 10px;
 
-      .snippet {
-        width: 50%;
-        --fect-gap: 10px;
-        margin-bottom: 10px;
+      .fect-card {
+        --fect-gap: 0;
+        padding-bottom: 4px;
         border: 1px solid #eee;
+        overflow: hidden;
+      }
+
+      .fect-image {
+        border-top-left-radius: unset;
+        border-top-right-radius: unset;
+      }
+
+      .snippet {
+        pointer-events: none;
+        
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        height: 120px;
         text-align: center;
+        cursor: pointer;
         p {
           padding: 0;
           margin: 0;

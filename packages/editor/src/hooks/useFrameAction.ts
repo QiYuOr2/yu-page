@@ -20,6 +20,15 @@ function el(element: HTMLElement) {
     height() {
       return getComputedStyle(element).height;
     },
+
+    /**
+     * 获取所有element节点
+     */
+    childNodes() {
+      return Array.from(element.childNodes).filter(
+        (_node) => !['#text', '#comments'].includes(_node.nodeName)
+      );
+    },
   };
 }
 
@@ -213,15 +222,13 @@ export function useFrameAction(id: string) {
     let total = 40;
     let index = 0;
 
-    Array.from(contentInFrame.childNodes).some((_node, i) => {
-      total = total + parseInt(el(_node as HTMLElement).height());
-      if (total > y) {
+    el(contentInFrame)
+      .childNodes()
+      .some((_node, i) => {
+        total = total + parseInt(el(_node as HTMLElement).height());
         index = i;
-        return true;
-      }
-      index = i;
-      return false;
-    });
+        return total > y;
+      });
     return index;
   };
 

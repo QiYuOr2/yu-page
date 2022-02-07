@@ -6,4 +6,5 @@ export const MESSAGE_TYPE = {
   SORT_COMPONENT: 'sortComponent',
   COPY_COMPONENT: 'copyComponent',
   DELETE_COMPONENT: 'deleteComponent',
+  ADD_COMPONENT: 'addComponent',
 };

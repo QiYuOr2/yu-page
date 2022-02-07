@@ -11,9 +11,14 @@ type PageConfig = {
   config: any;
 };
 
+type UIConfig = {
+  dragStart: boolean;
+};
+
 type StoreState = {
   pageConfig: PageConfig;
   editConfig: EditConfig;
+  uiConfig: UIConfig;
 };
 
 export const useEditStore = defineStore(STATE.EDIT, {
@@ -24,8 +29,13 @@ export const useEditStore = defineStore(STATE.EDIT, {
         components: [],
         config: {},
       },
+
       editConfig: {
         currentIndex: -1,
+      },
+
+      uiConfig: {
+        dragStart: false,
       },
     } as StoreState),
 
@@ -35,6 +45,10 @@ export const useEditStore = defineStore(STATE.EDIT, {
     },
     updateEditConfig({ currentIndex }: EditConfig) {
       this.editConfig = { currentIndex };
+    },
+    updateDragStart(event: DragEvent, value: boolean, data?: any) {
+      this.uiConfig.dragStart = value;
+      data && event.dataTransfer?.setData('text/plain', JSON.stringify(data));
     },
   },
 });

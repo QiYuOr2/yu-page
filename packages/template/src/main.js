@@ -23,9 +23,7 @@ requireComponent.keys().forEach((fileName) => {
     fileName
       .split('/')[1]
       .replace(/\.\w+$/, '')
-      .replace(/-\w/g, (val) => {
-        return val.slice(1).toUpperCase();
-      })
+      .replace(/-\w/g, (val) => val.slice(1).toUpperCase())
   );
 
   // 注册组件
