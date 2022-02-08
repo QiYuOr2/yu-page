@@ -1,6 +1,6 @@
 <template>
   <a class="yu-banner" :href="obj.link">
-    <img :src="obj.src" style="width: 100%" alt="图片" />
+    <img :src="obj.src" style="display: block; width: 100%" alt="图片" />
   </a>
 </template>
 
@@ -18,6 +18,6 @@ export default {
 
 <style>
 .yu-banner {
-  display: inline-block;
+  display: block;
 }
 </style>

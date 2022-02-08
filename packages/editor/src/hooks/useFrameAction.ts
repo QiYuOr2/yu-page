@@ -1,36 +1,8 @@
 import { reactive, nextTick } from 'vue';
 import { FRAME, MESSAGE_TYPE } from '@/common/constants';
 import { useEditStore } from '@/store';
-import { fork } from '@/common/utils';
-
-function el(element: HTMLElement) {
-  return {
-    top() {
-      let actualTop = element.offsetTop;
-      let current = element.offsetParent as HTMLElement;
-
-      while (current !== null) {
-        actualTop += current.offsetTop;
-        current = current.offsetParent as HTMLElement;
-      }
-
-      return actualTop;
-    },
-
-    height() {
-      return getComputedStyle(element).height;
-    },
-
-    /**
-     * 获取所有element节点
-     */
-    childNodes() {
-      return Array.from(element.childNodes).filter(
-        (_node) => !['#text', '#comments'].includes(_node.nodeName)
-      );
-    },
-  };
-}
+import { el } from '@/common/utils';
+import { useState } from './useState';
 
 /**
  * 向上层遍历节点
@@ -42,21 +14,6 @@ function loopNodes(node: HTMLElement, handler: (node: HTMLElement) => void) {
   }
 }
 
-function useStyle(
-  initial: Record<string, string | number>
-): [
-  Record<string, string | number>,
-  (styles: Record<string, string | number>) => void
-] {
-  const style = reactive(fork(initial));
-  const setStyle = (styles: Record<string, string | number>) => {
-    Object.keys(styles).forEach((key) => {
-      style[key] = styles[key];
-    });
-  };
-  return [style, setStyle];
-}
-
 const StyleType = {
   Tool: 'tool',
   Active: 'active',
@@ -66,9 +23,9 @@ const StyleType = {
 export function useFrameAction(id: string) {
   const initialStyle = { height: '0px', top: '0px' };
 
-  const [toolStyle, setToolStyle] = useStyle(initialStyle);
-  const [activeStyle, setActiveStyle] = useStyle(initialStyle);
-  const [hoverStyle, setHoverStyle] = useStyle(initialStyle);
+  const [toolStyle, setToolStyle] = useState(initialStyle);
+  const [activeStyle, setActiveStyle] = useState(initialStyle);
+  const [hoverStyle, setHoverStyle] = useState(initialStyle);
 
   const editorState = reactive({
     toolStyle,
@@ -87,10 +44,18 @@ export function useFrameAction(id: string) {
     }>,
   });
 
-  const frameView = () =>
-    (
-      document.getElementById(id) as HTMLIFrameElement
-    ).contentWindow?.document.getElementById(FRAME.VIEW_ID);
+  const frameDoc = () =>
+    (document.getElementById(id) as HTMLIFrameElement).contentWindow?.document!;
+
+  const frameView = () => frameDoc().getElementById(FRAME.VIEW_ID);
+
+  (window as any).f = frameDoc;
+
+  // const resetFrameHeight = () => {
+  //   const iframe = document.getElementById(id) as HTMLIFrameElement;
+  //   const body = frameDoc().body;
+  //   iframe.height = `${body.scrollHeight}px`;
+  // };
 
   const setStyle = (type: string, height: string, top: number) => {
     const _top = `${top}px`;

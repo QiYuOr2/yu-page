@@ -7,7 +7,8 @@
     "template": "pnpm serve --filter \"@yu-page/template\"",
     "server": "pnpm start --filter \"@yu-page/server\"",
     "dev": "node scripts/server.js",
-    "create": "pnpm start create --filter \"@yu-page/cli\""
+    "create": "pnpm start create --filter \"@yu-page/cli\"",
+    "pm2": "pm2 start pm2.json"
   },
   "repository": {
     "type": "git",

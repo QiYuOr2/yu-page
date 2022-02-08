@@ -76,6 +76,7 @@ import { MESSAGE_TYPE, FRAME } from '@/common/constants';
 // Components
 import { ArrowDown, ArrowUp, Clipboard, Copy } from '@fect-ui/vue-icons';
 import ComponentSelector from './components/component-selector.vue';
+import { nextTick } from 'process';
 
 export default defineComponent({
   components: { ComponentSelector, ArrowDown, ArrowUp, Clipboard, Copy },
@@ -204,13 +205,13 @@ export default defineComponent({
 
       .preview {
         display: inline-block;
-        height: 667px;
+        min-height: 667px;
         width: 375px;
-        transform: scale(0.95);
+        // transform: scale(0.95);
         position: relative;
 
         &__core {
-          height: 667px;
+          min-height: 667px;
           width: 375px;
           border-width: 0;
           box-shadow: var(--x-shadow-small);

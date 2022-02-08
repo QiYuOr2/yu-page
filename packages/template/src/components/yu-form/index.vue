@@ -20,7 +20,7 @@
       label="地址"
       placeholder="地址"
     />
-    <div style="margin: 16px">
+    <div style="margin: 0">
       <button round block type="info" native-type="submit">
         {{ obj.btnText }}
       </button>

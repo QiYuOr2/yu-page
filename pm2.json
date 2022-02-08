@@ -1,0 +1,19 @@
+{
+  "apps": [
+    {
+      "name": "@yu-page/template",
+      "script": "pnpm",
+      "args": "template"
+    },
+    {
+      "name": "@yu-page/editor",
+      "script": "pnpm",
+      "args": "editor"
+    },
+    {
+      "name": "@yu-page/gateway",
+      "script": "pnpm",
+      "args": "dev"
+    }
+  ]
+}

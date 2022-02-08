@@ -123,7 +123,13 @@ export default {
       },
       // addComponent
       [MESSAGE_TYPE.ADD_COMPONENT]({ data, index }) {
-        console.log('add component', data, index);
+        currentIndex.value = index ? index + 1 : index;
+        components.value = [
+          ...components.value.slice(0, currentIndex.value),
+          { name: data.name, props: data.data },
+          ...components.value.slice(currentIndex.value),
+        ];
+        actions[MESSAGE_TYPE.GET_CONFIG]();
       },
     };
 
