@@ -58,7 +58,6 @@
         </div>
       </main>
       <aside class="aside">
-        侧边栏配置
         <form-render></form-render>
       </aside>
     </div>

@@ -1290,11 +1290,11 @@ packages:
     dev: true
 
   /@fect-ui/themes/2.0.0:
-    resolution: {integrity: sha512-xXysjVDxmClN0AAZWO6ejE7bKfPBDjuw+Ze4V0e1HKGJztuYrxhvnS0SQPcB2rLrJiH9iKFhWAjqOjr//RtMBg==, tarball: '@fect-ui/themes/download/@fect-ui/themes-2.0.0.tgz'}
+    resolution: {integrity: sha512-xXysjVDxmClN0AAZWO6ejE7bKfPBDjuw+Ze4V0e1HKGJztuYrxhvnS0SQPcB2rLrJiH9iKFhWAjqOjr//RtMBg==}
     dev: false
 
   /@fect-ui/vue-hooks/1.0.0_vue@3.2.27:
-    resolution: {integrity: sha512-iLw8GVBJNcg4i2ugS64Fjc2zojVOV5UIWV5KIq6iotBHHjrdDbR9M64lNiCFL+8fiWsYFl/MxW5JGVPtmejk6A==, tarball: '@fect-ui/vue-hooks/download/@fect-ui/vue-hooks-1.0.0.tgz'}
+    resolution: {integrity: sha512-iLw8GVBJNcg4i2ugS64Fjc2zojVOV5UIWV5KIq6iotBHHjrdDbR9M64lNiCFL+8fiWsYFl/MxW5JGVPtmejk6A==}
     peerDependencies:
       vue: ^3.0.11
     dependencies:
@@ -1310,7 +1310,7 @@ packages:
     dev: false
 
   /@fect-ui/vue/1.2.2_vue@3.2.27:
-    resolution: {integrity: sha512-frooOi4JVFng2BPW50BFshmANiHQV8MdwAybyTK3+o7gWmNWdGQqmOLDE0va37nGrnRcIiqjE8n7SzwdnFNKSw==, tarball: '@fect-ui/vue/download/@fect-ui/vue-1.2.2.tgz'}
+    resolution: {integrity: sha512-frooOi4JVFng2BPW50BFshmANiHQV8MdwAybyTK3+o7gWmNWdGQqmOLDE0va37nGrnRcIiqjE8n7SzwdnFNKSw==}
     peerDependencies:
       vue: ^3.0.11
     dependencies:
@@ -7054,7 +7054,7 @@ packages:
       ipaddr.js: 1.9.1
 
   /proy/0.0.3:
-    resolution: {integrity: sha512-T1RE9NuaGXX54LGpt9PjxtXGio/N681v15ONwTfVkHlmt7TcNomJvV10UhNJ6PlniOygqH3cNmzVBpdvm+BZqg==, tarball: proy/download/proy-0.0.3.tgz}
+    resolution: {integrity: sha512-T1RE9NuaGXX54LGpt9PjxtXGio/N681v15ONwTfVkHlmt7TcNomJvV10UhNJ6PlniOygqH3cNmzVBpdvm+BZqg==}
     dev: false
 
   /prr/1.0.1:
