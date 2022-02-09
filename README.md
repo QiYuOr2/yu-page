@@ -4,10 +4,11 @@
 - `@yu-page/template` 存放页面模板/组件，用于预览页面
 - `@yu-page/server` 服务端
 - `@yu-page/cli` 命令行工具
+- `@yu-page/form-render` schema 渲染表单
 
 ## 启动
 
-前端项目需要依次执行`pnpm run template`，`pnpm run editor`，`pnpm run dev`这三个命令用来分别启动`@yu-page/template`，`@yu-page/editor`和端口代理
+前端项目需要依次执行`pnpm run form`, `pnpm run template`，`pnpm run editor`，`pnpm run dev`这四个命令用来编译打包`@yu-page/form-render`并且分别启动`@yu-page/template`，`@yu-page/editor`和端口代理
 
 ## 组件 Schema 设计
 
