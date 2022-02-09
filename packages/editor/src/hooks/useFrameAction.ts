@@ -21,7 +21,7 @@ const StyleType = {
 };
 
 export function useFrameAction(id: string) {
-  const initialStyle = { height: '0px', top: '0px' };
+  const initialStyle = { height: '0px', top: '-1000px' };
 
   const [toolStyle, setToolStyle] = useState(initialStyle);
   const [activeStyle, setActiveStyle] = useState(initialStyle);
@@ -49,37 +49,38 @@ export function useFrameAction(id: string) {
 
   const frameView = () => frameDoc().getElementById(FRAME.VIEW_ID);
 
-  (window as any).f = frameDoc;
-
-  // const resetFrameHeight = () => {
-  //   const iframe = document.getElementById(id) as HTMLIFrameElement;
-  //   const body = frameDoc().body;
-  //   iframe.height = `${body.scrollHeight}px`;
-  // };
+  /**
+   * 重新计算iframe高度
+   */
+  const resetFrameHeight = () => {
+    const iframe = document.getElementById(id) as HTMLIFrameElement;
+    const body = frameDoc().body;
+    iframe.height = `${body.scrollHeight + 300}px`;
+  };
 
   const setStyle = (type: string, height: string, top: number) => {
-    const _top = `${top}px`;
     switch (type) {
       case StyleType.Tool:
-        setToolStyle({ height, top: _top });
+        setToolStyle({ height, top: `${top}px` });
         break;
       case StyleType.Active:
-        setActiveStyle({ height, top: _top });
+        setActiveStyle({ height, top: `${top - 3}px` });
         break;
       case StyleType.Hover:
-        setHoverStyle({ height, top: _top });
+        setHoverStyle({ height, top: `${top - 3}px` });
         break;
     }
     nextTick(() => {
-      const toolNode = document.getElementById(FRAME.TOOL_ID)!;
-      const toolHeight = parseInt(getComputedStyle(toolNode).height, 10);
-      setToolStyle({
-        top: `${
-          top + toolHeight > editorState.containerHeight
-            ? top - toolHeight + parseInt(height, 10)
-            : top
-        }px`,
-      });
+        setToolStyle({ height, top: `${top + 3}px` });
+        // const toolNode = document.getElementById(FRAME.TOOL_ID)!;
+      // const toolHeight = parseInt(getComputedStyle(toolNode).height, 10);
+      // setToolStyle({
+      //   top: `${
+      //     top + toolHeight > editorState.containerHeight
+      //       ? top - toolHeight + parseInt(height, 10)
+      //       : top
+      //   }px`,
+      // });
     });
   };
 
@@ -104,6 +105,8 @@ export function useFrameAction(id: string) {
 
   const injectEventListener = (afterSelect: (index: number) => void) => {
     const contentInFrame = frameView();
+
+    resetFrameHeight();
 
     contentInFrame?.addEventListener('click', (e) => {
       loopNodes(e.target as HTMLElement, (node) => {
@@ -234,5 +237,6 @@ export function useFrameAction(id: string) {
     postMessage,
     editStore,
     injectIframeMessageListener,
+    resetFrameHeight,
   };
 }

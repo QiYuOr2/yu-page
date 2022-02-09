@@ -25,6 +25,8 @@ export const MESSAGE_TYPE = {
   COPY_COMPONENT: 'copyComponent',
   DELETE_COMPONENT: 'deleteComponent',
   ADD_COMPONENT: 'addComponent',
+  BEFORE_ADD_COMPONENT: 'beforeAddComponent',
+  AFTER_ADD_COMPONENT: 'afterAddComponent'
 };
 
 export const STATE = {

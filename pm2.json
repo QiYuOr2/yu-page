@@ -1,16 +1,19 @@
 {
   "apps": [
     {
+      "namespace": "yu-page",
       "name": "@yu-page/template",
       "script": "pnpm",
       "args": "template"
     },
     {
+      "namespace": "yu-page",
       "name": "@yu-page/editor",
       "script": "pnpm",
       "args": "editor"
     },
     {
+      "namespace": "yu-page",
       "name": "@yu-page/gateway",
       "script": "pnpm",
       "args": "dev"

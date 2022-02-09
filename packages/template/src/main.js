@@ -1,5 +1,6 @@
 import { createApp } from 'vue';
 import App from './App.vue';
+import Placeholder from './_components/placeholder.vue';
 
 const app = createApp(App);
 
@@ -29,5 +30,7 @@ requireComponent.keys().forEach((fileName) => {
   // 注册组件
   app.component(componentName, componentConfig.default || componentConfig);
 });
+
+app.component('private-placeholder', Placeholder);
 
 app.mount('#app');

@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { onMounted, ref, toRaw } from 'vue';
+import { onMounted, ref } from 'vue';
 import { MESSAGE_TYPE } from './common/constants';
 import { fork, getComponents } from './common/utils';
 import { useFrame } from './hooks';
@@ -99,8 +99,8 @@ export default {
           type: MESSAGE_TYPE.RETURN_CONFIG,
           data: {
             currentIndex: currentIndex.value,
-            components: toRaw(componentsConfig.value),
-            userSelectComponents: toRaw(components.value),
+            components: componentsConfig.value,
+            userSelectComponents: components.value,
           },
         });
       },
@@ -123,13 +123,49 @@ export default {
       },
       // addComponent
       [MESSAGE_TYPE.ADD_COMPONENT]({ data, index }) {
-        currentIndex.value = index ? index + 1 : index;
+        // 清除占位用的预览组件
+        // actions[MESSAGE_TYPE.AFTER_ADD_COMPONENT]();
+
+        currentIndex.value = index + 1;
         components.value = [
           ...components.value.slice(0, currentIndex.value),
           { name: data.name, props: data.data },
           ...components.value.slice(currentIndex.value),
         ];
+
         actions[MESSAGE_TYPE.GET_CONFIG]();
+      },
+      // beforeAddComponent
+      [MESSAGE_TYPE.BEFORE_ADD_COMPONENT]({ index }) {
+        // if (
+        //   !components.value[index] ||
+        //   components.value[index].name === 'private-placeholder'
+        // ) {
+        //   actions[MESSAGE_TYPE.AFTER_ADD_COMPONENT]();
+        //   return;
+        // }
+
+        // if (
+        //   !components.value[index + 1] ||
+        //   components.value[index + 1].name !== 'private-placeholder'
+        // ) {
+        //   currentIndex.value = index + 1;
+        //   components.value = [
+        //     ...components.value.slice(0, currentIndex.value),
+        //     {
+        //       name: 'private-placeholder',
+        //     },
+        //     ...components.value.slice(currentIndex.value),
+        //   ];
+        //   actions[MESSAGE_TYPE.GET_CONFIG]();
+        // }
+      },
+      // afterAddComponent
+      [MESSAGE_TYPE.AFTER_ADD_COMPONENT]() {
+        // // 清除占位用的预览组件
+        // components.value = components.value.filter(
+        //   (c) => c.name !== 'private-placeholder'
+        // );
       },
     };
 
@@ -160,12 +196,5 @@ html,
 body {
   margin: 0;
   padding: 0;
-}
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
 }
 </style>

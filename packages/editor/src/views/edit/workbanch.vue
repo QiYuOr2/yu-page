@@ -27,6 +27,7 @@
             v-show="showDragMask"
             class="drag-mask"
             @dragover.prevent="dragOverHandler"
+            @dragleave.prevent="dragLeaveHandler"
             @drop.prevent="dropHandler"
           ></div>
           <!-- 悬浮工具组 -->
@@ -56,7 +57,7 @@
           </div>
         </div>
       </main>
-      <aside class="aside">right</aside>
+      <aside class="aside">侧边栏配置</aside>
     </div>
   </div>
 </template>
@@ -76,7 +77,6 @@ import { MESSAGE_TYPE, FRAME } from '@/common/constants';
 // Components
 import { ArrowDown, ArrowUp, Clipboard, Copy } from '@fect-ui/vue-icons';
 import ComponentSelector from './components/component-selector.vue';
-import { nextTick } from 'process';
 
 export default defineComponent({
   components: { ComponentSelector, ArrowDown, ArrowUp, Clipboard, Copy },
@@ -98,6 +98,7 @@ export default defineComponent({
       injectIframeMessageListener,
       editStore,
       getIndex,
+      resetFrameHeight,
     } = useFrameAction('editorFrame');
     const { backHome } = useNav();
 
@@ -139,10 +140,31 @@ export default defineComponent({
       });
     };
 
-    const dragOverHandler = (e: DragEvent) => {
-      // console.log(e);
+    // dragover触发 预计用来预览组件位置 - 暂时搁置
+    const beforeAddComponents = (index: number) => {
+      // postMessage({
+      //   type: MESSAGE_TYPE.BEFORE_ADD_COMPONENT,
+      //   data: { index },
+      // });
     };
+
+    // dragleave触发 预计用来清空预览 - 暂时搁置
+    const dragLeaveHandler = () => {
+      // postMessage({
+      //   type: MESSAGE_TYPE.AFTER_ADD_COMPONENT,
+      // });
+    };
+
+    const dragOverHandler = (event: DragEvent) => {
+      const { layerY } = event as any;
+      const index = getIndex(layerY);
+      beforeAddComponents(index);
+    };
+
     const dropHandler = (event: DragEvent) => {
+      setTimeout(() => {
+        resetFrameHeight();
+      }, 100);
       const data = event.dataTransfer?.getData('text/plain')!;
       const { layerY } = event as any;
       const index = getIndex(layerY);
@@ -161,6 +183,7 @@ export default defineComponent({
 
       showDragMask: computed(() => editStore.uiConfig.dragStart),
       dragOverHandler,
+      dragLeaveHandler,
       dropHandler,
 
       toolId: FRAME.TOOL_ID,
@@ -205,12 +228,13 @@ export default defineComponent({
 
       .preview {
         display: inline-block;
-        min-height: 667px;
-        width: 375px;
-        // transform: scale(0.95);
+        // min-height: 667px;
+        // width: 375px;
+        transform: scale(0.95);
         position: relative;
 
         &__core {
+          overflow: hidden;
           min-height: 667px;
           width: 375px;
           border-width: 0;
@@ -227,19 +251,23 @@ export default defineComponent({
         }
       }
       .active-heightlight {
-        background: #ddd;
+        // background: #ddd;
+        // border: 3px solid red;
         position: absolute;
-        z-index: -1;
-        left: 0;
+        // z-index: -1;
+        left: -3px;
         right: 0;
         width: 100%;
         // border: 2px solid var(--x-color-primary);
       }
       .hover-heightlight {
-        background: #ededef;
+        // background: #ededef;
+        border: 3px solid var(--x-color-primary);
+        box-shadow: var(--x-shadow-small);
+        border-radius: 1px;
         position: absolute;
-        z-index: -1;
-        left: 0;
+        // z-index: -1;
+        left: -3px;
         right: 0;
         width: 100%;
       }

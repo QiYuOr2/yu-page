@@ -68,7 +68,7 @@ export default defineComponent({
 
       .snippet {
         pointer-events: none;
-        
+
         display: flex;
         flex-direction: column;
         justify-content: space-between;

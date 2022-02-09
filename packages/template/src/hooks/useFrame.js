@@ -1,9 +1,10 @@
-// import { isProxy, toRaw } from 'vue';
+import { fork } from '../common/utils';
 
 export function useFrame() {
   const postMessage = (msg) => {
-    // window.parent.postMessage(isProxy(msg) ? toRaw(msg) : msg, '*');
-    window.parent.postMessage(msg, '*');
+    // 通过JSON.parse和JSON.stringify来去除proxy
+    const parsedMessage = fork(msg);
+    window.parent.postMessage(parsedMessage, '*');
   };
 
   return { postMessage };
