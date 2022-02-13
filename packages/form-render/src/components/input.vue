@@ -9,6 +9,10 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'r-input',
+  props: {
+    schema: Object,
+    formData: Object,
+  },
   setup() {},
 });
 </script>

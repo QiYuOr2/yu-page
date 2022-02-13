@@ -1,19 +1,21 @@
 # form-render
 
-## Project setup
-```
-npm install
-```
+将 Schema 渲染成 Form 的组件
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+- [ ] input
+- [ ] checkbox
+- [ ] select
+- [ ] radio
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## Schema 设计
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+```json
+{
+  "schema": {
+    "type": "",
+    "format": "",
+    "properties": {}
+  },
+  "formData": {}
+}
+```

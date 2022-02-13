@@ -2628,7 +2628,7 @@ packages:
     dev: true
 
   /bindings/1.5.0:
-    resolution: {integrity: sha1-EDU8npRTNLwFEabZCzj7x8nFBN8=, tarball: bindings/download/bindings-1.5.0.tgz}
+    resolution: {integrity: sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==}
     dependencies:
       file-uri-to-path: 1.0.0
     dev: true
@@ -3220,7 +3220,7 @@ packages:
     dev: true
 
   /concat-map/0.0.1:
-    resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=, tarball: concat-map/download/concat-map-0.0.1.tgz}
+    resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
     dev: true
 
   /concat-stream/1.6.2:
@@ -4281,7 +4281,7 @@ packages:
     dev: true
 
   /file-uri-to-path/1.0.0:
-    resolution: {integrity: sha1-VTp7hEb/b2hDWcRF8eN6BdrMM90=, tarball: file-uri-to-path/download/file-uri-to-path-1.0.0.tgz}
+    resolution: {integrity: sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==}
     dev: true
     optional: true
 
@@ -4474,7 +4474,7 @@ packages:
     optional: true
 
   /fs-monkey/1.0.3:
-    resolution: {integrity: sha1-rjrJLVO7Mo7+DpodlUH2rY1I4tM=, tarball: fs-monkey/download/fs-monkey-1.0.3.tgz}
+    resolution: {integrity: sha512-cybjIfiiE+pTWicSCLFHSrXZ6EilF30oh91FDP9S2B051prEa7QWfrVTQm10/dDpswBDXZugPa1Ogu8Yh+HV0Q==}
     dev: true
     optional: true
 
@@ -6052,7 +6052,7 @@ packages:
     dev: true
 
   /nan/2.15.0:
-    resolution: {integrity: sha1-PzSkc/8Y4VwbVia2KQO1rW5mX+4=, tarball: nan/download/nan-2.15.0.tgz}
+    resolution: {integrity: sha512-8ZtvEnA2c5aYCZYd1cvgdnU6cqwixRoYg70xPLWUws5ORTa/lnw+u4amixRS/Ac5U5mQVgp9pnlSUnbNWFaWZQ==}
     dev: true
     optional: true
 

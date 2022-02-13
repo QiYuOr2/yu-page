@@ -9,9 +9,13 @@
 ## 启动
 
 **手动启动项目**
+
 前端项目需要依次执行`pnpm run form`, `pnpm run template`，`pnpm run editor`，`pnpm run dev`这四个命令用来编译打包`@yu-page/form-render`并且分别启动`@yu-page/template`，`@yu-page/editor`和端口代理
 
 **使用 pm2 启动**
+
+> windows下可能会报错
+
 执行`pnpm run form`后执行`pnpm run pm2:dev`即可在 pm2 中启动前端项目，在 http://localhost:3090 中可以访问
 
 ## 组件 Schema 设计
