@@ -3,9 +3,7 @@
     <header class="workbanch__header">
       <chevronLeft class="back" @click="backHome" />
       <div>
-        <fe-button size="mini" style="margin-right: 0.5rem" @click="preview">
-          预览
-        </fe-button>
+        <fe-button size="mini" style="margin-right: 0.5rem" @click="preview">预览</fe-button>
         <fe-button type="success" size="mini" @click="release">发布</fe-button>
       </div>
     </header>
@@ -37,12 +35,7 @@
             <!-- 悬浮高亮 -->
             <div :style="hoverStyle" class="hover-heightlight"></div>
             <!-- 悬浮工具 -->
-            <div
-              v-show="toolStyle.top"
-              :style="{ top: toolStyle.top }"
-              class="tools"
-              :id="toolId"
-            >
+            <div v-show="toolStyle.top" :style="{ top: toolStyle.top }" class="tools" :id="toolId">
               <div class="tools__move">
                 <span @click="moveComponent(-1)"><arrow-up /></span>
                 <span @click="moveComponent(1)"><arrow-down /></span>
@@ -58,27 +51,21 @@
         </div>
       </main>
       <aside class="aside">
-        <form-render></form-render>
+        <form-render :schema="currentComponentSchema" @change="formDataChangeHandler"></form-render>
       </aside>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  onMounted,
-  reactive,
-  toRefs,
-  watch,
-} from 'vue';
+import { computed, defineComponent, onMounted, reactive, toRefs, watch } from 'vue';
 import { useFrameAction, useNav } from '@/hooks';
 import { MESSAGE_TYPE, FRAME } from '@/common/constants';
 
 // Components
 import { ArrowDown, ArrowUp, Clipboard, Copy } from '@fect-ui/vue-icons';
 import ComponentSelector from './components/component-selector.vue';
+import { fork } from '@/common/utils';
 
 export default defineComponent({
   components: { ComponentSelector, ArrowDown, ArrowUp, Clipboard, Copy },
@@ -121,11 +108,7 @@ export default defineComponent({
     };
 
     const moveComponent = (action: number) => {
-      if (
-        (editorState.isBottom && action === 1) ||
-        (editorState.isTop && action === -1)
-      )
-        return;
+      if ((editorState.isBottom && action === 1) || (editorState.isTop && action === -1)) return;
 
       postMessage({
         type: MESSAGE_TYPE.SORT_COMPONENT,
@@ -173,6 +156,13 @@ export default defineComponent({
       addComponents(data, index);
     };
 
+    const formDataChangeHandler = (value: any) => {
+      postMessage({
+        type: MESSAGE_TYPE.CHANGE_PROPS,
+        data: fork({ index: editStore.editConfig.currentIndex, props: value }),
+      });
+    };
+
     return {
       ...toRefs(editorState),
 
@@ -188,7 +178,13 @@ export default defineComponent({
       dragLeaveHandler,
       dropHandler,
 
+      currentComponentSchema: computed(
+        () =>
+          editStore.pageConfig.userSelectComponents[editStore.editConfig.currentIndex]?.schema ?? {}
+      ),
+
       toolId: FRAME.TOOL_ID,
+      formDataChangeHandler,
     };
   },
 });

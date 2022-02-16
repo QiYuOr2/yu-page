@@ -12,10 +12,19 @@
 ```json
 {
   "schema": {
-    "type": "",
-    "format": "",
-    "properties": {}
+    "type": "object",
+    "properties": {
+      "src": {
+        "title": "图片地址",
+        "type": "string",
+        "format": "image"
+      },
+      "link": {
+        "title": "跳转链接",
+        "type": "string",
+        "format": "url"
+      }
+    }
   },
-  "formData": {}
 }
 ```

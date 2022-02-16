@@ -30,8 +30,7 @@ window.__yu_config__ = {
     {
       name: 'yu-banner',
       description: 'banner 组件',
-      snapshot:
-        'https://cdn.jsdelivr.net/gh/xmy6364/blog-image/img/evening.JPG',
+      snapshot: 'https://cdn.jsdelivr.net/gh/xmy6364/blog-image/img/evening.JPG',
       schema: {
         type: 'object',
         properties: {
@@ -144,7 +143,6 @@ export default {
         //   actions[MESSAGE_TYPE.AFTER_ADD_COMPONENT]();
         //   return;
         // }
-
         // if (
         //   !components.value[index + 1] ||
         //   components.value[index + 1].name !== 'private-placeholder'
@@ -166,6 +164,15 @@ export default {
         // components.value = components.value.filter(
         //   (c) => c.name !== 'private-placeholder'
         // );
+      },
+      [MESSAGE_TYPE.CHANGE_PROPS]({ index, props }) {
+        const newComponent = components.value[index];
+        newComponent.props = props;
+        components.value = [
+          ...components.value.slice(0, index),
+          newComponent,
+          ...components.value.slice(index + 1),
+        ];
       },
     };
 

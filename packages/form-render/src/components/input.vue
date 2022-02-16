@@ -1,19 +1,29 @@
 <template>
-  <fe-form-item label="测试">
-    <fe-input placeholder="一个基础的示例" type="number" />
+  <fe-form-item :label="attributes.title">
+    <fe-input v-model="data" :placeholder="attributes.description" :type="attributes.type" />
   </fe-form-item>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { SET_FORM_DATA_KEY } from '@/common/constants';
+import { defineComponent, inject, ref, watch } from 'vue';
 
 export default defineComponent({
   name: 'r-input',
   props: {
-    schema: Object,
-    formData: Object,
+    attributes: Object,
   },
-  setup() {},
+  setup(props) {
+    const data = ref(props.attributes?.type === 'number' ? 0 : '');
+
+    const setFormData = inject<(key: string, value: any) => void>(SET_FORM_DATA_KEY);
+
+    watch(data, (value) => {
+      setFormData?.(props.attributes?.key, value);
+    });
+
+    return { data };
+  },
 });
 </script>
 

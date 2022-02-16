@@ -18,6 +18,7 @@ export const FRAME = {
 
 export const MESSAGE_TYPE = {
   CHANGE_INDEX: 'changeIndex',
+  CHANGE_PROPS: 'changeProps',
   SET_CONFIG: 'setConfig',
   GET_CONFIG: 'getConfig',
   RETURN_CONFIG: 'returnConfig',
