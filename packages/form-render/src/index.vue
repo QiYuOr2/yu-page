@@ -33,7 +33,7 @@ export default defineComponent({
     [Input.name]: Input,
   },
   props: {
-    schema: Object,
+    itemData: Object,
   },
   emits: ['change'],
   setup(props, { emit }) {
@@ -47,15 +47,16 @@ export default defineComponent({
     provide(SET_FORM_DATA_KEY, setFormData);
 
     const formItemList = computed(() => {
-      const list = props?.schema?.properties ?? [];
+      const list = props?.itemData?.schema?.properties ?? [];
 
       return Object.keys(list).map((key) => {
         const currentItem = list[key];
+        const val = props?.itemData?.props?.[key];
         if (FormItemType.INPUT.includes(currentItem.type)) {
-          formData[key] = InitData[currentItem.type];
-          return { ...currentItem, component: ComponentsName.INPUT, key };
+          formData[key] = val || InitData[currentItem.type];
+          return { ...currentItem, component: ComponentsName.INPUT, key, value: val };
         }
-        return { ...currentItem, component: 'span', key };
+        return { ...currentItem, component: 'span', key, val };
       });
     });
 

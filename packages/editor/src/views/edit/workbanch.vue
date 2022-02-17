@@ -51,7 +51,10 @@
         </div>
       </main>
       <aside class="aside">
-        <form-render :schema="currentComponentSchema" @change="formDataChangeHandler"></form-render>
+        <form-render
+          :itemData="currentComponentSchema"
+          @change="formDataChangeHandler"
+        ></form-render>
       </aside>
     </div>
   </div>
@@ -65,7 +68,7 @@ import { MESSAGE_TYPE, FRAME } from '@/common/constants';
 // Components
 import { ArrowDown, ArrowUp, Clipboard, Copy } from '@fect-ui/vue-icons';
 import ComponentSelector from './components/component-selector.vue';
-import { fork } from '@/common/utils';
+import { fork, local } from '@/common/utils';
 
 export default defineComponent({
   components: { ComponentSelector, ArrowDown, ArrowUp, Clipboard, Copy },
@@ -89,7 +92,7 @@ export default defineComponent({
       getIndex,
       resetFrameHeight,
     } = useFrameAction('editorFrame');
-    const { backHome } = useNav();
+    const { backHome, to } = useNav();
 
     onMounted(() => {
       injectIframeMessageListener();
@@ -100,9 +103,9 @@ export default defineComponent({
     });
 
     const onFrameLoaded = () => {
-      injectEventListener((index) => {
+      injectEventListener((event, index) => {
         editorState.current = index;
-        postMessage({ type: MESSAGE_TYPE.CHANGE_INDEX, data: index });
+        event === 'click' && postMessage({ type: MESSAGE_TYPE.CHANGE_INDEX, data: index });
       });
       state.spinning = false;
     };
@@ -115,7 +118,10 @@ export default defineComponent({
         data: { action, index: editorState.current },
       });
     };
-    const preview = () => {};
+    const preview = () => {
+      local.set('preview', editStore.pageConfig.userSelectComponents);
+      to('PREVIEW');
+    };
     const release = () => {};
 
     const addComponents = (data: string, index: number) => {
@@ -179,8 +185,7 @@ export default defineComponent({
       dropHandler,
 
       currentComponentSchema: computed(
-        () =>
-          editStore.pageConfig.userSelectComponents[editStore.editConfig.currentIndex]?.schema ?? {}
+        () => editStore.pageConfig.userSelectComponents[editStore.editConfig.currentIndex] ?? {}
       ),
 
       toolId: FRAME.TOOL_ID,
@@ -251,12 +256,16 @@ export default defineComponent({
       .active-heightlight {
         // background: #ddd;
         // border: 3px solid red;
+        border: 3px solid var(--dot-error-color);
+        box-shadow: var(--x-shadow-small);
         position: absolute;
         // z-index: -1;
         left: -3px;
         right: 0;
         width: 100%;
         // border: 2px solid var(--x-color-primary);
+
+        pointer-events: none;
       }
       .hover-heightlight {
         // background: #ededef;
@@ -268,6 +277,8 @@ export default defineComponent({
         left: -3px;
         right: 0;
         width: 100%;
+
+        pointer-events: none;
       }
 
       .tools {

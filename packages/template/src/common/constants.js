@@ -10,4 +10,5 @@ export const MESSAGE_TYPE = {
   ADD_COMPONENT: 'addComponent',
   BEFORE_ADD_COMPONENT: 'beforeAddComponent',
   AFTER_ADD_COMPONENT: 'afterAddComponent',
+  PREVIEW: 'preview',
 };

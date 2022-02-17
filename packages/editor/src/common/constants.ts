@@ -4,6 +4,7 @@
 export const ROUTER = {
   HOME: 'home',
   WORKBANCH: 'workbanch',
+  PREVIEW: 'preview',
 };
 
 /**
@@ -27,7 +28,7 @@ export const MESSAGE_TYPE = {
   DELETE_COMPONENT: 'deleteComponent',
   ADD_COMPONENT: 'addComponent',
   BEFORE_ADD_COMPONENT: 'beforeAddComponent',
-  AFTER_ADD_COMPONENT: 'afterAddComponent'
+  AFTER_ADD_COMPONENT: 'afterAddComponent',
 };
 
 export const STATE = {

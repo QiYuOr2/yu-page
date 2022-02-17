@@ -128,7 +128,7 @@ export default {
         currentIndex.value = index + 1;
         components.value = [
           ...components.value.slice(0, currentIndex.value),
-          { name: data.name, props: data.data },
+          { ...data, name: data.name, props: data.data },
           ...components.value.slice(currentIndex.value),
         ];
 
@@ -166,6 +166,7 @@ export default {
         // );
       },
       [MESSAGE_TYPE.CHANGE_PROPS]({ index, props }) {
+        console.log(index, props);
         const newComponent = components.value[index];
         newComponent.props = props;
         components.value = [
@@ -173,6 +174,11 @@ export default {
           newComponent,
           ...components.value.slice(index + 1),
         ];
+
+        actions[MESSAGE_TYPE.GET_CONFIG]();
+      },
+      [MESSAGE_TYPE.PREVIEW]() {
+        components.value = [...JSON.parse(localStorage.getItem(MESSAGE_TYPE.PREVIEW))];
       },
     };
 

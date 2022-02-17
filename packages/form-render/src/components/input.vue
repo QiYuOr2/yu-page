@@ -1,12 +1,17 @@
 <template>
   <fe-form-item :label="attributes.title">
-    <fe-input v-model="data" :placeholder="attributes.description" :type="attributes.type" />
+    <fe-input
+      :value="data"
+      @change="handler"
+      :placeholder="attributes.description"
+      :type="attributes.type"
+    />
   </fe-form-item>
 </template>
 
 <script lang="ts">
-import { SET_FORM_DATA_KEY } from '@/common/constants';
-import { defineComponent, inject, ref, watch } from 'vue';
+import { FORM_DATA_KEY, SET_FORM_DATA_KEY } from '@/common/constants';
+import { computed, defineComponent, inject } from 'vue';
 
 export default defineComponent({
   name: 'r-input',
@@ -14,15 +19,15 @@ export default defineComponent({
     attributes: Object,
   },
   setup(props) {
-    const data = ref(props.attributes?.type === 'number' ? 0 : '');
-
+    const formData = inject<Record<string, any>>(FORM_DATA_KEY);
     const setFormData = inject<(key: string, value: any) => void>(SET_FORM_DATA_KEY);
+    const data = computed(() => formData?.[props.attributes?.key]);
 
-    watch(data, (value) => {
-      setFormData?.(props.attributes?.key, value);
-    });
+    const handler = (event: any) => {
+      setFormData?.(props.attributes?.key, event.target.value);
+    };
 
-    return { data };
+    return { data, handler };
   },
 });
 </script>
