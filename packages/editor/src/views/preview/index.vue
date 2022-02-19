@@ -15,12 +15,9 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   setup() {
-    const { resetFrameHeight, postMessage } = useFrameAction('editorFrame');
+    const { postMessage } = useFrameAction('editorFrame');
     const onFrameLoaded = () => {
       postMessage({ type: 'preview' });
-      setTimeout(() => {
-        resetFrameHeight(10);
-      }, 100);
     };
     return { onFrameLoaded };
   },
@@ -37,7 +34,8 @@ export default defineComponent({
     margin: 0 auto;
     background: #fff;
     height: 100vh;
-    width: 375px;
+    width: 100%;
+    max-width: 640px;
     border-width: 0;
   }
 }
