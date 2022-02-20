@@ -22,7 +22,7 @@ import { defineComponent } from 'vue';
 
 import { useNav } from '@/hooks';
 
-import PageCard from '@/components/page-card.vue';
+import PageCard from './components/page-card.vue';
 
 export default defineComponent({
   components: { PageCard },

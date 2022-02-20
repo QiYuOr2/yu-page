@@ -7,7 +7,7 @@
       <trash2 class="trash" />
     </div>
     <fe-card hoverable>
-      <fe-img :src="require('../assets/f6-bg4.png')"></fe-img>
+      <fe-img :src="require('../../../assets/f6-bg4.png')"></fe-img>
     </fe-card>
     <div class="page-card__footer">
       <fe-button type="success" @click="toEditor">编辑页面</fe-button>
