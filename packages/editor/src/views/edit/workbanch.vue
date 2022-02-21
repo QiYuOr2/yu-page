@@ -171,7 +171,11 @@ export default defineComponent({
       local.set('preview::page', pageConfig);
       to('PREVIEW');
     };
-    const release = () => {};
+    const release = () => {
+      // js-md5 + timestamp生成唯一id
+      // 将components的config和page的config存入
+      // 前端通过url参数读取id拉取数据渲染页面
+    };
 
     const addComponents = (data: string, index: number) => {
       postMessage({

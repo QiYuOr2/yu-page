@@ -30,10 +30,10 @@ export default defineComponent({
       postMessage({ type: 'preview' });
     };
 
-    const title = ref('默认标题');
+    const title = ref('');
 
     onMounted(() => {
-      title.value = local.get('preview::page').title;
+      title.value = local.get('preview::page').title || '默认标题';
     });
 
     return { onFrameLoaded, back, title };
