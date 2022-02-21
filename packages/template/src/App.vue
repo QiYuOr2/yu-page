@@ -30,7 +30,8 @@ window.__yu_config__ = {
     {
       name: 'yu-banner',
       description: 'banner 组件',
-      snapshot: 'https://cdn.jsdelivr.net/gh/xmy6364/blog-image/img/evening.JPG',
+      snapshot:
+        'https://cdn.jsdelivr.net/gh/xmy6364/blog-image/img/evening.JPG',
       schema: {
         type: 'object',
         properties: {
@@ -178,7 +179,9 @@ export default {
         actions[MESSAGE_TYPE.GET_CONFIG]();
       },
       [MESSAGE_TYPE.PREVIEW]() {
-        components.value = [...JSON.parse(localStorage.getItem(MESSAGE_TYPE.PREVIEW))];
+        components.value = [
+          ...JSON.parse(localStorage.getItem('preview::components')),
+        ];
       },
     };
 

@@ -2,6 +2,8 @@
   <div class="preview-mobile">
     <header class="preview-mobile__header">
       <chevronLeft class="back" @click="back" />
+      <span>{{ title }}</span>
+      <chevronLeft class="hidden" />
     </header>
     <iframe
       class="preview-mobile__core"
@@ -14,8 +16,9 @@
 
 <script lang="ts">
 import { useFrameAction, useNav } from '@/hooks';
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import { ChevronsLeft } from '@fect-ui/vue-icons';
+import { local } from '@/common/utils';
 
 export default defineComponent({
   components: { ChevronsLeft },
@@ -26,7 +29,14 @@ export default defineComponent({
     const onFrameLoaded = () => {
       postMessage({ type: 'preview' });
     };
-    return { onFrameLoaded, back };
+
+    const title = ref('默认标题');
+
+    onMounted(() => {
+      title.value = local.get('preview::page').title;
+    });
+
+    return { onFrameLoaded, back, title };
   },
 });
 </script>
@@ -38,14 +48,31 @@ export default defineComponent({
   overflow: hidden;
 
   &__header {
-    width: 375px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    height: 48px;
+
+    .back {
+      cursor: pointer;
+    }
+
+    .hidden {
+      opacity: 0;
+    }
   }
 
   &__core {
     display: block;
     margin: 0 auto;
     background: #fff;
-    height: 100vh;
+    height: calc(100vh - 48px);
     width: 100%;
     max-width: 640px;
     border-width: 0;

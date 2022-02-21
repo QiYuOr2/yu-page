@@ -5,6 +5,7 @@
       @change="handler"
       :placeholder="attributes.description"
       :type="attributes.type"
+      width="100%"
     />
   </fe-form-item>
 </template>
@@ -20,7 +21,8 @@ export default defineComponent({
   },
   setup(props) {
     const formData = inject<Record<string, any>>(FORM_DATA_KEY);
-    const setFormData = inject<(key: string, value: any) => void>(SET_FORM_DATA_KEY);
+    const setFormData =
+      inject<(key: string, value: any) => void>(SET_FORM_DATA_KEY);
     const data = computed(() => formData?.[props.attributes?.key]);
 
     const handler = (event: any) => {
