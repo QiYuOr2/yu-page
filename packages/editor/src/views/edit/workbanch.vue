@@ -77,6 +77,13 @@
                     width="100%"
                   />
                 </fe-form-item>
+                <fe-form-item label="页面描述">
+                  <fe-input
+                    v-model="pageConfig.description"
+                    :placeholder="请输入页面描述"
+                    width="100%"
+                  />
+                </fe-form-item>
               </fe-form>
             </div>
           </fe-tab>
@@ -111,6 +118,7 @@ export default defineComponent({
 
     const pageConfig = reactive({
       title: '',
+      description: '',
     });
 
     const state = reactive({

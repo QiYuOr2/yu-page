@@ -1,8 +1,10 @@
 import { createRouter } from '../common/createRouter';
-import { MockService } from '../service/mock';
+import { userModel } from '../model';
 
 export const MockController = createRouter('/mock', (r) => {
-  r.get('/', (req, res) => {
-    res.send('hello mock');
+  r.get('/', async (req, res) => {
+    await userModel.create({ name: 'test' });
+    const users = await userModel.findAll();
+    res.json(users);
   });
 });
