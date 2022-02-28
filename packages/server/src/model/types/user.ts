@@ -5,8 +5,11 @@ import {
   CreationOptional,
   HasManyAddAssociationMixin,
   BelongsToManyAddAssociationMixin,
+  Association,
 } from 'sequelize';
-import { Component, Page, Preset } from '.';
+import { Page } from './page';
+import { Component } from './component';
+import { Preset } from './preset';
 import { isEmpty } from '../../common/utils';
 
 export class User extends Model<
@@ -24,6 +27,12 @@ export class User extends Model<
   declare addPage: HasManyAddAssociationMixin<Page, string>;
   declare addPreset: BelongsToManyAddAssociationMixin<Preset, number>;
   declare addComponent: BelongsToManyAddAssociationMixin<Component, number>;
+
+  declare static associations: {
+    pages: Association<Page>;
+    presets: Association<Preset>;
+    components: Association<Component>;
+  };
 
   static check(target: User) {
     return !(
