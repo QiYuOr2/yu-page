@@ -1,13 +1,25 @@
-import { Model, InferAttributes, InferCreationAttributes, CreationOptional } from 'sequelize';
+import {
+  Model,
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+  BelongsToCreateAssociationMixin,
+} from 'sequelize';
+import { User } from '.';
 import { isEmpty } from '../../common/utils';
 
-export class Page extends Model<InferAttributes<Page>, InferCreationAttributes<Page>> {
+export class Page extends Model<
+  InferAttributes<Page>,
+  InferCreationAttributes<Page>
+> {
   declare id: string;
   declare schema: string;
   declare name: string;
   declare description: string;
   declare isPublish: boolean;
   declare isPublic: boolean;
+  declare isDelete: boolean;
+  declare userId: number;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;

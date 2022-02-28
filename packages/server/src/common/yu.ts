@@ -1,6 +1,7 @@
 export const YuStatus = {
   Success: 0,
   InvalidParams: 1,
+  NotExist: 2,
 
   SystemError: 10001,
   AuthError: 10002,
@@ -13,6 +14,7 @@ export const YuMessage = {
   [YuStatus.InvalidParams]: '参数错误',
   [YuStatus.AuthError]: '鉴权失败',
   [YuStatus.SystemError]: '系统错误',
+  [YuStatus.NotExist]: '数据不存在',
 };
 
 export class Yu {
