@@ -24,3 +24,4 @@ pnpm-debug.log*
 
 packages/**/dist
 packages/**/config/db.ts
+packages/**/upload

@@ -16,7 +16,7 @@ export const PageController = createRouter('/page', (r) => {
     res.json(Yu.success(page));
   });
 
-  r.post('/save', async (req, res) => {
+  r.post('/create', async (req, res) => {
     const page = req.body;
     if (!PageModel.check(page)) {
       res.json(Yu.error(YuStatus.InvalidParams));

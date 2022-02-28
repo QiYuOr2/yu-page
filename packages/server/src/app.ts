@@ -3,14 +3,20 @@ import { error } from './common/middleware/error';
 import { CommonController, PageController, UserController } from './controller';
 import { db } from './model';
 
+const pkg = require('../package.json');
+
 db.sync({ force: true });
 
 const app = Express();
 
+app.get('/', (req, res) => {
+  res.send(`hello ${pkg.name}`);
+});
 app.use(CommonController, UserController, PageController);
-// 错误兜底处理
+
+// 异常兜底处理
 app.use(error);
 
-app.listen(3000, () => {
-  console.log('running at http://localhost:3000');
+app.listen(63643, () => {
+  console.log('running at http://localhost:63643');
 });

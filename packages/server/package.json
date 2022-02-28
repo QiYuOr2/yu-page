@@ -11,11 +11,13 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.2",
+    "multer": "^1.4.4",
     "mysql2": "^2.3.3",
     "sequelize": "^6.16.2"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
+    "@types/multer": "^1.4.7",
     "@types/node": "^17.0.8"
   }
 }

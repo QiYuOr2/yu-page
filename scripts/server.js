@@ -12,17 +12,27 @@ const createVueProxy = (target, host) => {
   );
 };
 
-// @yu-page/editor
-const EDITOR_HOST = 'http://localhost:63642';
-createVueProxy('editor', EDITOR_HOST);
+app.get('/', (_req, res) => {
+  res.redirect('/editor');
+});
 
 // @yu-page/template
 const TEMPLATE_HOST = 'http://localhost:63641';
 createVueProxy('template', TEMPLATE_HOST);
 
-app.get('/', (req, res) => {
-  res.redirect('/editor');
-});
+// @yu-page/editor
+const EDITOR_HOST = 'http://localhost:63642';
+createVueProxy('editor', EDITOR_HOST);
+
+// @yu-page/server
+const SERVER_HOST = 'http://localhost:63643';
+app.use(
+  createProxyMiddleware('/api', {
+    target: SERVER_HOST,
+    pathRewrite: { '^/api': '' },
+    changeOrigin: true,
+  })
+);
 
 app.listen(3090, () => {
   console.log('http://localhost:3090');
