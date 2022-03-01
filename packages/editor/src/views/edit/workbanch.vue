@@ -3,9 +3,7 @@
     <header class="workbanch__header">
       <chevronLeft class="back" @click="backHome" />
       <div>
-        <fe-button size="mini" style="margin-right: 0.5rem" @click="preview"
-          >预览</fe-button
-        >
+        <fe-button size="mini" style="margin-right: 0.5rem" @click="preview">预览</fe-button>
         <fe-button type="success" size="mini" @click="release">发布</fe-button>
       </div>
     </header>
@@ -37,12 +35,7 @@
             <!-- 悬浮高亮 -->
             <div :style="hoverStyle" class="hover-heightlight"></div>
             <!-- 悬浮工具 -->
-            <div
-              v-show="toolStyle.top"
-              :style="{ top: toolStyle.top }"
-              class="tools"
-              :id="toolId"
-            >
+            <div v-show="toolStyle.top" :style="{ top: toolStyle.top }" class="tools" :id="toolId">
               <div class="tools__move">
                 <span @click="moveComponent(-1)"><arrow-up /></span>
                 <span @click="moveComponent(1)"><arrow-down /></span>
@@ -71,11 +64,7 @@
             <div class="aside__form">
               <fe-form label-position="top">
                 <fe-form-item label="页面标题">
-                  <fe-input
-                    v-model="pageConfig.title"
-                    :placeholder="请输入页面标题"
-                    width="100%"
-                  />
+                  <fe-input v-model="pageConfig.title" :placeholder="请输入页面标题" width="100%" />
                 </fe-form-item>
                 <fe-form-item label="页面描述">
                   <fe-input
@@ -94,15 +83,7 @@
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  onMounted,
-  reactive,
-  ref,
-  toRefs,
-  watch,
-} from 'vue';
+import { computed, defineComponent, onMounted, reactive, ref, toRefs, watch } from 'vue';
 import { useFrameAction, useNav } from '@/hooks';
 import { MESSAGE_TYPE, FRAME } from '@/common/constants';
 
@@ -153,18 +134,13 @@ export default defineComponent({
     const onFrameLoaded = () => {
       injectEventListener((event, index) => {
         editorState.current = index;
-        event === 'click' &&
-          postMessage({ type: MESSAGE_TYPE.CHANGE_INDEX, data: index });
+        event === 'click' && postMessage({ type: MESSAGE_TYPE.CHANGE_INDEX, data: index });
       });
       state.spinning = false;
     };
 
     const moveComponent = (action: number) => {
-      if (
-        (editorState.isBottom && action === 1) ||
-        (editorState.isTop && action === -1)
-      )
-        return;
+      if ((editorState.isBottom && action === 1) || (editorState.isTop && action === -1)) return;
 
       postMessage({
         type: MESSAGE_TYPE.SORT_COMPONENT,
@@ -172,10 +148,7 @@ export default defineComponent({
       });
     };
     const preview = () => {
-      local.set(
-        'preview::components',
-        editStore.pageConfig.userSelectComponents
-      );
+      local.set('preview::components', editStore.pageConfig.userSelectComponents);
       local.set('preview::page', pageConfig);
       to('PREVIEW');
     };
@@ -246,10 +219,7 @@ export default defineComponent({
       dropHandler,
 
       currentComponentSchema: computed(
-        () =>
-          editStore.pageConfig.userSelectComponents[
-            editStore.editConfig.currentIndex
-          ] ?? {}
+        () => editStore.pageConfig.userSelectComponents[editStore.editConfig.currentIndex] ?? {}
       ),
 
       toolId: FRAME.TOOL_ID,

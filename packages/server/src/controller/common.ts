@@ -13,5 +13,5 @@ const uploadConfig = upload.fields([{ name: UploadScope.Avatar, maxCount: 1 }]);
 export const CommonController = createRouter('/common', (r) => {
   r.post('/upload', uploadConfig, (req, res) => {
     res.json(req);
-  });
+  }).comment('上传');
 });

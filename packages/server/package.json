@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "start": "cross-env tsc && node dist/app.js"
+    "start": "cross-env tsc && node scripts/start.js"
   },
   "keywords": [],
   "author": "",

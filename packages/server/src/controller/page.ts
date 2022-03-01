@@ -4,9 +4,6 @@ import { Yu, YuStatus } from '../common/yu';
 import { PageModel, UserModel } from '../model';
 
 export const PageController = createRouter('/page', (r) => {
-  /**
-   * 根据ID获取页面
-   */
   r.get('/', async (req, res) => {
     const id = req.query.pageId;
 
@@ -22,11 +19,8 @@ export const PageController = createRouter('/page', (r) => {
       return;
     }
     res.json(Yu.success(page));
-  });
+  }).comment('根据ID获取页面');
 
-  /**
-   * 创建页面
-   */
   r.post('/create', async (req, res) => {
     const page = req.body;
     const userId = req.body.userId;
@@ -36,23 +30,20 @@ export const PageController = createRouter('/page', (r) => {
       return;
     }
     const user = await UserModel.findByPk(userId);
-    const createdPage = await PageModel.create(page);
-    await user.addPage(createdPage.id);
+    if (user.id) {
+      const createdPage = await PageModel.create(page);
+      await user.addPage(createdPage.id);
+    }
 
     res.json(Yu.success(null));
-  });
+  }).comment('创建页面');
 
-  /**
-   * 更新页面信息
-   */
   r.post('/update.config', async (req, res) => {
     const { id, schema, name, description } = req.body;
     await PageModel.update({ schema, name, description }, { where: { id } });
-  });
+    res.json(Yu.success(null));
+  }).comment('更新页面信息');
 
-  /**
-   * 更新页面发布状态
-   */
   r.post('/update.publish', async (req, res) => {
     const { id, isPublish } = req.body;
 
@@ -62,11 +53,9 @@ export const PageController = createRouter('/page', (r) => {
     }
 
     await PageModel.update({ isPublish }, { where: { id } });
-  });
+    res.json(Yu.success(null));
+  }).comment('更新页面发布状态');
 
-  /**
-   * 更新页面开放状态
-   */
   r.post('/update.public', async (req, res) => {
     const { id, isPublic } = req.body;
 
@@ -76,5 +65,6 @@ export const PageController = createRouter('/page', (r) => {
     }
 
     await PageModel.update({ isPublic }, { where: { id } });
-  });
+    res.json(Yu.success(null));
+  }).comment('更新页面开放状态');
 });

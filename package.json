@@ -5,6 +5,9 @@
   "scripts": {
     "editor": "pnpm serve --filter \"@yu-page/editor\"",
     "template": "pnpm serve --filter \"@yu-page/template\"",
+    "editor:build": "pnpm build --filter \"@yu-page/editor\"",
+    "template:build": "pnpm form && pnpm build --filter \"@yu-page/template\"",
+    "build:front": "pnpm editor:build && pnpm template:build",
     "server": "pnpm start --filter \"@yu-page/server\"",
     "form": "pnpm build --filter \"@yu-page/form-render\" && pnpm install @yu-page/form-render -r --filter @yu-page/editor",
     "dev": "node scripts/server.js",
@@ -26,6 +29,7 @@
     "@types/node": "^17.0.10",
     "cross-env": "^7.0.3",
     "express": "^4.17.2",
+    "fs-extra": "^10.0.1",
     "http-proxy-middleware": "^2.0.1",
     "less": "^3.13.1",
     "less-loader": "^5.0.0",

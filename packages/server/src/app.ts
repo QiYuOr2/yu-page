@@ -17,6 +17,4 @@ app.use(CommonController, UserController, PageController);
 // 异常兜底处理
 app.use(error);
 
-app.listen(63643, () => {
-  console.log('running at http://localhost:63643');
-});
+export { app };

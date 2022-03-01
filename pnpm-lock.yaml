@@ -7,6 +7,7 @@ importers:
       '@types/node': ^17.0.10
       cross-env: ^7.0.3
       express: ^4.17.2
+      fs-extra: ^10.0.1
       http-proxy-middleware: ^2.0.1
       less: ^3.13.1
       less-loader: ^5.0.0
@@ -15,6 +16,7 @@ importers:
       '@types/node': 17.0.10
       cross-env: 7.0.3
       express: 4.17.2
+      fs-extra: 10.0.1
       http-proxy-middleware: 2.0.1
       less: 3.13.1
       less-loader: 5.0.0_less@3.13.1
@@ -3255,7 +3257,7 @@ packages:
     dev: true
 
   /concat-map/0.0.1:
-    resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
+    resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=, tarball: concat-map/download/concat-map-0.0.1.tgz}
     dev: true
 
   /concat-stream/1.6.2:
@@ -3675,7 +3677,7 @@ packages:
       ms: 2.1.2
 
   /debug/4.3.3_supports-color@6.1.0:
-    resolution: {integrity: sha512-/zxw5+vh1Tfv+4Qn7a5nsbcJKPaSvCDhojn6FEl9vupwK2VCSDtEiEtqr8DFtzYFOdz63LBkxec7DYuc2jon6Q==, tarball: debug/download/debug-4.3.3.tgz}
+    resolution: {integrity: sha512-/zxw5+vh1Tfv+4Qn7a5nsbcJKPaSvCDhojn6FEl9vupwK2VCSDtEiEtqr8DFtzYFOdz63LBkxec7DYuc2jon6Q==}
     engines: {node: '>=6.0'}
     peerDependencies:
       supports-color: '*'
@@ -4503,6 +4505,15 @@ packages:
       readable-stream: 2.3.7
     dev: true
 
+  /fs-extra/10.0.1:
+    resolution: {integrity: sha512-NbdoVMZso2Lsrn/QwLXOy6rm0ufY2zEOKCDzJR/0kBsb0E6qed0P3iYK+Ath3BfvXEeu4JhEtXLgILx5psUfag==}
+    engines: {node: '>=12'}
+    dependencies:
+      graceful-fs: 4.2.9
+      jsonfile: 6.1.0
+      universalify: 2.0.0
+    dev: true
+
   /fs-extra/7.0.1:
     resolution: {integrity: sha1-TxicRKoSO4lfcigE9V6iPq3DSOk=, tarball: fs-extra/download/fs-extra-7.0.1.tgz}
     engines: {node: '>=6 <7 || >=8'}
@@ -4524,7 +4535,7 @@ packages:
     optional: true
 
   /fs-monkey/1.0.3:
-    resolution: {integrity: sha512-cybjIfiiE+pTWicSCLFHSrXZ6EilF30oh91FDP9S2B051prEa7QWfrVTQm10/dDpswBDXZugPa1Ogu8Yh+HV0Q==}
+    resolution: {integrity: sha1-rjrJLVO7Mo7+DpodlUH2rY1I4tM=, tarball: fs-monkey/download/fs-monkey-1.0.3.tgz}
     dev: true
     optional: true
 
@@ -5643,7 +5654,6 @@ packages:
     optionalDependencies:
       graceful-fs: 4.2.9
     dev: true
-    optional: true
 
   /jsprim/1.4.2:
     resolution: {integrity: sha512-P2bSOMAc/ciLz6DzgjVlGJP9+BrJWu5UDGK70C2iweC5QBIeFf0ZXRvGjEj2uYgrY2MkAAhsSWHDWlFtEroZWw==, tarball: jsprim/download/jsprim-1.4.2.tgz}
@@ -8623,7 +8633,6 @@ packages:
     resolution: {integrity: sha512-hAZsKq7Yy11Zu1DE0OzWjw7nnLZmJZYTDZZyEFHZdUhV8FkH5MCfoU1XMaxXovpyW5nq5scPqq0ZDP9Zyl04oQ==}
     engines: {node: '>= 10.0.0'}
     dev: true
-    optional: true
 
   /unpipe/1.0.0:
     resolution: {integrity: sha1-sr9O6FFKrmFltIF4KdIbLvSZBOw=, tarball: unpipe/download/unpipe-1.0.0.tgz}
