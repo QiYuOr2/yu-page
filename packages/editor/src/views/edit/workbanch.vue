@@ -91,6 +91,7 @@ import { MESSAGE_TYPE, FRAME } from '@/common/constants';
 import { ArrowDown, ArrowUp, Clipboard, Copy } from '@fect-ui/vue-icons';
 import ComponentSelector from './components/component-selector.vue';
 import { fork, local } from '@/common/utils';
+import { page } from '@/api';
 
 export default defineComponent({
   components: { ComponentSelector, ArrowDown, ArrowUp, Clipboard, Copy },
@@ -152,10 +153,16 @@ export default defineComponent({
       local.set('preview::page', pageConfig);
       to('PREVIEW');
     };
-    const release = () => {
-      // js-md5 + timestamp生成唯一id
-      // 将components的config和page的config存入
-      // 前端通过url参数读取id拉取数据渲染页面
+    const release = async () => {
+      // 如果原本没有改页面，创建
+      if (!true /* pageId */) {
+        const { status, result } = await page.create(1 /* userId */, {
+          schema: JSON.stringify(editStore.pageConfig.userSelectComponents),
+          name: pageConfig.title,
+          description: pageConfig.title,
+          isPublish: true,
+        });
+      }
     };
 
     const addComponents = (data: string, index: number) => {

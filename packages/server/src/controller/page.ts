@@ -21,6 +21,18 @@ export const PageController = createRouter('/page', (r) => {
     res.json(Yu.success(page));
   }).comment('根据ID获取页面');
 
+  r.get('/list', async (req, res) => {
+    const userId = Number(req.query.userId);
+
+    if (isEmpty(userId) || isNaN(userId)) {
+      res.json(Yu.error(YuStatus.InvalidParams));
+      return;
+    }
+
+    const pages = await PageModel.findAll({ where: { userId } });
+    res.json(Yu.success(pages));
+  }).comment('获取某人页面列表');
+
   r.post('/create', async (req, res) => {
     const page = req.body;
     const userId = req.body.userId;
@@ -30,12 +42,18 @@ export const PageController = createRouter('/page', (r) => {
       return;
     }
     const user = await UserModel.findByPk(userId);
-    if (user.id) {
-      const createdPage = await PageModel.create(page);
-      await user.addPage(createdPage.id);
+
+    const createId = () => '';
+
+    if (!user.id) {
+      res.json(Yu.error(YuStatus.NotExist, '用户不存在'));
+      return;
     }
 
-    res.json(Yu.success(null));
+    const createdPage = await PageModel.create({ id: createId(), ...page });
+    await user.addPage(createdPage.id);
+
+    res.json(Yu.success({ id: createdPage.id }));
   }).comment('创建页面');
 
   r.post('/update.config', async (req, res) => {
@@ -59,7 +77,7 @@ export const PageController = createRouter('/page', (r) => {
   r.post('/update.public', async (req, res) => {
     const { id, isPublic } = req.body;
 
-    if (typeof isPublic === 'boolean') {
+    if (typeof isPublic !== 'boolean') {
       res.json(Yu.error(YuStatus.InvalidParams));
       return;
     }

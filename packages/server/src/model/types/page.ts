@@ -1,17 +1,7 @@
-import {
-  Model,
-  InferAttributes,
-  InferCreationAttributes,
-  CreationOptional,
-  BelongsToCreateAssociationMixin,
-} from 'sequelize';
-import { User } from '.';
+import { Model, InferAttributes, InferCreationAttributes, CreationOptional } from 'sequelize';
 import { isEmpty } from '../../common/utils';
 
-export class Page extends Model<
-  InferAttributes<Page>,
-  InferCreationAttributes<Page>
-> {
+export class Page extends Model<InferAttributes<Page>, InferCreationAttributes<Page>> {
   declare id: string;
   declare schema: string;
   declare name: string;
@@ -30,7 +20,7 @@ export class Page extends Model<
       isEmpty(target.name) ||
       isEmpty(target.schema) ||
       isEmpty(target.description) ||
-      isEmpty(target.isPublic)
+      isEmpty(target.isPublish)
     );
   }
 }
