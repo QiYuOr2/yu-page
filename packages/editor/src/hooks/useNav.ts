@@ -16,5 +16,9 @@ export function useNav() {
     to('HOME');
   };
 
-  return { to, back, backHome };
+  const getRouteName = () => {
+    return r.currentRoute.value.name;
+  };
+
+  return { to, back, backHome, getRouteName };
 }

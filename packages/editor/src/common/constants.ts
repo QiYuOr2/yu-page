@@ -5,6 +5,7 @@ export const ROUTER = {
   HOME: 'home',
   WORKBANCH: 'workbanch',
   PREVIEW: 'preview',
+  LOGIN: 'login',
 };
 
 /**
@@ -33,4 +34,8 @@ export const MESSAGE_TYPE = {
 
 export const STATE = {
   EDIT: 'editState',
+};
+
+export const COOKIE = {
+  TOKEN: 'token',
 };

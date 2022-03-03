@@ -1,3 +1,5 @@
+import { cookieDriver } from './cookie';
+
 class YuStorage {
   storage: Storage;
   constructor(storage: Storage) {
@@ -19,3 +21,4 @@ class YuStorage {
 }
 
 export const local = new YuStorage(localStorage);
+export const cookie = new YuStorage(cookieDriver);

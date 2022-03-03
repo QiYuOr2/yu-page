@@ -1,0 +1,29 @@
+{
+  "name": "yu-alert",
+  "description": "alert 组件",
+  "snapshot": "https://cdn.jsdelivr.net/gh/xmy6364/blog-image/img/evening.JPG",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "color": {
+        "title": "条幅颜色",
+        "type": "string",
+        "enum": [
+          { "label": "黄色", "value": "yellow" },
+          { "label": "红色", "value": "red" }
+        ],
+        "format": "color"
+      },
+      "text": {
+        "title": "文本",
+        "type": "string",
+        "format": "text"
+      }
+    },
+    "required": ["color", "text"]
+  },
+  "data": {
+    "color": "yellow",
+    "text": "通知条文本"
+  }
+}

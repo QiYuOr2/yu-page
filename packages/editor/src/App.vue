@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav-bar />
+    <nav-bar v-if="isShowNav" />
     <div>
       <router-view />
     </div>
@@ -8,12 +8,35 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent, onMounted } from 'vue';
 import NavBar from '@/components/nav-bar.vue';
+import { useNav } from './hooks';
+import { ROUTER, COOKIE } from './common/constants';
+import { cookie } from './common/utils';
 
 export default defineComponent({
   components: { NavBar },
-  setup() {},
+  setup() {
+    const { getRouteName, to } = useNav();
+
+    const isShowNav = computed(() => {
+      return getRouteName() !== ROUTER.LOGIN;
+    });
+
+    onMounted(() => {
+      const token = cookie.get(COOKIE.TOKEN);
+
+      console.log(cookie.get(COOKIE.TOKEN));
+
+      if (!token) {
+        to('LOGIN');
+      }
+    });
+
+    return {
+      isShowNav,
+    };
+  },
 });
 </script>
 
