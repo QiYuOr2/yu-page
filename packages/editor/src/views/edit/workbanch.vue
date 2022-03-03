@@ -16,7 +16,7 @@
         <div class="preview">
           <iframe
             class="preview__core"
-            src="http://localhost:3090/template"
+            :src="`${iframeHost}:3090/template`"
             id="editorFrame"
             @load="onFrameLoaded"
           ></iframe>
@@ -86,6 +86,7 @@
 import { computed, defineComponent, onMounted, reactive, ref, toRefs, watch } from 'vue';
 import { useFrameAction, useNav } from '@/hooks';
 import { MESSAGE_TYPE, FRAME } from '@/common/constants';
+import { config } from '@/common/config'
 
 // Components
 import { ArrowDown, ArrowUp, Clipboard, Copy } from '@fect-ui/vue-icons';
@@ -234,6 +235,8 @@ export default defineComponent({
 
       activeTab,
       pageConfig,
+
+      iframeHost: config.IFRAME_HOST
     };
   },
 });
