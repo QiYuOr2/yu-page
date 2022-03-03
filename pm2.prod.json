@@ -1,0 +1,10 @@
+{
+  "apps": [
+    {
+      "namespace": "yu-page",
+      "name": "@yu-page/app",
+      "script": "pnpm",
+      "args": "prod"
+    }
+  ]
+}

@@ -15,7 +15,8 @@
     "create": "pnpm start create --filter \"@yu-page/cli\"",
     "pm2:dev": "pm2 restart pm2.json",
     "build": "node scripts/build.js",
-    "prod": "cross-env NODE_ENV=prod node scripts/prod.js"
+    "prod": "cross-env NODE_ENV=prod node scripts/prod.js",
+    "pm2:prod": "pm2 restart pm2.prod.json"
   },
   "repository": {
     "type": "git",
