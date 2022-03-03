@@ -6,13 +6,16 @@
     "editor": "pnpm serve --filter \"@yu-page/editor\"",
     "template": "pnpm serve --filter \"@yu-page/template\"",
     "editor:build": "pnpm build --filter \"@yu-page/editor\"",
-    "template:build": "pnpm form && pnpm build --filter \"@yu-page/template\"",
-    "build:front": "pnpm editor:build && pnpm template:build",
+    "template:build": "cross-env pnpm form && pnpm build --filter \"@yu-page/template\"",
+    "server:build": "pnpm build --filter \"@yu-page/server\"",
+    "build:front": "cross-env pnpm editor:build && pnpm template:build",
     "server": "pnpm start --filter \"@yu-page/server\"",
-    "form": "pnpm build --filter \"@yu-page/form-render\" && pnpm install @yu-page/form-render -r --filter @yu-page/editor",
+    "form": "cross-env pnpm build --filter \"@yu-page/form-render\" && pnpm install @yu-page/form-render -r --filter @yu-page/editor",
     "dev": "node scripts/server.js",
     "create": "pnpm start create --filter \"@yu-page/cli\"",
-    "pm2:dev": "pm2 restart pm2.json"
+    "pm2:dev": "pm2 restart pm2.json",
+    "build": "node scripts/build.js",
+    "prod": "cross-env NODE_ENV=prod node scripts/prod.js"
   },
   "repository": {
     "type": "git",

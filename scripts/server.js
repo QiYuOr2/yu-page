@@ -29,7 +29,6 @@ const SERVER_HOST = 'http://localhost:63643';
 app.use(
   createProxyMiddleware('/api', {
     target: SERVER_HOST,
-    pathRewrite: { '^/api': '' },
     changeOrigin: true,
   })
 );

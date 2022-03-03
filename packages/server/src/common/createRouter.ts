@@ -12,7 +12,7 @@ export const createRouter = (prefix: string, callback: (r: Router) => void) => {
 
   callback(r);
 
-  const router = Router().use(prefix, r);
+  const router = Router().use(`/api/${prefix}`, r);
 
   const pathTable = [];
 
