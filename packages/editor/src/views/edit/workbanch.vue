@@ -311,7 +311,7 @@ export default defineComponent({
       .active-heightlight {
         // background: #ddd;
         // border: 3px solid red;
-        border: 3px solid var(--dot-error-color);
+        border: 2px solid var(--x-color-primary);
         box-shadow: var(--x-shadow-small);
         position: absolute;
         // z-index: -1;
@@ -324,7 +324,7 @@ export default defineComponent({
       }
       .hover-heightlight {
         // background: #ededef;
-        border: 3px solid var(--x-color-primary);
+        border: 2px dashed var(--x-color-primary);
         box-shadow: var(--x-shadow-small);
         border-radius: 1px;
         position: absolute;

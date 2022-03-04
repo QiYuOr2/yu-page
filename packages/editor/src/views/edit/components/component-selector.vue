@@ -52,11 +52,12 @@ export default defineComponent({
     .list {
       margin: 10px;
       display: flex;
+      justify-content: space-between;
       flex-wrap: wrap;
       gap: 10px;
 
       .fect-card {
-        width: 127px;
+        width: 124px;
         --fect-gap: 0;
         padding-bottom: 4px;
         border: 1px solid #eee;

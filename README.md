@@ -39,9 +39,11 @@
 
 **使用 pm2 启动**
 
-> windows 下可能会报错
-
 执行`pnpm run form`后执行`pnpm run pm2:dev`即可在 pm2 中启动前端项目，在 http://localhost:3090 中可以访问
+
+**prod 环境**
+
+`NODE_ENV=prod pm2 start scripts/prod.js --name yu-page`
 
 ## 组件 Schema 设计
 

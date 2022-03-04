@@ -1,7 +1,7 @@
 {
   "name": "yu-alert",
   "description": "alert 组件",
-  "snapshot": "https://cdn.jsdelivr.net/gh/xmy6364/blog-image/img/evening.JPG",
+  "snapshot": "https://cdn.jsdelivr.net/gh/qiyuor2/blog-image/img/20220304-yu-page-alert-snapshot.png",
   "schema": {
     "type": "object",
     "properties": {
@@ -9,10 +9,20 @@
         "title": "条幅颜色",
         "type": "string",
         "enum": [
-          { "label": "黄色", "value": "yellow" },
-          { "label": "红色", "value": "red" }
+          {
+            "label": "https://cdn.jsdelivr.net/gh/qiyuor2/blog-image/img/20220304-yu-page-alert-y.png",
+            "value": "yellow"
+          },
+          {
+            "label": "https://cdn.jsdelivr.net/gh/qiyuor2/blog-image/img/20220304-yu-page-alert-r.png",
+            "value": "red"
+          },
+          {
+            "label": "https://cdn.jsdelivr.net/gh/qiyuor2/blog-image/img/20220304-yu-page-alert-g.png",
+            "value": "green"
+          }
         ],
-        "format": "color"
+        "ui": "image-radio"
       },
       "text": {
         "title": "文本",
@@ -24,6 +34,6 @@
   },
   "data": {
     "color": "yellow",
-    "text": "通知条文本"
+    "text": "通知条幅示例文本"
   }
 }

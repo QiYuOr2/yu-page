@@ -12,10 +12,13 @@
 <script lang="ts">
 import { computed, defineComponent, provide, reactive } from 'vue';
 import Input from './components/input.vue';
+import ImageRadio from './components/image-radio.vue';
 import { FORM_DATA_KEY, SET_FORM_DATA_KEY } from './common/constants';
 
-const ComponentsName = {
+const ComponentsName: Record<string, string> = {
   INPUT: 'r-input',
+  IMAGE_RADIO: 'r-image-radio',
+  'image-radio': 'r-image-radio',
 };
 
 const FormItemType = {
@@ -31,6 +34,7 @@ export default defineComponent({
   name: 'form-render',
   components: {
     [Input.name]: Input,
+    [ImageRadio.name]: ImageRadio,
   },
   props: {
     itemData: Object,
@@ -52,6 +56,18 @@ export default defineComponent({
       return Object.keys(list).map((key) => {
         const currentItem = list[key];
         const val = props?.itemData?.props?.[key];
+
+        // 特殊处理
+        // enum -> radio / select 根据ui选择
+        if (currentItem.enum) {
+          formData[key] = val || InitData[currentItem.type];
+
+          const currComponent = ComponentsName[currentItem.ui];
+
+          return { ...currentItem, component: currComponent, key, value: val };
+        }
+
+        // 无特殊处理的 type=string,number 转化为input
         if (FormItemType.INPUT.includes(currentItem.type)) {
           formData[key] = val || InitData[currentItem.type];
           return { ...currentItem, component: ComponentsName.INPUT, key, value: val };

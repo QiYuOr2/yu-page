@@ -3,7 +3,7 @@
     <fe-input
       :value="data"
       @change="handler"
-      :placeholder="attributes.description"
+      :placeholder="attributes.placeholder"
       :type="attributes.type"
       width="100%"
     />
