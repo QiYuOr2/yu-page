@@ -338,6 +338,7 @@
           <fe-form-item prop="password">
             <fe-input
               prefix="密码"
+              type="password"
               v-model="loginData.password"
               placeholder="请输入密码"
             ></fe-input>
@@ -408,6 +409,10 @@ export default defineComponent({
   /deep/ .fect-button--medium {
     display: block;
     width: 100%;
+  }
+
+  /deep/ .fect-input__icon--suffix {
+    display: none;
   }
 }
 </style>

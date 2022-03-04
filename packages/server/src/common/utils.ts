@@ -1,3 +1,5 @@
+import * as Jwt from 'jsonwebtoken';
+
 export const isEmpty = <T>(target: T) => {
   if (typeof target === 'undefined') {
     return true;
@@ -12,4 +14,8 @@ export const isEmpty = <T>(target: T) => {
     return true;
   }
   return false;
+};
+
+export const genJwt = (id: number, account: string) => {
+  return Jwt.sign({ id, account }, 'qiyuor2', { expiresIn: 3600 * 24 * 3 });
 };

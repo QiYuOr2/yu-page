@@ -3,7 +3,10 @@
     <header class="workbanch__header">
       <chevronLeft class="back" @click="backHome" />
       <div>
-        <fe-button size="mini" style="margin-right: 0.5rem" @click="preview">预览</fe-button>
+        <fe-button-group size="mini" style="margin-right: 0.5rem">
+          <fe-button @click="preview">预览</fe-button>
+          <fe-button @click="preview">保存</fe-button>
+        </fe-button-group>
         <fe-button type="success" size="mini" @click="release">发布</fe-button>
       </div>
     </header>
@@ -86,7 +89,7 @@
 import { computed, defineComponent, onMounted, reactive, ref, toRefs, watch } from 'vue';
 import { useFrameAction, useNav } from '@/hooks';
 import { MESSAGE_TYPE, FRAME } from '@/common/constants';
-import { config } from '@/common/config'
+import { config } from '@/common/config';
 
 // Components
 import { ArrowDown, ArrowUp, Clipboard, Copy } from '@fect-ui/vue-icons';
@@ -236,7 +239,7 @@ export default defineComponent({
       activeTab,
       pageConfig,
 
-      iframeHost: config.IFRAME_HOST
+      iframeHost: config.IFRAME_HOST,
     };
   },
 });

@@ -1,7 +1,10 @@
 import { createRouter } from '../common/createRouter';
-import { isEmpty } from '../common/utils';
+import { genJwt, isEmpty } from '../common/utils';
 import { Yu, YuStatus } from '../common/yu';
 import { UserModel } from '../model';
+
+// 14天
+const cookieExpires = new Date(Date.now() + 14 * 86400000);
 
 export const UserController = createRouter('/user', (r) => {
   r.post('/register', async (req, res) => {
@@ -21,8 +24,14 @@ export const UserController = createRouter('/user', (r) => {
       return;
     }
 
-    const users = await UserModel.findOne({ where: { account, password } });
-    res.json(Yu.success(null /* token, id */));
+    const user = await UserModel.findOne({ where: { account, password } });
+
+    const token = genJwt(user.id, user.account);
+
+    res.cookie('token', token, { expires: cookieExpires });
+    res.cookie('uid', user.id, { expires: cookieExpires });
+
+    res.json(Yu.success(null));
   }).comment('登录');
 
   r.post('/update', async (req, res) => {

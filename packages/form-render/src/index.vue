@@ -1,5 +1,5 @@
 <template>
-  <fe-form label-position="top">
+  <fe-form label-position="top" @submit.prevent="">
     <component
       v-for="(item, $i) in formItemList"
       :is="item.component"
