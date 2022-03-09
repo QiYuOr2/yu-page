@@ -333,7 +333,7 @@
         <h1 class="title">登入编辑平台</h1>
         <fe-form :model="loginData">
           <fe-form-item prop="account">
-            <fe-input prefix="账号" v-model="loginData.input" placeholder="请输入账号"></fe-input>
+            <fe-input prefix="账号" v-model="loginData.account" placeholder="请输入账号"></fe-input>
           </fe-form-item>
           <fe-form-item prop="password">
             <fe-input
@@ -354,8 +354,7 @@
 </template>
 
 <script lang="ts">
-import { COOKIE } from '@/common/constants';
-import { cookie } from '@/common/utils';
+import { user } from '@/api';
 import { useNav } from '@/hooks';
 import { defineComponent, reactive } from 'vue';
 
@@ -368,9 +367,11 @@ export default defineComponent({
 
     const { to } = useNav();
 
-    const login = () => {
-      cookie.set(COOKIE.TOKEN, 'test');
-      to('HOME');
+    const login = async () => {
+      const { status } = await user.login(loginData.account, loginData.password);
+      if (status.code === 0) {
+        to('HOME');
+      }
     };
 
     return {

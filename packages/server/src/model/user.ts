@@ -5,7 +5,7 @@ export const createUserModel = (sequelize: Sequelize) => {
   return User.init(
     {
       id: { type: DataTypes.INTEGER.UNSIGNED, autoIncrement: true, primaryKey: true },
-      account: { type: DataTypes.STRING(128), allowNull: false },
+      account: { type: DataTypes.STRING(128), allowNull: false, unique: true },
       password: { type: DataTypes.STRING(128), allowNull: false },
       avatar: { type: DataTypes.STRING(128) },
       createdAt: DataTypes.DATE,

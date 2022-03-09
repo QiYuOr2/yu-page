@@ -38,4 +38,5 @@ export const STATE = {
 
 export const COOKIE = {
   TOKEN: 'token',
+  UID: 'uid'
 };

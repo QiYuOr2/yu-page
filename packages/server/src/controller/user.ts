@@ -12,8 +12,10 @@ export const UserController = createRouter('/user', (r) => {
       res.json(Yu.error(YuStatus.InvalidParams));
       return;
     }
-    await UserModel.create({ account: 'test', password: '123' });
-    res.json(null);
+    const { account, password } = req.body;
+
+    await UserModel.create({ account, password });
+    res.json(Yu.success(null));
   }).comment('注册');
 
   r.post('/login', async (req, res) => {
@@ -25,6 +27,11 @@ export const UserController = createRouter('/user', (r) => {
     }
 
     const user = await UserModel.findOne({ where: { account, password } });
+
+    if (!user) {
+      res.json(Yu.error(YuStatus.NotExist));
+      return;
+    }
 
     const token = genJwt(user.id, user.account);
 

@@ -18,11 +18,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted } from 'vue';
 
 import { useNav } from '@/hooks';
 
 import PageCard from './components/page-card.vue';
+import { page } from '@/api';
+import { cookie } from '@/common/utils';
+import { COOKIE } from '@/common/constants';
 
 export default defineComponent({
   components: { PageCard },
@@ -32,6 +35,17 @@ export default defineComponent({
     const toEditor = () => {
       to('WORKBANCH');
     };
+
+    const getPages = async () => {
+      const { status, result } = await page.list(cookie.get(COOKIE.UID));
+      if (status.code === 0) {
+        console.log(result);
+      }
+    };
+
+    onMounted(() => {
+      getPages();
+    });
 
     return { toEditor };
   },

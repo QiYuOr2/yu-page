@@ -20,5 +20,9 @@ export function useNav() {
     return r.currentRoute.value.name;
   };
 
-  return { to, back, backHome, getRouteName };
+  const getQuery = (key: string) => {
+    return r.currentRoute.value.query[key] || null;
+  };
+
+  return { to, back, backHome, getRouteName, getQuery };
 }

@@ -5,7 +5,7 @@
       <div>
         <fe-button-group size="mini" style="margin-right: 0.5rem">
           <fe-button @click="preview">预览</fe-button>
-          <fe-button @click="preview">保存</fe-button>
+          <fe-button @click="release">保存</fe-button>
         </fe-button-group>
         <fe-button type="success" size="mini" @click="release">发布</fe-button>
       </div>
@@ -88,13 +88,13 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, reactive, ref, toRefs, watch } from 'vue';
 import { useFrameAction, useNav } from '@/hooks';
-import { MESSAGE_TYPE, FRAME } from '@/common/constants';
+import { MESSAGE_TYPE, FRAME, COOKIE } from '@/common/constants';
 import { config } from '@/common/config';
 
 // Components
 import { ArrowDown, ArrowUp, Clipboard, Copy } from '@fect-ui/vue-icons';
 import ComponentSelector from './components/component-selector.vue';
-import { fork, local } from '@/common/utils';
+import { cookie, fork, local } from '@/common/utils';
 import { page } from '@/api';
 
 export default defineComponent({
@@ -126,7 +126,7 @@ export default defineComponent({
       getIndex,
       resetFrameHeight,
     } = useFrameAction('editorFrame');
-    const { backHome, to } = useNav();
+    const { backHome, to, getQuery } = useNav();
 
     onMounted(() => {
       injectIframeMessageListener();
@@ -158,15 +158,19 @@ export default defineComponent({
       to('PREVIEW');
     };
     const release = async () => {
-      // 如果原本没有改页面，创建
-      if (!true /* pageId */) {
-        const { status, result } = await page.create(1 /* userId */, {
+      const pageId = Number(getQuery('pageId'));
+
+      // 如果原本没有该页面，创建
+      if (!pageId) {
+        const { status, result } = await page.create(cookie.get(COOKIE.UID), {
           schema: JSON.stringify(editStore.pageConfig.userSelectComponents),
           name: pageConfig.title,
           description: pageConfig.title,
           isPublish: true,
         });
+        return;
       }
+      // 否则是编辑
     };
 
     const addComponents = (data: string, index: number) => {

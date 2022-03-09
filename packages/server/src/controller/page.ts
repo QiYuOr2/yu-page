@@ -43,12 +43,13 @@ export const PageController = createRouter('/page', (r) => {
     }
     const user = await UserModel.findByPk(userId);
 
-    const createId = () => '';
-
     if (!user.id) {
       res.json(Yu.error(YuStatus.NotExist, '用户不存在'));
       return;
     }
+
+    // 生成page id
+    const createId = () => (Math.floor(Math.random() * 10 + 1) * Date.now()).toString(36);
 
     const createdPage = await PageModel.create({ id: createId(), ...page });
     await user.addPage(createdPage.id);

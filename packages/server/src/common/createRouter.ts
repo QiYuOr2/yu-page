@@ -12,14 +12,14 @@ export const createRouter = (prefix: string, callback: (r: Router) => void) => {
 
   callback(r);
 
-  const router = Router().use(`/api/${prefix}`, r);
+  const router = Router().use(`/api${prefix}`, r);
 
   const pathTable = [];
 
   router.stack.forEach((rr) => {
     rr.handle.stack &&
       rr.handle.stack.forEach((rrr) => {
-        const path = prefix + rrr.route.path;
+        const path = '/api' + prefix + rrr.route.path;
         const methods = Object.keys(rrr.route.methods).join(',');
         const comment = rrr.route.comment || '';
 

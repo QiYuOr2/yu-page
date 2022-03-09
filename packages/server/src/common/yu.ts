@@ -32,7 +32,7 @@ export class Yu {
     return this.response(YuStatus.Success, data);
   }
 
-  static error(code: number, message?: string) {
-    return this.response(code, null, message);
+  static error(code: number, data: any = null, message?: string) {
+    return this.response(code, data, message);
   }
 }
