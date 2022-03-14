@@ -9,21 +9,21 @@
       </fe-card>
       <page-card
         class="page"
-        v-for="i in 10"
+        v-for="(p, i) in pages"
         :key="i"
-        :title="'页面标题页面标题页面标题页面标题页面标题页面标题'"
+        :title="p.title"
       ></page-card>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 
 import { useNav } from '@/hooks';
 
 import PageCard from './components/page-card.vue';
-import { page } from '@/api';
+import { Page, page } from '@/api';
 import { cookie } from '@/common/utils';
 import { COOKIE } from '@/common/constants';
 
@@ -36,10 +36,12 @@ export default defineComponent({
       to('WORKBANCH');
     };
 
+    const pages = ref<Page[]>([]);
+
     const getPages = async () => {
       const { status, result } = await page.list(cookie.get(COOKIE.UID));
       if (status.code === 0) {
-        console.log(result);
+        pages.value = result;
       }
     };
 
@@ -47,7 +49,7 @@ export default defineComponent({
       getPages();
     });
 
-    return { toEditor };
+    return { toEditor, pages };
   },
 });
 </script>

@@ -1,6 +1,6 @@
 import { yuRequest } from '@/common/request';
 
-type Page = {
+export type Page = {
   id: string;
   schema: string;
   name: string;
@@ -22,7 +22,7 @@ export const page = {
   },
 
   async list(userId: number) {
-    return yuRequest({
+    return yuRequest<Page[]>({
       url: 'page/list',
       method: 'get',
       data: { userId },
