@@ -97,10 +97,7 @@
           d="M243.759 294.142s-7.037 85.893-10.535 101.102c-3.498 15.209-10.28 72.347-20.866 84.128 0 0 16.866 5.161 26.526 1.777 0 0 9.966-28.375 11.678-61.392 1.707-33.017 14.42-105.151 14.42-105.151l-21.223-20.464Z"
           fill="#2483E2"
         ></path>
-        <path
-          d="m245.202 301.038 13.86 49.542-4.869 33.704-8.991-83.246Z"
-          fill="#2A2B3B"
-        ></path>
+        <path d="m245.202 301.038 13.86 49.542-4.869 33.704-8.991-83.246Z" fill="#2A2B3B"></path>
         <path
           d="M247.831 313.458c3.008 18.006 6.555 36.009 10.891 53.761 4.105 16.792 20.083 115.143 20.782 113.932 26.82 2.822 39.258-1.749 46.982-6.724 1.796-21.6-3.022-49.74-8.221-70.591-5.76-22.973-15.952-93.223-17.118-105.188-.77-8.003-1.609-22.463-6.273-29.95-.255-.42-.535-.816-.817-1.189-10.147-13.318-47.437.186-47.952 1.026-7.766 13.178-.7 30.346 1.726 44.923Z"
           fill="#4093F6"
@@ -177,10 +174,7 @@
           d="m140.658 267.422 75.374 2.473.108-3.301-75.374-2.473-.108 3.301Z"
           fill="#AABFCE"
         ></path>
-        <path
-          d="m216.192 269.836 34.237-4.14.107-3.3-34.234 4.14-.11 3.3Z"
-          fill="#BED0E2"
-        ></path>
+        <path d="m216.192 269.836 34.237-4.14.107-3.3-34.234 4.14-.11 3.3Z" fill="#BED0E2"></path>
         <path
           d="m250.536 262.396-85.442-5.315-24.164 6.98 75.372 2.475 34.234-4.14Z"
           fill="#DCE8EF"
@@ -233,10 +227,7 @@
           d="M79.18 346.416c-11.882 25.078-24.063 51.571-24.593 81.52-.02 1.213 1.481 1.213 1.505 0 .522-29.604 12.645-55.789 24.387-80.57.492-1.043-.805-1.99-1.299-.95Z"
           fill="#4093F6"
         ></path>
-        <path
-          d="M65.999 495.029h-30.92l-8.889-70.864h48.692L66 495.029Z"
-          fill="#BED0E2"
-        ></path>
+        <path d="M65.999 495.029h-30.92l-8.889-70.864h48.692L66 495.029Z" fill="#BED0E2"></path>
         <g class="js js_rotate">
           <path
             d="M75.68 183.103c-.968 0-1.887-.45-2.496-1.275L60.87 165.247H19.423c-7.016 0-12.722-5.707-12.722-12.723v-45.432c0-7.015 5.706-12.723 12.721-12.723h72.912c7.015 0 12.722 5.708 12.722 12.723v45.432c0 7.016-5.707 12.723-12.722 12.723H78.83l.016 14.708a3.086 3.086 0 0 1-2.15 2.983 3.33 3.33 0 0 1-1.017.165ZM19.42 95.997c-6.115 0-11.092 4.978-11.092 11.093v45.432c0 6.115 4.977 11.092 11.092 11.092H61.69l12.806 17.241c.483.646 1.19.7 1.684.534.501-.165 1.033-.63 1.033-1.432l-.021-16.34h15.138c6.115 0 11.092-4.977 11.092-11.093v-45.432c0-6.115-4.977-11.092-11.092-11.092H19.42v-.003Z"
@@ -319,14 +310,8 @@
           d="M506.363 56.956a1.79 1.79 0 1 0 0-3.582 1.79 1.79 0 0 0 0 3.582Z"
           fill="#fff"
         ></path>
-        <path
-          d="M603.362 26.227h-16.236v62.057h16.236V26.227Z"
-          fill="#92CEFF"
-        ></path>
-        <path
-          d="M606.907 26.227h-3.545v62.057h3.545V26.227Z"
-          fill="#EDF1F4"
-        ></path>
+        <path d="M603.362 26.227h-16.236v62.057h16.236V26.227Z" fill="#92CEFF"></path>
+        <path d="M606.907 26.227h-3.545v62.057h3.545V26.227Z" fill="#EDF1F4"></path>
         <path
           d="m584.415 29.451-15.541-4.698-17.971 59.4 15.541 4.699 17.971-59.4Z"
           fill="#92CEFF"
@@ -335,30 +320,12 @@
           d="m566.477 88.782 3.393 1.026 17.965-59.4-3.393-1.026-17.965 59.4Z"
           fill="#EDF1F4"
         ></path>
-        <path
-          d="M623.904 43.768h-14.781v44.516h14.781V43.768Z"
-          fill="#FFD357"
-        ></path>
-        <path
-          d="M627.133 43.768h-3.229v44.516h3.229V43.768Z"
-          fill="#EDF1F4"
-        ></path>
-        <path
-          d="M472.609 71.392h-73.591v16.781h73.591V71.392Z"
-          fill="#4093F5"
-        ></path>
-        <path
-          d="M464.04 77.234h-22.178v5.095h22.178v-5.095Z"
-          fill="#4C5072"
-        ></path>
-        <path
-          d="M462.024 54.522h-73.591v16.78h73.591v-16.78Z"
-          fill="#E93E72"
-        ></path>
-        <path
-          d="M453.455 60.366h-22.178v5.094h22.178v-5.094Z"
-          fill="#4C5072"
-        ></path>
+        <path d="M623.904 43.768h-14.781v44.516h14.781V43.768Z" fill="#FFD357"></path>
+        <path d="M627.133 43.768h-3.229v44.516h3.229V43.768Z" fill="#EDF1F4"></path>
+        <path d="M472.609 71.392h-73.591v16.781h73.591V71.392Z" fill="#4093F5"></path>
+        <path d="M464.04 77.234h-22.178v5.095h22.178v-5.095Z" fill="#4C5072"></path>
+        <path d="M462.024 54.522h-73.591v16.78h73.591v-16.78Z" fill="#E93E72"></path>
+        <path d="M453.455 60.366h-22.178v5.094h22.178v-5.094Z" fill="#4C5072"></path>
       </svg>
     </div>
     <div class="login__form">
@@ -366,11 +333,7 @@
         <h1 class="title">登入编辑平台</h1>
         <fe-form :model="loginData">
           <fe-form-item prop="account">
-            <fe-input
-              prefix="账号"
-              v-model="loginData.account"
-              placeholder="请输入账号"
-            ></fe-input>
+            <fe-input prefix="账号" v-model="loginData.account" placeholder="请输入账号"></fe-input>
           </fe-form-item>
           <fe-form-item prop="password">
             <fe-input
@@ -381,17 +344,10 @@
             ></fe-input>
           </fe-form-item>
         </fe-form>
-        <fe-button
-          type="success"
-          size="medium"
-          style="margin-bottom: 20px"
-          @click="login"
-        >
+        <fe-button type="success" size="medium" style="margin-bottom: 20px" @click="login">
           登录
         </fe-button>
-        <fe-button type="default" size="medium" @click="register"
-          >注册</fe-button
-        >
+        <fe-button type="default" size="medium" @click="register">注册</fe-button>
       </fe-card>
     </div>
   </div>
@@ -412,10 +368,7 @@ export default defineComponent({
     const { to } = useNav();
 
     const login = async () => {
-      const { status } = await user.login(
-        loginData.account,
-        loginData.password
-      );
+      const { status } = await user.login(loginData.account, loginData.password);
       if (status.code === 0) {
         to('HOME');
       }
@@ -425,7 +378,7 @@ export default defineComponent({
       const { status } = await user.register(loginData);
       if (status.code === 0) {
         const { proxy } = getCurrentInstance()!;
-        (proxy as any).$toast({ text: '注册成功', closeAble: true });
+        (proxy as any)?.$toast({ text: '注册成功', closeAble: true });
       }
     };
 
