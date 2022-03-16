@@ -1,10 +1,19 @@
 import { ROUTER } from '../common/constants';
-import { useRouter } from 'vue-router';
+import { useRouter, LocationQueryRaw, RouteParamsRaw } from 'vue-router';
+
+type RouterOptions = {
+  query?: LocationQueryRaw;
+  params?: RouteParamsRaw;
+};
 
 export function useNav() {
   const r = useRouter();
 
-  const to = (name: keyof typeof ROUTER) => {
+  const to = (name: keyof typeof ROUTER, options?: RouterOptions) => {
+    if (options) {
+      r.push({ ...options, name: ROUTER[name] });
+      return;
+    }
     r.push({ name: ROUTER[name] });
   };
 

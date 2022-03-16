@@ -7,12 +7,7 @@
           <span>创建新页面</span>
         </div>
       </fe-card>
-      <page-card
-        class="page"
-        v-for="(p, i) in pages"
-        :key="i"
-        :title="p.title"
-      ></page-card>
+      <page-card class="page" v-for="(p, i) in pages" :key="i" :page="p"></page-card>
     </div>
   </div>
 </template>
@@ -39,9 +34,10 @@ export default defineComponent({
     const pages = ref<Page[]>([]);
 
     const getPages = async () => {
-      const { status, result } = await page.list(cookie.get(COOKIE.UID));
+      const { status, data } = await page.list(cookie.get(COOKIE.UID));
       if (status.code === 0) {
-        pages.value = result;
+        console.log(data)
+        pages.value = data;
       }
     };
 
@@ -59,7 +55,9 @@ export default defineComponent({
   &__list {
     display: flex;
     flex-wrap: wrap;
-    padding: 2rem 3rem;
+    width: 1200px;
+    margin: 0 auto;
+    padding-top: 2rem;
     .page {
       width: 280px;
       margin-bottom: 2rem;
@@ -76,6 +74,7 @@ export default defineComponent({
         flex-direction: column;
 
         height: 100%;
+        min-height: 375px;
 
         color: #8b8b8b;
         cursor: pointer;

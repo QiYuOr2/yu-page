@@ -66,9 +66,12 @@ export default defineComponent({
 
   &__logo {
     h1 {
+      margin: 0;
       padding-left: 1.2rem;
       text-align: left;
       color: var(--x-color-primary-black);
+      font-size: 1.2rem;
+      line-height: 64px;
     }
   }
 

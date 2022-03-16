@@ -9,6 +9,7 @@ export const createPageModel = (sequelize: Sequelize) => {
       name: { type: DataTypes.STRING(128), allowNull: false },
       schema: { type: DataTypes.TEXT, allowNull: false },
       description: { type: DataTypes.TEXT, allowNull: false },
+      thumb: { type: DataTypes.STRING(128), allowNull: true },
       isPublic: {
         field: 'is_public',
         type: DataTypes.BOOLEAN,

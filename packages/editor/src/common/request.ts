@@ -6,7 +6,7 @@ export type YuResponse<T> = {
     code: number;
     message: string;
   };
-  result: T;
+  data: T;
 };
 
 export type RequestOptions = {
@@ -32,7 +32,7 @@ type YuRequest = <T = null>(options: RequestOptions) => Promise<YuResponse<T>>;
 export const yuRequest: YuRequest = async (options) => {
   const axiosResponse = await axiosRequest(buildOptions(options));
 
-  const { status, result } = axiosResponse.data;
+  const { status, data } = axiosResponse.data;
 
-  return { status, result };
+  return { status, data };
 };

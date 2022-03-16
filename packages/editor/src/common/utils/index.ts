@@ -1,6 +1,7 @@
 export * from './el';
 export * from './fork';
 export * from './storage';
+export * from './time';
 
 export const pick = (target: Record<string, any>, ...keys: string[]) => {
   return Object.keys(target).reduce((result, current) => {

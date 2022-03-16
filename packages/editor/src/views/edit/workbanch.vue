@@ -162,10 +162,10 @@ export default defineComponent({
 
       // 如果原本没有该页面，创建
       if (!pageId) {
-        const { status, result } = await page.create(cookie.get(COOKIE.UID), {
+        const { status, data } = await page.create(cookie.get(COOKIE.UID), {
           schema: JSON.stringify(editStore.pageConfig.userSelectComponents),
           name: pageConfig.title,
-          description: pageConfig.title,
+          description: pageConfig.description,
           isPublish: true,
         });
         return;

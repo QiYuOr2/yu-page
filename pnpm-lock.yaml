@@ -41,6 +41,7 @@ importers:
       axios: ^0.24.0
       core-js: ^3.21.1
       pinia: ^2.0.12
+      qrcode.vue: ^3.3.3
       regenerator-runtime: ^0.13.9
       vue: ^3.2.31
       vue-router: ^4.0.14
@@ -51,6 +52,7 @@ importers:
       axios: 0.24.0
       core-js: 3.21.1
       pinia: 2.0.12_typescript@4.6.2+vue@3.2.31
+      qrcode.vue: 3.3.3_vue@3.2.31
       vue: 3.2.31
       vue-router: 4.0.14_vue@3.2.31
     devDependencies:
@@ -7528,6 +7530,14 @@ packages:
     resolution: {integrity: sha512-kV/CThkXo6xyFEZUugw/+pIOywXcDbFYgSct5cT3gqlbkBE1SJdwy6UQoZvodiWF/ckQLZyDE/Bu1M6gVu5lVw==}
     engines: {node: '>=0.6.0', teleport: '>=0.2.0'}
     dev: true
+
+  /qrcode.vue/3.3.3_vue@3.2.31:
+    resolution: {integrity: sha512-OsD4tQjIbxg/K6D5ZkWjBdYI9eg9K2i8qeYILdEAX5mdAydSAxV7xKmmZSP/hA12olLqEMZ9ryqDQrwa9jEMgw==}
+    peerDependencies:
+      vue: ^3.0.0
+    dependencies:
+      vue: 3.2.31
+    dev: false
 
   /qs/6.5.3:
     resolution: {integrity: sha512-qxXIEh4pCGfHICj1mAJQ2/2XVZkjCDTcEgfoSQxc/fYivUZxTkk7L3bDBJSoNrEzXI17oUO5Dp07ktqE5KzczA==}

@@ -6,6 +6,7 @@ export class Page extends Model<InferAttributes<Page>, InferCreationAttributes<P
   declare schema: string;
   declare name: string;
   declare description: string;
+  declare thumb: string;
   declare isPublish: boolean;
   declare isPublic: boolean;
   declare isDelete: boolean;

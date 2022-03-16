@@ -1,45 +1,78 @@
 <template>
   <div class="page-card">
-    <div class="page-card__header">
-      <span>
-        {{ title }}
-      </span>
-      <trash2 class="trash" />
+    <div v-if="qrCodeLink" class="page-card__header">
+      <X class="close" @click="clearQrCode" />
+      <qr-code :value="qrCodeLink" :size="160"></qr-code>
+      <p>扫描二维码打开页面</p>
     </div>
-    <fe-card hoverable>
-      <fe-img :src="require('../../../assets/f6-bg4.png')"></fe-img>
+    <fe-card>
+      <div class="page-card__content">
+        <fe-img v-if="page.thumb" :src="page.thumb"></fe-img>
+        <fe-skeleton v-else :animated="false">
+          <template #skeleton>
+            <fe-skeleton-item variable="image" style="min-height: 210px" />
+          </template>
+        </fe-skeleton>
+      </div>
     </fe-card>
     <div class="page-card__footer">
-      <fe-button type="success" @click="toEditor">编辑页面</fe-button>
-      <fe-button class="share-btn">
-        <share class="share-btn__icon" />
-      </fe-button>
+      <div class="info">
+        <div class="info__title">{{ page.name }}</div>
+        <div class="info__desc">{{ page.description }}</div>
+        <div class="info__time">最后编辑时间: {{ timeFormatter(page.updatedAt) }}</div>
+      </div>
+
+      <div class="actions">
+        <fe-button type="success" @click="toEditor">编辑页面</fe-button>
+        <fe-button class="share-btn" @click="genQrCode">
+          <share class="share-btn__icon" />
+        </fe-button>
+        <fe-button class="share-btn">
+          <trash2 class="share-btn__icon" color="red" />
+        </fe-button>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import { useRouter } from 'vue-router';
+import { defineComponent, PropType, ref } from 'vue';
 import { Image } from '@fect-ui/vue';
+import QrCode from 'qrcode.vue';
+import { Page } from '@/api';
+import { timeFormatter } from '@/common/utils';
+import { useNav } from '@/hooks';
+import { config } from '@/common/config';
 
 export default defineComponent({
   components: {
     'fe-img': Image,
+    QrCode,
   },
   props: {
-    id: { type: String },
-    title: { type: String },
+    page: { type: Object as PropType<Page> },
   },
   setup(props) {
-    const r = useRouter();
+    const { to } = useNav();
 
     const toEditor = () => {
-      r.push({ name: 'editor' });
+      to('WORKBANCH', { query: { pageId: props.page?.id } });
+    };
+
+    const qrCodeLink = ref('');
+    const genQrCode = () => {
+      qrCodeLink.value = `${config.IFRAME_HOST}/editor#/workbanch?pageId=${props.page?.id}`;
+    };
+    const clearQrCode = () => {
+      qrCodeLink.value = '';
     };
 
     return {
       toEditor,
+      timeFormatter,
+      qrCodeLink,
+      genQrCode,
+      clearQrCode,
     };
   },
 });
@@ -48,13 +81,16 @@ export default defineComponent({
 <style lang="less" scoped>
 .page-card {
   position: relative;
+  transition: box-shadow 0.3s;
   &__header {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
     background: #fff;
     border-radius: 5px 5px 0 0;
-    padding: 0.8rem 1rem;
-    box-shadow: 0 1px 1px 0px rgba(0, 0, 0, 0.12);
+    padding: 2rem 0;
 
     position: absolute;
     top: 1px;
@@ -62,53 +98,74 @@ export default defineComponent({
     right: 1px;
     z-index: 20;
 
-    opacity: 0;
+    // opacity: 0;
     transition: opacity 0.3s;
-    > span {
-      display: inline-block;
-      white-space: nowrap;
-      width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .trash {
-      width: 16px;
-      margin-left: auto;
+
+    .close {
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 1rem;
       cursor: pointer;
-      transition: stroke 0.3s;
-      &:hover {
-        stroke: var(--error-default);
-        transition: stroke 0.3s;
-      }
     }
   }
+
+  &__content {
+    min-height: 375px;
+  }
+
   &__footer {
-    display: flex;
-    justify-content: space-between;
-
-    background: #fff;
-    border-radius: 0 0 5px 5px;
-    padding: 0.7rem;
-    box-shadow: 0 -1px 1px 0px rgba(0, 0, 0, 0.12);
-
     position: absolute;
     bottom: 1px;
     left: 1px;
     right: 1px;
     z-index: 20;
 
-    opacity: 0;
-    transition: opacity 0.3s;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 -1px 1px 0px rgba(0, 0, 0, 0.12);
 
-    .share-btn {
+    .info {
+      padding: 0.7rem;
+      padding-bottom: 0;
+      &__title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 4px;
+      }
+      &__desc {
+        color: #8b8b8b;
+      }
+
+      &__time {
+        margin-top: 1rem;
+        font-size: 0.8rem;
+        color: #8b8b8b;
+      }
+    }
+
+    .actions {
+      --button-medium-width: 150px;
+
       display: flex;
-      justify-content: center;
-      align-items: center;
-      min-width: 20px;
-      padding: 0 13px;
+      justify-content: space-between;
 
-      &__icon {
-        width: 16px;
+      background: #fff;
+      padding: 0.7rem;
+      border-radius: 0 0 5px 5px;
+
+      // opacity: 0;
+      transition: opacity 0.3s;
+
+      .share-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 20px;
+        padding: 0 13px;
+
+        &__icon {
+          width: 16px;
+        }
       }
     }
   }
@@ -121,6 +178,11 @@ export default defineComponent({
   &:hover &__footer {
     opacity: 1;
     transition: opacity 0.3s;
+  }
+
+  &:hover {
+    box-shadow: var(--x-shadow-medium);
+    transition: box-shadow 0.3s;
   }
 }
 </style>
