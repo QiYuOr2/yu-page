@@ -34,7 +34,7 @@ export const PageController = createRouter('/page', (r) => {
         return;
       }
 
-      const pages = await PageModel.findAll({ where: { userId } });
+      const pages = await PageModel.findAll({ where: { userId, isDelete: false } });
       res.json(Yu.success(pages));
     })
   ).comment('获取某人页面列表');
@@ -104,4 +104,19 @@ export const PageController = createRouter('/page', (r) => {
       res.json(Yu.success(null));
     })
   ).comment('更新页面开放状态');
+
+  r.post(
+    '/delete',
+    catchAsyncErr(async (req, res) => {
+      const id = req.body.pageId;
+
+      if (!id) {
+        res.json(Yu.error(YuStatus.InvalidParams));
+        return;
+      }
+
+      await PageModel.update({ isDelete: true }, { where: { id } });
+      res.json(Yu.success(null));
+    })
+  ).comment('删除页面');
 });

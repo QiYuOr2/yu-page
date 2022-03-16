@@ -90,7 +90,7 @@ export default defineComponent({
 
     background: #fff;
     border-radius: 5px 5px 0 0;
-    padding: 2rem 0;
+    padding: 2.5rem 0 2rem;
 
     position: absolute;
     top: 1px;

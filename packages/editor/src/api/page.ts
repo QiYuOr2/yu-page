@@ -36,4 +36,12 @@ export const page = {
       data: { userId, ...page },
     });
   },
+
+  async remove(id: string) {
+    return yuRequest({
+      url: 'page/delete',
+      method: 'post',
+      data: { pageId: id },
+    });
+  },
 };
