@@ -5,6 +5,7 @@ import Home from '@/views/home/index.vue';
 import Workbanch from '@/views/edit/workbanch.vue';
 import Preview from '@/views/preview/index.vue';
 import Login from '@/views/home/login.vue';
+import P from '@/views/p/index.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -27,6 +28,11 @@ const routes: Array<RouteRecordRaw> = [
     name: ROUTER.LOGIN,
     component: Login,
   },
+  {
+    path: '/p',
+    name: ROUTER.P,
+    component: P
+  }
 ];
 
 const router = createRouter({

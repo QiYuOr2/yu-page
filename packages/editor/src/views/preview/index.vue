@@ -7,7 +7,7 @@
     </header>
     <iframe
       class="preview-mobile__core"
-      src="http://localhost:3090/template"
+      :src="`${iframeHost}:3090/template`"
       id="editorFrame"
       @load="onFrameLoaded"
     ></iframe>
@@ -19,6 +19,7 @@ import { useFrameAction, useNav } from '@/hooks';
 import { defineComponent, onMounted, ref } from 'vue';
 import { ChevronsLeft } from '@fect-ui/vue-icons';
 import { local } from '@/common/utils';
+import { config } from '@/common/config';
 
 export default defineComponent({
   components: { ChevronsLeft },
@@ -36,7 +37,7 @@ export default defineComponent({
       title.value = local.get('preview::page').title || '默认标题';
     });
 
-    return { onFrameLoaded, back, title };
+    return { onFrameLoaded, back, title, iframeHost: config.IFRAME_HOST };
   },
 });
 </script>

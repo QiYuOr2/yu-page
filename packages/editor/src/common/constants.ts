@@ -6,6 +6,7 @@ export const ROUTER = {
   WORKBANCH: 'workbanch',
   PREVIEW: 'preview',
   LOGIN: 'login',
+  P: 'p',
 };
 
 /**
@@ -39,5 +40,5 @@ export const STATE = {
 
 export const COOKIE = {
   TOKEN: 'token',
-  UID: 'uid'
+  UID: 'uid',
 };
