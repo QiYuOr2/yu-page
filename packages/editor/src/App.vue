@@ -28,7 +28,7 @@ export default defineComponent({
 
       console.log(cookie.get(COOKIE.TOKEN));
 
-      if (!token) {
+      if (!token && getRouteName() !== 'p') {
         to('LOGIN');
       }
     });
