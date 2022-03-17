@@ -13,10 +13,10 @@ export function useNav() {
   const to = (name: string, options?: RouterOptions) => {
     if (Object.keys(ROUTER).includes(name)) {
       if (options) {
-        r.push({ ...options, name: ROUTER[name as keyof typeof ROUTER] });
+        r.push({ ...options, name });
         return;
       }
-      r.push({ name: ROUTER[name as keyof typeof ROUTER] });
+      r.push({ name });
     }
   };
 
