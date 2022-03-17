@@ -8,29 +8,18 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted } from 'vue';
+import { computed, defineComponent } from 'vue';
 import NavBar from '@/components/nav-bar.vue';
 import { useNav } from './hooks';
-import { ROUTER, COOKIE } from './common/constants';
-import { cookie } from './common/utils';
+import { ROUTER } from './common/constants';
 
 export default defineComponent({
   components: { NavBar },
   setup() {
-    const { getRouteName, to } = useNav();
+    const { getRouteName } = useNav();
 
     const isShowNav = computed(() => {
       return getRouteName() !== ROUTER.LOGIN;
-    });
-
-    onMounted(() => {
-      const token = cookie.get(COOKIE.TOKEN);
-
-      console.log(cookie.get(COOKIE.TOKEN));
-
-      if (!token && getRouteName() !== 'p') {
-        to('LOGIN');
-      }
     });
 
     return {

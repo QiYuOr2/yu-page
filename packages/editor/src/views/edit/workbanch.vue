@@ -88,7 +88,7 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, reactive, ref, toRefs, watch } from 'vue';
 import { useFrameAction, useNav } from '@/hooks';
-import { MESSAGE_TYPE, FRAME, COOKIE } from '@/common/constants';
+import { MESSAGE_TYPE, FRAME, COOKIE, ROUTER } from '@/common/constants';
 import { config } from '@/common/config';
 
 // Components
@@ -172,7 +172,7 @@ export default defineComponent({
     const preview = () => {
       local.set('preview::components', editStore.pageConfig.userSelectComponents);
       local.set('preview::page', pageConfig);
-      to('PREVIEW');
+      to(ROUTER.PREVIEW);
     };
     const release = async () => {
       const pageId = Number(getQuery('pageId'));

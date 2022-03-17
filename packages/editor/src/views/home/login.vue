@@ -367,12 +367,12 @@ export default defineComponent({
       password: '',
     });
 
-    const { to } = useNav();
+    const { backHome } = useNav();
 
     const login = async () => {
       const { status } = await user.login(loginData.account, loginData.password);
       if (status.code === 0) {
-        to('HOME');
+        backHome()
       }
     };
 

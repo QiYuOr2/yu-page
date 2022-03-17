@@ -33,7 +33,7 @@
 import { defineComponent, getCurrentInstance, onMounted, reactive, ref } from 'vue';
 import { Page, page } from '@/api';
 import { cookie } from '@/common/utils';
-import { COOKIE } from '@/common/constants';
+import { COOKIE, ROUTER } from '@/common/constants';
 import { useNav } from '@/hooks';
 
 import PageCard from './components/page-card.vue';
@@ -45,7 +45,7 @@ export default defineComponent({
     const { to } = useNav();
 
     const toEditor = () => {
-      to('WORKBANCH');
+      to(ROUTER.WORKBANCH);
     };
 
     const pages = ref<Page[]>([]);

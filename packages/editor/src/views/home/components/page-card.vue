@@ -43,6 +43,7 @@ import { Page } from '@/api';
 import { timeFormatter } from '@/common/utils';
 import { useNav } from '@/hooks';
 import { config } from '@/common/config';
+import { ROUTER } from '@/common/constants';
 
 export default defineComponent({
   components: {
@@ -57,7 +58,7 @@ export default defineComponent({
     const { to } = useNav();
 
     const toEditor = () => {
-      to('WORKBANCH', { query: { pageId: props.page?.id } });
+      to(ROUTER.WORKBANCH, { query: { pageId: props.page?.id } });
     };
 
     const qrCodeLink = ref('');
