@@ -62,7 +62,7 @@ export default defineComponent({
 
     const qrCodeLink = ref('');
     const genQrCode = () => {
-      qrCodeLink.value = `${config.IFRAME_HOST}/editor#/p?pageId=${props.page?.id}`;
+      qrCodeLink.value = `${config.IFRAME_HOST}:3090/editor#/p?pageId=${props.page?.id}`;
     };
     const clearQrCode = () => {
       qrCodeLink.value = '';
