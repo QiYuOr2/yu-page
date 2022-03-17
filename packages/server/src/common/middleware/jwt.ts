@@ -6,5 +6,5 @@ export const jwt = () =>
     algorithms: ['HS256'],
     getToken: (req) => (req.cookies.token ? req.cookies.token.split(' ')[0] : null),
   }).unless({
-    path: ['/', '/template', '/editor', '/api/user/login', '/api/user/register'],
+    path: ['/', '/api/user/login', '/api/user/register', /^\/template\/*/, /^\/editor\/*/],
   });
