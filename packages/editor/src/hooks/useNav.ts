@@ -11,7 +11,7 @@ export function useNav() {
   const r = useRouter();
 
   const to = (name: string, options?: RouterOptions) => {
-    if (Object.keys(ROUTER).includes(name)) {
+    if (Object.values(ROUTER).includes(name)) {
       if (options) {
         r.push({ ...options, name });
         return;
