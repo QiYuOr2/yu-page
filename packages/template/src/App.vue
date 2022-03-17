@@ -30,8 +30,7 @@ window.__yu_config__ = {
     {
       name: 'yu-banner',
       description: 'banner 组件',
-      snapshot:
-        'https://cdn.jsdelivr.net/gh/xmy6364/blog-image/img/evening.JPG',
+      snapshot: 'https://cdn.jsdelivr.net/gh/xmy6364/blog-image/img/evening.JPG',
       schema: {
         type: 'object',
         properties: {
@@ -88,6 +87,12 @@ export default {
     const currentIndex = ref(0);
 
     const actions = {
+      //init
+      [MESSAGE_TYPE.INIT](initData) {
+        console.log('init page', initData);
+        components.value = initData;
+        actions[MESSAGE_TYPE.GET_CONFIG]();
+      },
       // setConfig
       [MESSAGE_TYPE.SET_CONFIG](config) {
         components.value = config.userSelectComponents;
@@ -179,9 +184,7 @@ export default {
         actions[MESSAGE_TYPE.GET_CONFIG]();
       },
       [MESSAGE_TYPE.PREVIEW]() {
-        components.value = [
-          ...JSON.parse(localStorage.getItem('preview::components')),
-        ];
+        components.value = [...JSON.parse(localStorage.getItem('preview::components'))];
       },
     };
 
@@ -195,6 +198,7 @@ export default {
         return;
       }
 
+      console.log(e.data.type, e.data.data);
       actions[e.data.type]?.(e.data.data);
     });
 

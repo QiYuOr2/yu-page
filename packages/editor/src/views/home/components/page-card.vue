@@ -27,7 +27,7 @@
         <fe-button class="share-btn" @click="genQrCode">
           <share class="share-btn__icon" />
         </fe-button>
-        <fe-button class="share-btn">
+        <fe-button class="share-btn" @click="removeHandler">
           <trash2 class="share-btn__icon" color="red" />
         </fe-button>
       </div>
@@ -52,7 +52,8 @@ export default defineComponent({
   props: {
     page: { type: Object as PropType<Page> },
   },
-  setup(props) {
+  emits: ['remove'],
+  setup(props, { emit }) {
     const { to } = useNav();
 
     const toEditor = () => {
@@ -67,12 +68,17 @@ export default defineComponent({
       qrCodeLink.value = '';
     };
 
+    const removeHandler = () => {
+      emit('remove', props.page);
+    };
+
     return {
       toEditor,
       timeFormatter,
       qrCodeLink,
       genQrCode,
       clearQrCode,
+      removeHandler,
     };
   },
 });

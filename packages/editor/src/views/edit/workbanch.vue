@@ -101,6 +101,7 @@ export default defineComponent({
   components: { ComponentSelector, ArrowDown, ArrowUp, Clipboard, Copy },
   setup() {
     const activeTab = ref(0);
+    const { backHome, to, getQuery } = useNav();
 
     const pageConfig = reactive({
       title: '',
@@ -126,7 +127,6 @@ export default defineComponent({
       getIndex,
       resetFrameHeight,
     } = useFrameAction('editorFrame');
-    const { backHome, to, getQuery } = useNav();
 
     onMounted(() => {
       injectIframeMessageListener();
@@ -136,12 +136,29 @@ export default defineComponent({
       initState(values[0]);
     });
 
+    const loadPage = async (pageId: string) => {
+      const { status, data } = await page.get(pageId);
+      if (status.code === 0) {
+        pageConfig.title = data.name;
+        pageConfig.description = data.description;
+
+        postMessage({
+          type: MESSAGE_TYPE.INIT,
+          data: JSON.parse(data.schema),
+        });
+      }
+    };
+
     const onFrameLoaded = () => {
       injectEventListener((event, index) => {
         editorState.current = index;
         event === 'click' && postMessage({ type: MESSAGE_TYPE.CHANGE_INDEX, data: index });
       });
       state.spinning = false;
+
+      // iframe加载完成后读取数据
+      const pageId = String(getQuery('pageId'));
+      pageId && loadPage(pageId);
     };
 
     const moveComponent = (action: number) => {
@@ -180,6 +197,8 @@ export default defineComponent({
       });
     };
 
+    //#region 拖拽事件
+
     // dragover触发 预计用来预览组件位置 - 暂时搁置
     const beforeAddComponents = (index: number) => {
       // postMessage({
@@ -211,6 +230,9 @@ export default defineComponent({
       addComponents(data, index);
     };
 
+    //#endregion
+
+    // 修改页面组件数据
     const formDataChangeHandler = (value: any) => {
       postMessage({
         type: MESSAGE_TYPE.CHANGE_PROPS,

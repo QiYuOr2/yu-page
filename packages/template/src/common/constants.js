@@ -1,4 +1,5 @@
 export const MESSAGE_TYPE = {
+  INIT: 'init',
   CHANGE_INDEX: 'changeIndex',
   CHANGE_PROPS: 'changeProps',
   SET_CONFIG: 'setConfig',

@@ -14,7 +14,7 @@ type CreatePageDto = Omit<Page, 'id' | 'isPublic' | 'userId'>;
 
 export const page = {
   async get(id: string) {
-    return yuRequest({
+    return yuRequest<Page>({
       url: 'page',
       method: 'get',
       data: { pageId: id },

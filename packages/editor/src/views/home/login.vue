@@ -360,6 +360,8 @@ import { defineComponent, getCurrentInstance, reactive } from 'vue';
 
 export default defineComponent({
   setup() {
+    const { proxy } = getCurrentInstance()!;
+
     const loginData = reactive({
       account: '',
       password: '',
@@ -377,9 +379,10 @@ export default defineComponent({
     const register = async () => {
       const { status } = await user.register(loginData);
       if (status.code === 0) {
-        const { proxy } = getCurrentInstance()!;
         (proxy as any)?.$toast({ text: '注册成功', closeAble: true });
+        return;
       }
+      (proxy as any)?.$toast({ type: 'error', text: status.message, closeAble: true });
     };
 
     return {
