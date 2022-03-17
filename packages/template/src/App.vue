@@ -126,6 +126,14 @@ export default {
         components.value = source;
         actions[MESSAGE_TYPE.CHANGE_INDEX](nextIndex);
       },
+      // deleteComponent
+      [MESSAGE_TYPE.DELETE_COMPONENT]({ index }) {
+        components.value = [
+          ...components.value.slice(0, index),
+          ...components.value.slice(index + 1),
+        ];
+        actions[MESSAGE_TYPE.GET_CONFIG]();
+      },
       // addComponent
       [MESSAGE_TYPE.ADD_COMPONENT]({ data, index }) {
         // 清除占位用的预览组件

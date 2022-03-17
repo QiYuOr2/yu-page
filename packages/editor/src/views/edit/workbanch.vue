@@ -43,12 +43,15 @@
                 <span @click="moveComponent(-1)"><arrow-up /></span>
                 <span @click="moveComponent(1)"><arrow-down /></span>
               </div>
-              <div class="tools__copy">
+              <div v-if="canRemoveComponent" class="tools__copy" @click="removeComponents">
+                <trash2 />
+              </div>
+              <!-- <div class="tools__copy">
                 <copy />
               </div>
               <div class="tools__copy">
                 <clipboard />
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -197,6 +200,13 @@ export default defineComponent({
       });
     };
 
+    const removeComponents = () => {
+      postMessage({
+        type: MESSAGE_TYPE.DELETE_COMPONENT,
+        data: { index: editorState.current },
+      });
+    };
+
     //#region 拖拽事件
 
     // dragover触发 预计用来预览组件位置 - 暂时搁置
@@ -259,6 +269,8 @@ export default defineComponent({
         () => editStore.pageConfig.userSelectComponents[editStore.editConfig.currentIndex] ?? {}
       ),
 
+      canRemoveComponent: computed(() => editStore.pageConfig.userSelectComponents.length > 1),
+
       toolId: FRAME.TOOL_ID,
       formDataChangeHandler,
 
@@ -266,6 +278,8 @@ export default defineComponent({
       pageConfig,
 
       iframeHost: config.IFRAME_HOST,
+
+      removeComponents,
     };
   },
 });
