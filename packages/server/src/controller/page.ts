@@ -106,6 +106,19 @@ export const PageController = createRouter('/page', (r) => {
   ).comment('更新页面开放状态');
 
   r.post(
+    '/modify',
+    catchAsyncErr(async (req, res) => {
+      const page = req.body;
+      if (isEmpty(page.id) || !PageModel.check(page)) {
+        res.json(Yu.error(YuStatus.InvalidParams));
+        return;
+      }
+      await PageModel.update({ ...page }, { where: { id: page.id } });
+      res.json(Yu.success(null));
+    })
+  );
+
+  r.post(
     '/delete',
     catchAsyncErr(async (req, res) => {
       const id = req.body.pageId;

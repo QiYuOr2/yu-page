@@ -372,17 +372,17 @@ export default defineComponent({
     const login = async () => {
       const { status } = await user.login(loginData.account, loginData.password);
       if (status.code === 0) {
-        backHome()
+        backHome();
       }
     };
 
     const register = async () => {
       const { status } = await user.register(loginData);
       if (status.code === 0) {
-        (proxy as any)?.$toast({ text: '注册成功', closeAble: true });
+        proxy?.$toast({ text: '注册成功', closeAble: true });
         return;
       }
-      (proxy as any)?.$toast({ type: 'error', text: status.message, closeAble: true });
+      proxy?.$toast({ type: 'error', text: status.message, closeAble: true });
     };
 
     return {

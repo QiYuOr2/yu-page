@@ -28,3 +28,7 @@ export const catchAsyncErr: (
     fn(req, res, next).catch(next);
   };
 };
+
+export const pipe = <T, R>(...fns: ((...args: any[]) => any)[]) => {
+  return (value: T) => fns.reduce((result, fn) => fn(result), value) as R;
+};

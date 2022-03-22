@@ -11,6 +11,7 @@ export type Page = {
 };
 
 type CreatePageDto = Omit<Page, 'id' | 'isPublic' | 'userId'>;
+type ModifyPageDto = Partial<Omit<Page, 'id' | 'isPublic' | 'userId'>>;
 
 export const page = {
   async get(id: string) {
@@ -42,6 +43,14 @@ export const page = {
       url: 'page/delete',
       method: 'post',
       data: { pageId: id },
+    });
+  },
+
+  async modify(id: string, page: ModifyPageDto) {
+    return yuRequest({
+      url: 'page/modify',
+      method: 'post',
+      data: { ...page, id },
     });
   },
 };

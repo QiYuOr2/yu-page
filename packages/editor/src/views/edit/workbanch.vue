@@ -5,7 +5,7 @@
       <div>
         <fe-button-group size="mini" style="margin-right: 0.5rem">
           <fe-button @click="preview">预览</fe-button>
-          <fe-button @click="release">保存</fe-button>
+          <fe-button @click="save">保存</fe-button>
         </fe-button-group>
         <fe-button type="success" size="mini" @click="release">发布</fe-button>
       </div>
@@ -46,12 +46,6 @@
               <div v-if="canRemoveComponent" class="tools__copy" @click="removeComponents">
                 <trash2 />
               </div>
-              <!-- <div class="tools__copy">
-                <copy />
-              </div>
-              <div class="tools__copy">
-                <clipboard />
-              </div> -->
             </div>
           </div>
         </div>
@@ -89,7 +83,16 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, reactive, ref, toRefs, watch } from 'vue';
+import {
+  computed,
+  defineComponent,
+  getCurrentInstance,
+  onMounted,
+  reactive,
+  ref,
+  toRefs,
+  watch,
+} from 'vue';
 import { useFrameAction, useNav } from '@/hooks';
 import { MESSAGE_TYPE, FRAME, COOKIE, ROUTER } from '@/common/constants';
 import { config } from '@/common/config';
@@ -103,6 +106,7 @@ import { page } from '@/api';
 export default defineComponent({
   components: { ComponentSelector, ArrowDown, ArrowUp, Clipboard, Copy },
   setup() {
+    const { proxy } = getCurrentInstance()!;
     const activeTab = ref(0);
     const { backHome, to, getQuery } = useNav();
 
@@ -172,25 +176,61 @@ export default defineComponent({
         data: { action, index: editorState.current },
       });
     };
+
+    /**
+     * 预览
+     */
     const preview = () => {
       local.set('preview::components', editStore.pageConfig.userSelectComponents);
       local.set('preview::page', pageConfig);
       to(ROUTER.PREVIEW);
     };
-    const release = async () => {
-      const pageId = Number(getQuery('pageId'));
 
-      // 如果原本没有该页面，创建
-      if (!pageId) {
-        const { status, data } = await page.create(cookie.get(COOKIE.UID), {
-          schema: JSON.stringify(editStore.pageConfig.userSelectComponents),
-          name: pageConfig.title,
-          description: pageConfig.description,
-          isPublish: true,
-        });
-        return;
-      }
-      // 否则是编辑
+    /**
+     * 发布
+     */
+    const release = async () => {
+      const pageId = String(getQuery('pageId'));
+
+      const pageData = {
+        schema: JSON.stringify(editStore.pageConfig.userSelectComponents),
+        name: pageConfig.title,
+        description: pageConfig.description,
+        isPublish: true,
+      };
+
+      const { status } = !pageId
+        ? // 如果原本没有该页面，创建
+          await page.create(cookie.get(COOKIE.UID), pageData)
+        : // 否则是编辑
+          await page.modify(pageId, pageData);
+
+      status.code !== 0
+        ? proxy?.$toast({ type: 'error', text: status.message })
+        : (proxy?.$toast({ text: '发布成功' }), /* 跳转首页 */ to(ROUTER.HOME));
+    };
+
+    /**
+     * 保存
+     */
+    const save = async () => {
+      const pageId = String(getQuery('pageId'));
+
+      const pageData = {
+        schema: JSON.stringify(editStore.pageConfig.userSelectComponents),
+        name: pageConfig.title,
+        description: pageConfig.description,
+      };
+
+      const { status } = !pageId
+        ? // 如果原本没有该页面，创建
+          await page.create(cookie.get(COOKIE.UID), { ...pageData, isPublish: false })
+        : // 否则是编辑
+          await page.modify(pageId, pageData);
+
+      status.code !== 0
+        ? proxy?.$toast({ type: 'error', text: status.message })
+        : proxy?.$toast({ text: '保存成功' });
     };
 
     const addComponents = (data: string, index: number) => {
@@ -255,8 +295,10 @@ export default defineComponent({
 
       backHome,
       onFrameLoaded,
+
       preview,
       release,
+      save,
 
       moveComponent,
 

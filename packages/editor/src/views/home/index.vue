@@ -76,7 +76,7 @@ export default defineComponent({
     const removePage = async () => {
       const { status } = await page.remove(removeDialog.id);
       if (status.code === 0) {
-        (proxy as any).$toast({ text: '删除成功' });
+        proxy?.$toast({ text: '删除成功' });
         getPages();
       }
     };

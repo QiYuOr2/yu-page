@@ -20,6 +20,7 @@ console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV === 'prod') {
   app.use('/template', Express.static(path.join(__dirname, '../template')));
   app.use('/editor', Express.static(path.join(__dirname, '../editor')));
+  // app.use('/page', Express.static(path.join(__dirname, '../editor')));
   app.get('/', (_req, res) => res.redirect('/editor'));
 } else {
   const pkg = require('../package.json');
