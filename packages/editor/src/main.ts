@@ -11,6 +11,7 @@ import FormRender from '@yu-page/form-render';
 import '@yu-page/form-render/lib/form-render.css';
 
 import '@fect-ui/vue/lib/main.css';
+import '@fect-ui/themes';
 import './common/style/theme.css';
 
 createApp(App)

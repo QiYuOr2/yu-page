@@ -30,6 +30,7 @@ importers:
 
   packages/editor:
     specifiers:
+      '@fect-ui/themes': ^2.2.0
       '@fect-ui/vue': 1.4.0-rc.0
       '@fect-ui/vue-icons': ^2.0.0
       '@vue/cli-plugin-babel': ~4.5.16
@@ -46,6 +47,7 @@ importers:
       vue: ^3.2.31
       vue-router: ^4.0.14
     dependencies:
+      '@fect-ui/themes': 2.2.0
       '@fect-ui/vue': 1.4.0-rc.0_vue@3.2.31
       '@fect-ui/vue-icons': 2.0.0_vue@3.2.31
       '@yu-page/form-render': link:../form-render

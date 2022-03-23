@@ -1,35 +1,43 @@
 <template>
   <div class="preview-mobile">
     <iframe
+      v-if="isPublish"
       class="preview-mobile__core"
       :src="`${iframeHost}:3090/template`"
       id="editorFrame"
       @load="onFrameLoaded"
     ></iframe>
+    <div v-else>当前页面暂未发布</div>
   </div>
 </template>
 
 <script lang="ts">
 import { useFrameAction, useNav } from '@/hooks';
-import { defineComponent } from 'vue';
+import { defineComponent, getCurrentInstance, ref } from 'vue';
 import { config } from '@/common/config';
 import { page } from '@/api';
 import { MESSAGE_TYPE } from '@/common/constants';
 
 export default defineComponent({
   setup() {
+    const { proxy } = getCurrentInstance()!;
     const { postMessage } = useFrameAction('editorFrame');
     const { getQuery } = useNav();
 
+    const isPublish = ref(true);
+
     const loadPage = async () => {
       const { status, data } = await page.get(String(getQuery('pageId')));
-      if (status.code === 0) {
-        document.title = data.name;
-        postMessage({
-          type: MESSAGE_TYPE.INIT,
-          data: JSON.parse(data.schema),
-        });
+      if (status.code !== 0) {
+        proxy?.$toast({ type: 'error', text: status.message });
+        return;
       }
+      document.title = data.name;
+      postMessage({
+        type: MESSAGE_TYPE.INIT,
+        data: JSON.parse(data.schema),
+      });
+      isPublish.value = data.isPublish;
     };
 
     const onFrameLoaded = () => {

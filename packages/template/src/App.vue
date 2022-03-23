@@ -91,18 +91,19 @@ export default {
       [MESSAGE_TYPE.INIT](initData) {
         console.log('init page', initData);
         components.value = initData;
-        actions[MESSAGE_TYPE.GET_CONFIG]();
+        actions[MESSAGE_TYPE.GET_CONFIG](MESSAGE_TYPE.INIT);
       },
       // setConfig
       [MESSAGE_TYPE.SET_CONFIG](config) {
         components.value = config.userSelectComponents;
-        actions[MESSAGE_TYPE.GET_CONFIG]();
+        actions[MESSAGE_TYPE.GET_CONFIG](MESSAGE_TYPE.SET_CONFIG);
       },
       // getConfig
-      [MESSAGE_TYPE.GET_CONFIG]() {
+      [MESSAGE_TYPE.GET_CONFIG](source) {
         postMessage({
           type: MESSAGE_TYPE.RETURN_CONFIG,
           data: {
+            source,
             currentIndex: currentIndex.value,
             components: componentsConfig.value,
             userSelectComponents: components.value,
@@ -112,7 +113,7 @@ export default {
       // changeIndex
       [MESSAGE_TYPE.CHANGE_INDEX](index) {
         currentIndex.value = index;
-        actions[MESSAGE_TYPE.GET_CONFIG]();
+        actions[MESSAGE_TYPE.GET_CONFIG](MESSAGE_TYPE.CHANGE_INDEX);
       },
       // sortComponent
       [MESSAGE_TYPE.SORT_COMPONENT]({ action, index }) {
@@ -132,7 +133,7 @@ export default {
           ...components.value.slice(0, index),
           ...components.value.slice(index + 1),
         ];
-        actions[MESSAGE_TYPE.GET_CONFIG]();
+        actions[MESSAGE_TYPE.GET_CONFIG](MESSAGE_TYPE.DELETE_COMPONENT);
       },
       // addComponent
       [MESSAGE_TYPE.ADD_COMPONENT]({ data, index }) {
@@ -146,7 +147,7 @@ export default {
           ...components.value.slice(currentIndex.value),
         ];
 
-        actions[MESSAGE_TYPE.GET_CONFIG]();
+        actions[MESSAGE_TYPE.GET_CONFIG](MESSAGE_TYPE.ADD_COMPONENT);
       },
       // beforeAddComponent
       [MESSAGE_TYPE.BEFORE_ADD_COMPONENT]({ index }) {
@@ -189,7 +190,7 @@ export default {
           ...components.value.slice(index + 1),
         ];
 
-        actions[MESSAGE_TYPE.GET_CONFIG]();
+        actions[MESSAGE_TYPE.GET_CONFIG](MESSAGE_TYPE.CHANGE_PROPS);
       },
       [MESSAGE_TYPE.PREVIEW]() {
         components.value = [...JSON.parse(localStorage.getItem('preview::components'))];

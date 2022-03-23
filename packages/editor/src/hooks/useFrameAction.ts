@@ -140,8 +140,14 @@ export function useFrameAction(id: string) {
   };
 
   const editStore = useEditStore();
+  const shouldResetList = [
+    MESSAGE_TYPE.ADD_COMPONENT,
+    MESSAGE_TYPE.DELETE_COMPONENT,
+    MESSAGE_TYPE.CHANGE_INDEX,
+  ];
   const injectIframeMessageListener = () => {
     addEventListener('message', (e) => {
+      const doc = frameDoc();
       if (!e.data.type) return;
 
       if (e.source === window || e.data === 'loaded') {
@@ -150,6 +156,22 @@ export function useFrameAction(id: string) {
       if (e.data.type === MESSAGE_TYPE.RETURN_CONFIG) {
         editStore.updateEditConfig(e.data.data);
         editStore.updatePageConfig(e.data.data);
+
+        // TODO 重置高亮
+        setTimeout(() => {
+          const { source } = e.data.data;
+
+          if (shouldResetList.includes(source)) {
+            const activeNode = doc?.querySelector(
+              `#${FRAME.YU_COMPONENT_ID_PREFIX}${editStore.editConfig.currentIndex}`
+            ) as HTMLElement;
+
+            if (activeNode) {
+              setStyle(StyleType.Active, el(activeNode).height(), el(activeNode).top());
+              setStyle(StyleType.Hover, '0px', -1000);
+            }
+          }
+        });
       }
     });
   };
