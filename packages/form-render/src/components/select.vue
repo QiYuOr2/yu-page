@@ -1,17 +1,14 @@
 <template>
   <fe-form-item :label="attributes.title">
-    <fe-radio-group v-model="data">
-      <fe-radio
+    <fe-select v-model="data">
+      <fe-option
         v-for="(item, $i) in attributes.enum"
         :key="$i"
+        :label="item.label"
         :value="item.value"
         @click="handler(item.value)"
-      >
-        <div class="r-radio__label">
-          {{ item.label }}
-        </div>
-      </fe-radio>
-    </fe-radio-group>
+      />
+    </fe-select>
   </fe-form-item>
 </template>
 
@@ -20,7 +17,7 @@ import { FORM_DATA_KEY, SET_FORM_DATA_KEY } from '@/common/constants';
 import { computed, defineComponent, inject } from 'vue';
 
 export default defineComponent({
-  name: 'r-radio',
+  name: 'r-select',
   props: {
     attributes: Object,
   },
@@ -39,6 +36,6 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-.r-radio {
+.r-select {
 }
 </style>

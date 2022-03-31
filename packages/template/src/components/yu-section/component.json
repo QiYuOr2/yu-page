@@ -1,0 +1,38 @@
+{
+  "name": "yu-section",
+  "description": "段落组件",
+  "snapshot": "AlignLeft",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "fontSize": {
+        "title": "文字大小",
+        "type": "string",
+        "enum": [
+          {
+            "label": "大",
+            "value": "1.2rem"
+          },
+          {
+            "label": "默认",
+            "value": "1rem"
+          },
+          {
+            "label": "小",
+            "value": "0.8rem"
+          }
+        ],
+        "ui": "select"
+      },
+      "text": {
+        "title": "内容",
+        "type": "string"
+      }
+    },
+    "required": ["text", "fontSize"]
+  },
+  "data": {
+    "text": "默认文本",
+    "fontSize": "1rem"
+  }
+}

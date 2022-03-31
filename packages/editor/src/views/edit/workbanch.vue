@@ -68,10 +68,11 @@
                   <fe-input v-model="pageConfig.title" :placeholder="请输入页面标题" width="100%" />
                 </fe-form-item>
                 <fe-form-item label="页面描述">
-                  <fe-input
+                  <fe-textarea
                     v-model="pageConfig.description"
-                    :placeholder="请输入页面描述"
+                    placeholder="请输入页面描述"
                     width="100%"
+                    auto-height
                   />
                 </fe-form-item>
               </fe-form>
@@ -113,7 +114,7 @@ export default defineComponent({
 
     const pageConfig = reactive({
       title: '',
-      description: '',
+      description: '默认页面描述',
     });
 
     const state = reactive({

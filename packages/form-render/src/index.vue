@@ -11,14 +11,20 @@
 
 <script lang="ts">
 import { computed, defineComponent, provide, reactive } from 'vue';
-import Input from './components/input.vue';
-import ImageRadio from './components/image-radio.vue';
+import RInput from './components/input.vue';
+import RImageRadio from './components/image-radio.vue';
+import RRadio from './components/radio.vue';
+import RSelect from './components/select.vue';
 import { FORM_DATA_KEY, SET_FORM_DATA_KEY } from './common/constants';
 
 const ComponentsName: Record<string, string> = {
   INPUT: 'r-input',
   IMAGE_RADIO: 'r-image-radio',
   'image-radio': 'r-image-radio',
+  RADIO: 'r-radio',
+  radio: 'r-radio',
+  SELECT: 'r-select',
+  select: 'r-select',
 };
 
 const FormItemType = {
@@ -33,8 +39,10 @@ const InitData: Record<string, any> = {
 export default defineComponent({
   name: 'form-render',
   components: {
-    [Input.name]: Input,
-    [ImageRadio.name]: ImageRadio,
+    [RInput.name]: RInput,
+    [RImageRadio.name]: RImageRadio,
+    [RRadio.name]: RRadio,
+    [RSelect.name]: RSelect,
   },
   props: {
     itemData: Object,

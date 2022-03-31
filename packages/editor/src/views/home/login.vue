@@ -415,6 +415,10 @@ export default defineComponent({
     }
   }
 
+  /deep/ .fect-form__label {
+    padding: 0;
+  }
+
   /deep/ .fect-form-item__label {
     padding: 0;
   }

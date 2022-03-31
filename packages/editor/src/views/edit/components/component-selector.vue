@@ -1,7 +1,7 @@
 <template>
   <div class="component-selector">
     <section>
-      <div class="component-selector__title">模板组件</div>
+      <div class="component-selector__title">功能组件</div>
       <div class="component-selector__content">
         <div class="list">
           <fe-card
@@ -12,7 +12,10 @@
             :draggable="true"
           >
             <div class="snippet">
-              <fe-img :src="c.snapshot" />
+              <fe-img v-if="isImg(c.snapshot)" :src="c.snapshot" />
+              <div class="snippet__icon" v-else>
+                <component :is="c.snapshot" v-bind="{ size: 30 }"></component>
+              </div>
               <p>{{ c.description }}</p>
             </div>
           </fe-card>
@@ -32,8 +35,11 @@ export default defineComponent({
   setup() {
     const editStore = useEditStore();
 
+    const isImg = (value: string) => value.slice(0, 4) === 'http';
+
     return {
       components: computed(() => editStore.pageConfig.components),
+      isImg,
       setDragStart: editStore.updateDragStart,
     };
   },
@@ -82,6 +88,14 @@ export default defineComponent({
         p {
           padding: 0;
           margin: 0;
+        }
+
+        &__icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          height: 100%;
         }
       }
     }

@@ -31,7 +31,7 @@ importers:
   packages/editor:
     specifiers:
       '@fect-ui/themes': ^2.2.0
-      '@fect-ui/vue': 1.4.0-rc.0
+      '@fect-ui/vue': 1.4.0-rc.2
       '@fect-ui/vue-icons': ^2.0.0
       '@vue/cli-plugin-babel': ~4.5.16
       '@vue/cli-plugin-router': ~4.5.16
@@ -48,7 +48,7 @@ importers:
       vue-router: ^4.0.14
     dependencies:
       '@fect-ui/themes': 2.2.0
-      '@fect-ui/vue': 1.4.0-rc.0_vue@3.2.31
+      '@fect-ui/vue': 1.4.0-rc.2_vue@3.2.31
       '@fect-ui/vue-icons': 2.0.0_vue@3.2.31
       '@yu-page/form-render': link:../form-render
       axios: 0.24.0
@@ -1332,8 +1332,8 @@ packages:
     resolution: {integrity: sha512-1CIJonLeCkYqAomA+T5QqngplP7pCsf/ISDOMZSEQ4v0rvQWTxHWrMQyremiGGbDy3z5HsqrhmSPiBPvyEzrMA==}
     dev: false
 
-  /@fect-ui/vue-hooks/1.1.2_vue@3.2.31:
-    resolution: {integrity: sha512-FuJreUN9QKM6YCrrm8cR+S0kEWWtAmvlOQG4X/ZAY8wFES83KWul9NxAlHb2ifhWSLjfYDl2vaQTPG8WwY0N1g==}
+  /@fect-ui/vue-hooks/1.2.0_vue@3.2.31:
+    resolution: {integrity: sha512-38fDkDREjkx4hy76pRNuOmS3cPn5rKAaiRvfIROUm6AwiVSzcE4plPygCuGw/3+4d9uH6kABqzUpIQM9q8tQzg==}
     peerDependencies:
       vue: ^3.0.11
     dependencies:
@@ -1348,13 +1348,13 @@ packages:
       vue: 3.2.31
     dev: false
 
-  /@fect-ui/vue/1.4.0-rc.0_vue@3.2.31:
-    resolution: {integrity: sha512-UoZE1U+i5jWw09H+t493dmZ9hWm7xVJpr5wMl0IfiricMp+6SoON0gaYZ/NF6Fpji/w1uO4RvAuQfjOiDPNgow==}
+  /@fect-ui/vue/1.4.0-rc.2_vue@3.2.31:
+    resolution: {integrity: sha512-b9KalE632+UCdk6VUcujmcBkkOIazZ/2U4WPWy8vv2B1fe/1YK1bysu9tE/TlMUKZgiOGuDZyh+MkfZ/G9hjXg==}
     peerDependencies:
       vue: ^3.0.11
     dependencies:
       '@fect-ui/themes': 2.2.0
-      '@fect-ui/vue-hooks': 1.1.2_vue@3.2.31
+      '@fect-ui/vue-hooks': 1.2.0_vue@3.2.31
       '@popperjs/core': 2.11.4
       proy: 0.0.3
       vue: 3.2.31
