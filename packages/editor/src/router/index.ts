@@ -5,34 +5,16 @@ import Home from '@/views/home/index.vue';
 import Workbanch from '@/views/edit/workbanch.vue';
 import Preview from '@/views/preview/index.vue';
 import Login from '@/views/home/login.vue';
-import P from '@/views/p/index.vue'
+import P from '@/views/p/index.vue';
+import Template from '@/views/template/index.vue';
 
 const routes: Array<RouteRecordRaw> = [
-  {
-    path: '/',
-    name: ROUTER.HOME,
-    component: Home,
-  },
-  {
-    path: '/workbanch',
-    name: ROUTER.WORKBANCH,
-    component: Workbanch,
-  },
-  {
-    path: '/preview',
-    name: ROUTER.PREVIEW,
-    component: Preview,
-  },
-  {
-    path: '/login',
-    name: ROUTER.LOGIN,
-    component: Login,
-  },
-  {
-    path: '/p',
-    name: ROUTER.P,
-    component: P
-  }
+  { path: '/', name: ROUTER.HOME, component: Home },
+  { path: '/workbanch', name: ROUTER.WORKBANCH, component: Workbanch },
+  { path: '/preview', name: ROUTER.PREVIEW, component: Preview },
+  { path: '/login', name: ROUTER.LOGIN, component: Login },
+  { path: '/p', name: ROUTER.P, component: P },
+  { path: '/template-center', name: ROUTER.TEMPLATE, component: Template },
 ];
 
 const router = createRouter({

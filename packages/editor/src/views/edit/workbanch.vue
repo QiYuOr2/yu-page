@@ -75,6 +75,12 @@
                     auto-height
                   />
                 </fe-form-item>
+                <fe-form-item label="设置为模板">
+                  <fe-switch></fe-switch>
+                </fe-form-item>
+                <fe-form-item label="公开模板">
+                  <fe-switch></fe-switch>
+                </fe-form-item>
               </fe-form>
             </div>
           </fe-tab>
@@ -192,7 +198,7 @@ export default defineComponent({
      * 发布
      */
     const release = async () => {
-      const pageId = String(getQuery('pageId'));
+      const pageId = String(getQuery('pageId') || '');
 
       const pageData = {
         schema: JSON.stringify(editStore.pageConfig.userSelectComponents),
@@ -216,7 +222,7 @@ export default defineComponent({
      * 保存
      */
     const save = async () => {
-      const pageId = String(getQuery('pageId'));
+      const pageId = String(getQuery('pageId') || '');
 
       const pageData = {
         schema: JSON.stringify(editStore.pageConfig.userSelectComponents),

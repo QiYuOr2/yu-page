@@ -7,6 +7,7 @@ export const ROUTER = {
   PREVIEW: 'preview',
   LOGIN: 'login',
   P: 'p',
+  TEMPLATE: 'template',
 };
 
 /**

@@ -1,9 +1,9 @@
 <template>
   <div class="mine-page main-route">
     <div class="mine-page__filter">
-      <fe-select v-model="filterOptions.sortType">
-        <fe-option label="时间正序" value="asc"></fe-option>
-        <fe-option label="时间倒序" value="desc"></fe-option>
+      <fe-select v-model="filterOptions.currentTab">
+        <fe-option label="全部模板" value="all"></fe-option>
+        <fe-option label="我的模板" value="mine"></fe-option>
       </fe-select>
       <fe-spacer :x="1" inline />
       <fe-input v-model="filterOptions.keywords" placeholder="搜索关键词" />
@@ -11,19 +11,13 @@
       <fe-button size="small" auto>搜索</fe-button>
     </div>
     <div class="mine-page__list">
-      <fe-card class="page" hoverable @click="toEditor">
-        <div class="create">
-          <plus />
-          <span>创建新页面</span>
-        </div>
-      </fe-card>
-      <page-card
+      <template-card
         class="page"
         v-for="(p, i) in pages"
         :key="i"
         :page="p"
         @remove="openRemoveDialog"
-      ></page-card>
+      ></template-card>
     </div>
 
     <fe-modal
@@ -46,10 +40,10 @@ import { cookie } from '@/common/utils';
 import { COOKIE, ROUTER } from '@/common/constants';
 import { useNav } from '@/hooks';
 
-import PageCard from './components/page-card.vue';
+import TemplateCard from './components/template-card.vue';
 
 export default defineComponent({
-  components: { PageCard },
+  components: { TemplateCard },
   setup() {
     const { proxy } = getCurrentInstance()!;
     const { to } = useNav();
@@ -94,9 +88,17 @@ export default defineComponent({
     const filterOptions = reactive({
       sortType: 'asc',
       keywords: '',
+      currentTab: 'all',
     });
 
-    return { toEditor, pages, removeDialog, openRemoveDialog, removePage, filterOptions };
+    return {
+      toEditor,
+      pages,
+      removeDialog,
+      openRemoveDialog,
+      removePage,
+      filterOptions,
+    };
   },
 });
 </script>

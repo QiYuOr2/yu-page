@@ -1,13 +1,12 @@
 <template>
   <div class="preview-mobile">
     <iframe
-      v-if="isPublish"
       class="preview-mobile__core"
       :src="`${iframeHost}:3090/template`"
       id="editorFrame"
       @load="onFrameLoaded"
     ></iframe>
-    <div v-else>当前页面暂未发布</div>
+    <!-- <div v-show="!isPublish">当前页面暂未发布</div> -->
   </div>
 </template>
 
@@ -27,6 +26,7 @@ export default defineComponent({
     const isPublish = ref(true);
 
     const loadPage = async () => {
+      console.log(String(getQuery('pageId')));
       const { status, data } = await page.get(String(getQuery('pageId')));
       if (status.code !== 0) {
         proxy?.$toast({ type: 'error', text: status.message });
@@ -37,7 +37,7 @@ export default defineComponent({
         type: MESSAGE_TYPE.INIT,
         data: JSON.parse(data.schema),
       });
-      isPublish.value = data.isPublish;
+      isPublish.value =/*  data.isPublish */ true;
     };
 
     const onFrameLoaded = () => {

@@ -27,7 +27,7 @@ import { ROUTER } from '@/common/constants';
 
 const routes = [
   { label: '我的页面', to: { name: ROUTER.HOME } },
-  // { label: '模板中心', to: { name: 'template-center' } },
+  { label: '模板市场', to: { name: ROUTER.TEMPLATE } },
   // { label: '关于', to: { name: 'about' } },
 ];
 
