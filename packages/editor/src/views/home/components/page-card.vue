@@ -29,6 +29,9 @@
         <fe-button class="share-btn" @click="genQrCode">
           <share class="share-btn__icon" />
         </fe-button>
+        <fe-button class="share-btn" @click="copyUrl">
+          <copy class="share-btn__icon" />
+        </fe-button>
         <fe-button class="share-btn" @click="removeHandler">
           <trash2 class="share-btn__icon" color="red" />
         </fe-button>
@@ -71,6 +74,12 @@ export default defineComponent({
       qrCodeLink.value = '';
     };
 
+    const copyUrl = () => {
+      navigator.clipboard.writeText(
+        `${config.IFRAME_HOST}:3090/editor#/p?pageId=${props.page?.id}`
+      );
+    };
+
     const removeHandler = () => {
       emit('remove', props.page);
     };
@@ -81,6 +90,7 @@ export default defineComponent({
       qrCodeLink,
       genQrCode,
       clearQrCode,
+      copyUrl,
       removeHandler,
     };
   },
@@ -153,7 +163,7 @@ export default defineComponent({
     }
 
     .actions {
-      --button-medium-width: 150px;
+      --button-medium-width: 100px;
 
       display: flex;
       justify-content: space-between;

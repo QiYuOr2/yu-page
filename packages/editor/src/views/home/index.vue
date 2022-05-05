@@ -81,6 +81,13 @@ export default defineComponent({
       getPages();
     });
 
+    watch(
+      () => filterOptions.sortType,
+      () => {
+        getPages();
+      }
+    );
+
     const removeDialog = reactive({
       id: '',
       visible: false,

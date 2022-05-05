@@ -8,7 +8,7 @@
       <fe-spacer :x="1" inline />
       <fe-input v-model="filterOptions.keywords" placeholder="搜索关键词" />
       <fe-spacer :x="1" inline />
-      <fe-button size="small" auto>搜索</fe-button>
+      <fe-button size="small" auto @click="getTemplates">搜索</fe-button>
     </div>
     <div class="mine-page__list">
       <div class="blank" v-if="!pages.length">暂无数据</div>
@@ -63,7 +63,10 @@ export default defineComponent({
 
     const getTemplates = async () => {
       const { status, data } = await page.templates(
-        filterOptions.currentTab === 'mine' ? cookie.get(COOKIE.UID) : undefined
+        filterOptions.currentTab === 'mine'
+          ? cookie.get(COOKIE.UID)
+          : undefined,
+        filterOptions.keywords
       );
       if (status.code === 0) {
         pages.value = data;
@@ -107,6 +110,7 @@ export default defineComponent({
       openRemoveDialog,
       removePage,
       filterOptions,
+      getTemplates,
     };
   },
 });

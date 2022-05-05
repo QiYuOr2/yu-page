@@ -17,6 +17,7 @@ import RRadio from './components/radio.vue';
 import RSelect from './components/select.vue';
 import { FORM_DATA_KEY, SET_FORM_DATA_KEY } from './common/constants';
 
+// ui -> component映射
 const ComponentsName: Record<string, string> = {
   INPUT: 'r-input',
   IMAGE_RADIO: 'r-image-radio',
@@ -78,7 +79,12 @@ export default defineComponent({
         // 无特殊处理的 type=string,number 转化为input
         if (FormItemType.INPUT.includes(currentItem.type)) {
           formData[key] = val || InitData[currentItem.type];
-          return { ...currentItem, component: ComponentsName.INPUT, key, value: val };
+          return {
+            ...currentItem,
+            component: ComponentsName.INPUT,
+            key,
+            value: val,
+          };
         }
         return { ...currentItem, component: 'span', key, val };
       });

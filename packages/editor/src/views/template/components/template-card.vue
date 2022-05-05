@@ -51,7 +51,9 @@ export default defineComponent({
     const { to } = useNav();
 
     const toEditor = () => {
-      to(ROUTER.WORKBANCH, { query: { pageId: props.page?.id } });
+      to(ROUTER.WORKBANCH, {
+        query: { use_template: props.page?.id },
+      });
     };
 
     const qrCodeLink = ref('');

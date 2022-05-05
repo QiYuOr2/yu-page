@@ -1,7 +1,7 @@
 <template>
   <div class="workbanch">
     <header class="workbanch__header">
-      <chevronLeft class="back" @click="backHome" />
+      <chevronLeft class="back" @click="back" />
       <div>
         <fe-button-group size="mini" style="margin-right: 0.5rem">
           <fe-button @click="preview">预览</fe-button>
@@ -99,13 +99,9 @@
                     <fe-button size="mini" auto>上传</fe-button>
                   </fe-upload>
                   <fe-spacer />
-                  <img
-                    class="thumb-image"
-                    v-for="(t, i) in thumb"
-                    :key="i"
-                    :src="t"
-                    alt=""
-                  />
+                  <template v-for="(src, i) in thumb">
+                    <img v-if="src" class="thumb-image" :key="i" :src="src" />
+                  </template>
                 </fe-form-item>
                 <fe-form-item label="设置为模板" prop="isTemplate">
                   <fe-switch v-model="pageConfig.isTemplate"></fe-switch>
@@ -126,7 +122,6 @@
 import {
   computed,
   defineComponent,
-  onActivated,
   onMounted,
   reactive,
   ref,
@@ -154,14 +149,14 @@ export default defineComponent({
   setup() {
     const toast = useToast();
     const activeTab = ref(0);
-    const { backHome, to, getQuery, isFromPreview } = useNav();
+    const { back, to, getQuery, isFromPreview } = useNav();
 
     const pageConfig = reactive({
       title: '',
       description: '默认页面描述',
       isPublic: false,
       isTemplate: false,
-      thumb: '',
+      thumb: [''],
     });
 
     const state = reactive({
@@ -185,7 +180,6 @@ export default defineComponent({
     } = useFrameAction('editorFrame');
 
     onMounted(() => {
-      console.log(isFromPreview);
       injectIframeMessageListener();
     });
 
@@ -193,14 +187,16 @@ export default defineComponent({
       initState(values[0]);
     });
 
-    const loadPage = async (pageId: string) => {
+    const loadPage = async (pageId: string, isTemplate = false) => {
       const { status, data } = await page.get(pageId);
       if (status.code === 0) {
-        pageConfig.title = data.name;
-        pageConfig.description = data.description;
-        pageConfig.isPublic = data.isPublic ?? false;
-        pageConfig.isTemplate = data.isTemplate;
-        thumb.value = [data.thumb];
+        if (!isTemplate) {
+          pageConfig.title = data.name;
+          pageConfig.description = data.description;
+          pageConfig.isPublic = data.isPublic ?? false;
+          pageConfig.isTemplate = data.isTemplate;
+          thumb.value = [data.thumb];
+        }
 
         postMessage({
           type: MESSAGE_TYPE.INIT,
@@ -236,9 +232,19 @@ export default defineComponent({
       state.spinning = false;
 
       // iframe加载完成后读取数据
-      const pageId = String(getQuery('pageId'));
-      pageId && loadPage(pageId);
-      isFromPreview && loadPreviewPage();
+      if (isFromPreview) {
+        loadPreviewPage();
+        return;
+      }
+
+      const templateId = getQuery('use_template');
+      if (templateId) {
+        loadPage(String(templateId), true);
+        return;
+      }
+
+      const pageId = getQuery('pageId');
+      pageId && loadPage(String(pageId));
     };
 
     const moveComponent = (action: number) => {
@@ -291,7 +297,7 @@ export default defineComponent({
         isPublish: true,
         isPublic: pageConfig.isPublic,
         isTemplate: pageConfig.isTemplate,
-        ...(pageConfig.thumb ? { thumb: pageConfig.thumb } : {}),
+        ...(pageConfig.thumb.length ? { thumb: pageConfig.thumb[0] } : {}),
       };
 
       const { status } = !pageId
@@ -321,7 +327,7 @@ export default defineComponent({
         description: pageConfig.description,
         isPublic: pageConfig.isPublic,
         isTemplate: pageConfig.isTemplate,
-        ...(pageConfig.thumb ? { thumb: pageConfig.thumb } : {}),
+        ...(pageConfig.thumb.length ? { thumb: pageConfig.thumb[0] } : {}),
       };
 
       const { status } = !pageId
@@ -400,7 +406,7 @@ export default defineComponent({
         const r = await fileReader(e);
         const { status, data } = await upload(e);
         if (status.code === 0) {
-          pageConfig.thumb = data;
+          pageConfig.thumb = [data];
         }
         thumb.value = [r];
       } catch (error) {}
@@ -410,7 +416,7 @@ export default defineComponent({
     return {
       ...toRefs(editorState),
 
-      backHome,
+      back,
       onFrameLoaded,
 
       preview,
