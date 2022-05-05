@@ -15,6 +15,7 @@ import RInput from './components/input.vue';
 import RImageRadio from './components/image-radio.vue';
 import RRadio from './components/radio.vue';
 import RSelect from './components/select.vue';
+import RApi from './components/api.vue';
 import { FORM_DATA_KEY, SET_FORM_DATA_KEY } from './common/constants';
 
 // ui -> component映射
@@ -26,6 +27,7 @@ const ComponentsName: Record<string, string> = {
   radio: 'r-radio',
   SELECT: 'r-select',
   select: 'r-select',
+  api: 'r-api',
 };
 
 const FormItemType = {
@@ -44,6 +46,7 @@ export default defineComponent({
     [RImageRadio.name]: RImageRadio,
     [RRadio.name]: RRadio,
     [RSelect.name]: RSelect,
+    [RApi.name]: RApi,
   },
   props: {
     itemData: Object,
@@ -67,8 +70,8 @@ export default defineComponent({
         const val = props?.itemData?.props?.[key];
 
         // 特殊处理
-        // enum -> radio / select 根据ui选择
-        if (currentItem.enum) {
+        // 根据ui选择
+        if (currentItem.ui) {
           formData[key] = val || InitData[currentItem.type];
 
           const currComponent = ComponentsName[currentItem.ui];

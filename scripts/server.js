@@ -39,6 +39,63 @@ app.use(
   })
 );
 
+app.get('/mock/turntable/result', (req, res) => {
+  res.json({
+    status: { code: 0 },
+    data: 4,
+  });
+});
+
+app.get('/mock/turntable/data', (req, res) => {
+  res.json({
+    status: {
+      code: 0,
+    },
+    data: [
+      {
+        label: '这是奖品标题',
+        img: '/upload-image/1651749150537.jpg',
+        text: '恭喜你，这是抽到该奖品的提示',
+      },
+      {
+        label: 2,
+        img: '',
+        text: '恭喜你',
+      },
+      {
+        label: 3,
+        img: '',
+        text: '恭喜你',
+      },
+      {
+        label: 4,
+        img: '',
+        text: '恭喜你',
+      },
+      {
+        label: 5,
+        img: '',
+        text: '恭喜你',
+      },
+      {
+        label: 6,
+        img: '',
+        text: '恭喜你',
+      },
+      {
+        label: 7,
+        img: '',
+        text: '恭喜你',
+      },
+      {
+        label: 8,
+        img: '',
+        text: '恭喜你',
+      },
+    ],
+  });
+});
+
 app.listen(3090, () => {
   console.log('http://localhost:3090');
 });

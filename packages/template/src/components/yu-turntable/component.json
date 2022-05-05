@@ -1,0 +1,80 @@
+{
+  "name": "yu-turntable",
+  "description": "抽奖轮盘",
+  "snapshot": "Chrome",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "dataUrl": {
+        "title": "数据项接口",
+        "type": "string",
+        "example": {
+          "status": {
+            "code": 0
+          },
+          "data": [
+            {
+              "label": "这是奖品标题",
+              "img": "/upload-image/1651749150537.jpg",
+              "text": "恭喜你，这是抽到该奖品的提示"
+            },
+            {
+              "label": 2,
+              "img": "",
+              "text": "恭喜你"
+            },
+            {
+              "label": 3,
+              "img": "",
+              "text": "恭喜你"
+            },
+            {
+              "label": 4,
+              "img": "",
+              "text": "恭喜你"
+            },
+            {
+              "label": 5,
+              "img": "",
+              "text": "恭喜你"
+            },
+            {
+              "label": 6,
+              "img": "",
+              "text": "恭喜你"
+            },
+            {
+              "label": 7,
+              "img": "",
+              "text": "恭喜你"
+            },
+            {
+              "label": 8,
+              "img": "",
+              "text": "恭喜你"
+            }
+          ]
+        },
+        "ui": "api"
+      },
+      "url": {
+        "title": "获取结果的接口",
+        "type": "string",
+        "example": {
+          "status": {
+            "code": 0
+          },
+          "data": 4
+        },
+        "ui": "api"
+      }
+    },
+    "required": [
+      "items"
+    ]
+  },
+  "data": {
+    "dataUrl": "/mock/turntable/data",
+    "url": "/mock/turntable/result"
+  }
+}

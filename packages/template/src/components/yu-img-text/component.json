@@ -1,0 +1,27 @@
+{
+  "name": "yu-img-text",
+  "description": "图文内容",
+  "snapshot": "FileText",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "src": {
+        "title": "图片",
+        "type": "string",
+        "format": "image"
+      },
+      "text": {
+        "title": "文本",
+        "type": "string"
+      }
+    },
+    "required": [
+      "src",
+      "text"
+    ]
+  },
+  "data": {
+    "src": "https://cdn.jsdelivr.net/gh/xmy6364/blog-image/img/evening.JPG",
+    "text": "噫吁嚱，危乎高哉，蜀道之难，难于上青天！蚕丛及鱼凫，开国何茫然。尔来四万八千岁，不与秦塞通人烟。西当太白有鸟道，可以横绝峨眉巅。地崩山摧壮士死，然后天梯石栈相钩连。上有六龙回日之高标，下有冲波逆折之回川。"
+  }
+}
