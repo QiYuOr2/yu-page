@@ -7,6 +7,8 @@ export const error: ErrorRequestHandler = (err, req, res, next) => {
     return;
   }
 
+  console.log(err)
+
   if (err.name === 'UnauthorizedError') {
     res.json(Yu.error(YuStatus.AuthError));
     return;

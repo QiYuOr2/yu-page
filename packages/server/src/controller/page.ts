@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import { createRouter } from '../common/createRouter';
 import { catchAsyncErr, isEmpty } from '../common/utils';
 import { Yu, YuStatus } from '../common/yu';
@@ -34,10 +35,49 @@ export const PageController = createRouter('/page', (r) => {
         return;
       }
 
-      const pages = await PageModel.findAll({ where: { userId, isDelete: false } });
+      const options = {
+        userId,
+        isDelete: false,
+        ...(req.query.title
+          ? {
+              name: {
+                [Op.like]: `%${req.query.title}%`,
+              },
+            }
+          : {}),
+      };
+
+      const pages = await PageModel.findAll({
+        where: options,
+        order: [['updatedAt', Number(req.query.sort) === 1 ? 'asc' : 'desc']],
+      });
       res.json(Yu.success(pages));
     })
   ).comment('获取某人页面列表');
+
+  r.get(
+    '/templates',
+    catchAsyncErr(async (req, res) => {
+      const userId = Number(req.query.userId);
+
+      const options = {
+        isDelete: false,
+        isTemplate: true,
+        ...(isEmpty(userId) ? {} : { userId }),
+        ...(req.query.title
+          ? {
+              name: {
+                [Op.like]: `%${req.query.title}%`,
+              },
+            }
+          : {}),
+      };
+
+      const pages = await PageModel.findAll({ where: options });
+
+      res.json(Yu.success(pages));
+    })
+  ).comment('获取模板');
 
   r.post(
     '/create',
@@ -57,7 +97,8 @@ export const PageController = createRouter('/page', (r) => {
       }
 
       // 生成page id
-      const createId = () => (Math.floor(Math.random() * 10 + 1) * Date.now()).toString(36);
+      const createId = () =>
+        (Math.floor(Math.random() * 10 + 1) * Date.now()).toString(36);
 
       const createdPage = await PageModel.create({ id: createId(), ...page });
       await user.addPage(createdPage.id);

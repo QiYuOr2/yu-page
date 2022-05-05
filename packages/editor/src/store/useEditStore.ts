@@ -19,6 +19,7 @@ type StoreState = {
   pageConfig: PageConfig;
   editConfig: EditConfig;
   uiConfig: UIConfig;
+  isFromPreview: boolean;
 };
 
 export const useEditStore = defineStore(STATE.EDIT, {
@@ -37,6 +38,8 @@ export const useEditStore = defineStore(STATE.EDIT, {
       uiConfig: {
         dragStart: false,
       },
+
+      isFromPreview: false,
     } as StoreState),
 
   actions: {
@@ -49,6 +52,10 @@ export const useEditStore = defineStore(STATE.EDIT, {
     updateDragStart(event: DragEvent, value: boolean, data?: any) {
       this.uiConfig.dragStart = value;
       data && event.dataTransfer?.setData('text/plain', JSON.stringify(data));
+    },
+
+    setIsFromPreview(value: boolean) {
+      this.isFromPreview = value;
     },
   },
 });

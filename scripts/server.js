@@ -32,6 +32,12 @@ app.use(
     changeOrigin: true,
   })
 );
+app.use(
+  createProxyMiddleware('/upload-image', {
+    target: SERVER_HOST,
+    changeOrigin: true,
+  })
+);
 
 app.listen(3090, () => {
   console.log('http://localhost:3090');

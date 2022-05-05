@@ -28,7 +28,6 @@
             v-show="showDragMask"
             class="drag-mask"
             @dragover.prevent="dragOverHandler"
-            @dragleave.prevent="dragLeaveHandler"
             @drop.prevent="dropHandler"
           ></div>
           <!-- 悬浮工具组 -->
@@ -38,12 +37,21 @@
             <!-- 悬浮高亮 -->
             <div :style="hoverStyle" class="hover-heightlight"></div>
             <!-- 悬浮工具 -->
-            <div v-show="toolStyle.top" :style="{ top: toolStyle.top }" class="tools" :id="toolId">
+            <div
+              v-show="toolStyle.top"
+              :style="{ top: toolStyle.top }"
+              class="tools"
+              :id="toolId"
+            >
               <div class="tools__move">
                 <span @click="moveComponent(-1)"><arrow-up /></span>
                 <span @click="moveComponent(1)"><arrow-down /></span>
               </div>
-              <div v-if="canRemoveComponent" class="tools__copy" @click="removeComponents">
+              <div
+                v-if="canRemoveComponent"
+                class="tools__copy"
+                @click="removeComponents"
+              >
                 <trash2 />
               </div>
             </div>
@@ -63,9 +71,13 @@
           <fe-tab title="页面设置">
             <!-- TODO 抽离组件 -->
             <div class="aside__form">
-              <fe-form label-position="top">
+              <fe-form label-position="top" :model="pageConfig">
                 <fe-form-item label="页面标题">
-                  <fe-input v-model="pageConfig.title" :placeholder="请输入页面标题" width="100%" />
+                  <fe-input
+                    v-model="pageConfig.title"
+                    :placeholder="'请输入页面标题'"
+                    width="100%"
+                  />
                 </fe-form-item>
                 <fe-form-item label="页面描述">
                   <fe-textarea
@@ -75,11 +87,31 @@
                     auto-height
                   />
                 </fe-form-item>
-                <fe-form-item label="设置为模板">
-                  <fe-switch></fe-switch>
+                <fe-form-item label="网页封面">
+                  <fe-upload
+                    :limit="2"
+                    :assets="thumb"
+                    @exceed="() => {}"
+                    accept="image/png, image/jpeg"
+                    :before-read="beforeReadHandler"
+                    :after-read="afterReadHandler"
+                  >
+                    <fe-button size="mini" auto>上传</fe-button>
+                  </fe-upload>
+                  <fe-spacer />
+                  <img
+                    class="thumb-image"
+                    v-for="(t, i) in thumb"
+                    :key="i"
+                    :src="t"
+                    alt=""
+                  />
                 </fe-form-item>
-                <fe-form-item label="公开模板">
-                  <fe-switch></fe-switch>
+                <fe-form-item label="设置为模板" prop="isTemplate">
+                  <fe-switch v-model="pageConfig.isTemplate"></fe-switch>
+                </fe-form-item>
+                <fe-form-item label="公开模板" prop="isPublic">
+                  <fe-switch v-model="pageConfig.isPublic"></fe-switch>
                 </fe-form-item>
               </fe-form>
             </div>
@@ -94,14 +126,14 @@
 import {
   computed,
   defineComponent,
-  getCurrentInstance,
+  onActivated,
   onMounted,
   reactive,
   ref,
   toRefs,
   watch,
 } from 'vue';
-import { useFrameAction, useNav } from '@/hooks';
+import { useFrameAction, useNav, useToast } from '@/hooks';
 import { MESSAGE_TYPE, FRAME, COOKIE, ROUTER } from '@/common/constants';
 import { config } from '@/common/config';
 
@@ -109,18 +141,27 @@ import { config } from '@/common/config';
 import { ArrowDown, ArrowUp, Clipboard, Copy } from '@fect-ui/vue-icons';
 import ComponentSelector from './components/component-selector.vue';
 import { cookie, fork, local } from '@/common/utils';
-import { page } from '@/api';
+import { page, upload } from '@/api';
 
 export default defineComponent({
-  components: { ComponentSelector, ArrowDown, ArrowUp, Clipboard, Copy },
+  components: {
+    ComponentSelector,
+    ArrowDown,
+    ArrowUp,
+    Clipboard,
+    Copy,
+  },
   setup() {
-    const { proxy } = getCurrentInstance()!;
+    const toast = useToast();
     const activeTab = ref(0);
-    const { backHome, to, getQuery } = useNav();
+    const { backHome, to, getQuery, isFromPreview } = useNav();
 
     const pageConfig = reactive({
       title: '',
       description: '默认页面描述',
+      isPublic: false,
+      isTemplate: false,
+      thumb: '',
     });
 
     const state = reactive({
@@ -144,6 +185,7 @@ export default defineComponent({
     } = useFrameAction('editorFrame');
 
     onMounted(() => {
+      console.log(isFromPreview);
       injectIframeMessageListener();
     });
 
@@ -156,6 +198,9 @@ export default defineComponent({
       if (status.code === 0) {
         pageConfig.title = data.name;
         pageConfig.description = data.description;
+        pageConfig.isPublic = data.isPublic ?? false;
+        pageConfig.isTemplate = data.isTemplate;
+        thumb.value = [data.thumb];
 
         postMessage({
           type: MESSAGE_TYPE.INIT,
@@ -164,20 +209,44 @@ export default defineComponent({
       }
     };
 
+    const loadPreviewPage = () => {
+      const data = local.get('preview::page');
+      pageConfig.title = data.name;
+      pageConfig.description = data.description;
+      pageConfig.isPublic = data.isPublic ?? false;
+      pageConfig.isTemplate = data.isTemplate;
+      thumb.value = [data.thumb];
+
+      const components = local.get('preview::components');
+
+      postMessage({
+        type: MESSAGE_TYPE.INIT,
+        data: components,
+      });
+
+      // console.log('loadPreviewPage');
+    };
+
     const onFrameLoaded = () => {
       injectEventListener((event, index) => {
         editorState.current = index;
-        event === 'click' && postMessage({ type: MESSAGE_TYPE.CHANGE_INDEX, data: index });
+        event === 'click' &&
+          postMessage({ type: MESSAGE_TYPE.CHANGE_INDEX, data: index });
       });
       state.spinning = false;
 
       // iframe加载完成后读取数据
       const pageId = String(getQuery('pageId'));
       pageId && loadPage(pageId);
+      isFromPreview && loadPreviewPage();
     };
 
     const moveComponent = (action: number) => {
-      if ((editorState.isBottom && action === 1) || (editorState.isTop && action === -1)) return;
+      if (
+        (editorState.isBottom && action === 1) ||
+        (editorState.isTop && action === -1)
+      )
+        return;
 
       postMessage({
         type: MESSAGE_TYPE.SORT_COMPONENT,
@@ -189,15 +258,30 @@ export default defineComponent({
      * 预览
      */
     const preview = () => {
-      local.set('preview::components', editStore.pageConfig.userSelectComponents);
+      local.set(
+        'preview::components',
+        editStore.pageConfig.userSelectComponents
+      );
       local.set('preview::page', pageConfig);
       to(ROUTER.PREVIEW);
+    };
+
+    const check = () => {
+      if (!pageConfig.title) {
+        toast.error('请输入页面标题');
+        return false;
+      }
+      return true;
     };
 
     /**
      * 发布
      */
     const release = async () => {
+      if (!check()) {
+        return;
+      }
+
       const pageId = String(getQuery('pageId') || '');
 
       const pageData = {
@@ -205,6 +289,9 @@ export default defineComponent({
         name: pageConfig.title,
         description: pageConfig.description,
         isPublish: true,
+        isPublic: pageConfig.isPublic,
+        isTemplate: pageConfig.isTemplate,
+        ...(pageConfig.thumb ? { thumb: pageConfig.thumb } : {}),
       };
 
       const { status } = !pageId
@@ -214,31 +301,41 @@ export default defineComponent({
           await page.modify(pageId, pageData);
 
       status.code !== 0
-        ? proxy?.$toast({ type: 'error', text: status.message })
-        : (proxy?.$toast({ text: '发布成功' }), /* 跳转首页 */ to(ROUTER.HOME));
+        ? toast.error(status.message)
+        : (toast.normal('发布成功'), /* 跳转首页 */ to(ROUTER.HOME));
     };
 
     /**
      * 保存
      */
     const save = async () => {
+      if (!check()) {
+        return;
+      }
+
       const pageId = String(getQuery('pageId') || '');
 
       const pageData = {
         schema: JSON.stringify(editStore.pageConfig.userSelectComponents),
         name: pageConfig.title,
         description: pageConfig.description,
+        isPublic: pageConfig.isPublic,
+        isTemplate: pageConfig.isTemplate,
+        ...(pageConfig.thumb ? { thumb: pageConfig.thumb } : {}),
       };
 
       const { status } = !pageId
         ? // 如果原本没有该页面，创建
-          await page.create(cookie.get(COOKIE.UID), { ...pageData, isPublish: false })
+          await page.create(cookie.get(COOKIE.UID), {
+            ...pageData,
+            isPublish: false,
+          })
         : // 否则是编辑
           await page.modify(pageId, pageData);
 
       status.code !== 0
-        ? proxy?.$toast({ type: 'error', text: status.message })
-        : proxy?.$toast({ text: '保存成功' });
+        ? toast.error(status.message)
+        : toast.normal('保存成功');
     };
 
     const addComponents = (data: string, index: number) => {
@@ -257,25 +354,9 @@ export default defineComponent({
 
     //#region 拖拽事件
 
-    // dragover触发 预计用来预览组件位置 - 暂时搁置
-    const beforeAddComponents = (index: number) => {
-      // postMessage({
-      //   type: MESSAGE_TYPE.BEFORE_ADD_COMPONENT,
-      //   data: { index },
-      // });
-    };
-
-    // dragleave触发 预计用来清空预览 - 暂时搁置
-    const dragLeaveHandler = () => {
-      // postMessage({
-      //   type: MESSAGE_TYPE.AFTER_ADD_COMPONENT,
-      // });
-    };
-
     const dragOverHandler = (event: DragEvent) => {
       const { layerY } = event as any;
       const index = getIndex(layerY);
-      beforeAddComponents(index);
     };
 
     const dropHandler = (event: DragEvent) => {
@@ -298,6 +379,34 @@ export default defineComponent({
       });
     };
 
+    //#region 封面上传
+    const thumb = ref<any[]>([]);
+    const fileReader = (blob: any) => {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          resolve(e.target.result);
+        };
+        reader.readAsDataURL(blob);
+      });
+    };
+    const beforeReadHandler = () => {
+      thumb.value = [];
+      return true;
+    };
+    const afterReadHandler = async (e: any) => {
+      try {
+        console.log(e);
+        const r = await fileReader(e);
+        const { status, data } = await upload(e);
+        if (status.code === 0) {
+          pageConfig.thumb = data;
+        }
+        thumb.value = [r];
+      } catch (error) {}
+    };
+    //#endregion
+
     return {
       ...toRefs(editorState),
 
@@ -312,14 +421,18 @@ export default defineComponent({
 
       showDragMask: computed(() => editStore.uiConfig.dragStart),
       dragOverHandler,
-      dragLeaveHandler,
       dropHandler,
 
       currentComponentSchema: computed(
-        () => editStore.pageConfig.userSelectComponents[editStore.editConfig.currentIndex] ?? {}
+        () =>
+          editStore.pageConfig.userSelectComponents[
+            editStore.editConfig.currentIndex
+          ] ?? {}
       ),
 
-      canRemoveComponent: computed(() => editStore.pageConfig.userSelectComponents.length > 1),
+      canRemoveComponent: computed(
+        () => editStore.pageConfig.userSelectComponents.length > 1
+      ),
 
       toolId: FRAME.TOOL_ID,
       formDataChangeHandler,
@@ -330,6 +443,10 @@ export default defineComponent({
       iframeHost: config.IFRAME_HOST,
 
       removeComponents,
+
+      thumb,
+      beforeReadHandler,
+      afterReadHandler,
     };
   },
 });
@@ -467,6 +584,12 @@ export default defineComponent({
         }
       }
     }
+  }
+
+  .thumb-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 }
 </style>

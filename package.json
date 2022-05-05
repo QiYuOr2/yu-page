@@ -13,9 +13,9 @@
     "form": "cross-env pnpm build --filter \"@yu-page/form-render\" && pnpm install @yu-page/form-render -r --filter @yu-page/editor",
     "dev": "node scripts/server.js",
     "create": "pnpm start create --filter \"@yu-page/cli\"",
-    "pm2:dev": "pm2 restart pm2.json",
-    "build": "node scripts/build.js",
+    "b": "node scripts/build.js",
     "prod": "cross-env NODE_ENV=prod node scripts/prod.js",
+    "pm2:dev": "pm2 restart pm2.json",
     "pm2:prod": "pm2 restart pm2.prod.json"
   },
   "repository": {

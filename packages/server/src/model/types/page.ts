@@ -1,7 +1,15 @@
-import { Model, InferAttributes, InferCreationAttributes, CreationOptional } from 'sequelize';
+import {
+  Model,
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+} from 'sequelize';
 import { isEmpty } from '../../common/utils';
 
-export class Page extends Model<InferAttributes<Page>, InferCreationAttributes<Page>> {
+export class Page extends Model<
+  InferAttributes<Page>,
+  InferCreationAttributes<Page>
+> {
   declare id: string;
   declare schema: string;
   declare name: string;
@@ -9,6 +17,7 @@ export class Page extends Model<InferAttributes<Page>, InferCreationAttributes<P
   declare thumb: string;
   declare isPublish: boolean;
   declare isPublic: boolean;
+  declare isTemplate: boolean;
   declare isDelete: boolean;
   declare userId: number;
 
@@ -20,8 +29,7 @@ export class Page extends Model<InferAttributes<Page>, InferCreationAttributes<P
       isEmpty(target) ||
       isEmpty(target.name) ||
       isEmpty(target.schema) ||
-      isEmpty(target.description) ||
-      isEmpty(target.isPublish)
+      isEmpty(target.description)
     );
   }
 }

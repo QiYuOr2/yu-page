@@ -2,13 +2,13 @@
   <div class="mine-page main-route">
     <div class="mine-page__filter">
       <fe-select v-model="filterOptions.sortType">
-        <fe-option label="时间正序" value="asc"></fe-option>
         <fe-option label="时间倒序" value="desc"></fe-option>
+        <fe-option label="时间正序" value="asc"></fe-option>
       </fe-select>
       <fe-spacer :x="1" inline />
       <fe-input v-model="filterOptions.keywords" placeholder="搜索关键词" />
       <fe-spacer :x="1" inline />
-      <fe-button size="small" auto>搜索</fe-button>
+      <fe-button size="small" auto @click="getPages">搜索</fe-button>
     </div>
     <div class="mine-page__list">
       <fe-card class="page" hoverable @click="toEditor">
@@ -40,18 +40,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance, onMounted, reactive, ref } from 'vue';
+import { defineComponent, onMounted, reactive, ref, watch } from 'vue';
 import { Page, page } from '@/api';
 import { cookie } from '@/common/utils';
 import { COOKIE, ROUTER } from '@/common/constants';
-import { useNav } from '@/hooks';
+import { useNav, useToast } from '@/hooks';
 
 import PageCard from './components/page-card.vue';
 
 export default defineComponent({
   components: { PageCard },
   setup() {
-    const { proxy } = getCurrentInstance()!;
+    const toast = useToast();
     const { to } = useNav();
 
     const toEditor = () => {
@@ -60,8 +60,17 @@ export default defineComponent({
 
     const pages = ref<Page[]>([]);
 
+    const filterOptions = reactive({
+      sortType: 'desc',
+      keywords: '',
+    });
+
     const getPages = async () => {
-      const { status, data } = await page.list(cookie.get(COOKIE.UID));
+      const { status, data } = await page.list(
+        cookie.get(COOKIE.UID),
+        filterOptions.keywords,
+        filterOptions.sortType === 'asc' ? 1 : 0
+      );
       if (status.code === 0) {
         console.log(data);
         pages.value = data;
@@ -86,17 +95,20 @@ export default defineComponent({
     const removePage = async () => {
       const { status } = await page.remove(removeDialog.id);
       if (status.code === 0) {
-        proxy?.$toast({ text: '删除成功' });
+        toast.normal('删除成功');
         getPages();
       }
     };
 
-    const filterOptions = reactive({
-      sortType: 'asc',
-      keywords: '',
-    });
-
-    return { toEditor, pages, removeDialog, openRemoveDialog, removePage, filterOptions };
+    return {
+      toEditor,
+      pages,
+      removeDialog,
+      openRemoveDialog,
+      removePage,
+      filterOptions,
+      getPages,
+    };
   },
 });
 </script>

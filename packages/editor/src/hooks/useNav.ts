@@ -1,6 +1,7 @@
 import { COOKIE, ROUTER } from '../common/constants';
 import { useRouter, LocationQueryRaw, RouteParamsRaw } from 'vue-router';
 import { cookie } from '@/common/utils';
+import { useEditStore } from '@/store';
 
 type RouterOptions = {
   query?: LocationQueryRaw;
@@ -9,6 +10,7 @@ type RouterOptions = {
 
 export function useNav() {
   const r = useRouter();
+  const store = useEditStore();
 
   const to = (name: string, options?: RouterOptions) => {
     if (Object.values(ROUTER).includes(name)) {
@@ -36,11 +38,15 @@ export function useNav() {
     return r.currentRoute.value.query[key] || null;
   };
 
-  r.beforeEach((toRoute, _from, next) => {
-    console.log('beforeEach', toRoute);
+  r.beforeEach((toRoute, fromRoute, next) => {
+    // console.log('beforeEach', toRoute, fromRoute);
     const token = cookie.get(COOKIE.TOKEN);
 
-    console.log(!token && toRoute.name !== ROUTER.P && toRoute.name !== ROUTER.LOGIN);
+    // console.log(
+    //   !token && toRoute.name !== ROUTER.P && toRoute.name !== ROUTER.LOGIN
+    // );
+
+    store.setIsFromPreview(fromRoute.name === ROUTER.PREVIEW);
 
     if (!token && toRoute.name !== ROUTER.P && toRoute.name !== ROUTER.LOGIN) {
       next({ name: ROUTER.LOGIN });
@@ -48,5 +54,12 @@ export function useNav() {
     next();
   });
 
-  return { to, back, backHome, getRouteName, getQuery };
+  return {
+    to,
+    back,
+    backHome,
+    getRouteName,
+    getQuery,
+    isFromPreview: store.isFromPreview,
+  };
 }

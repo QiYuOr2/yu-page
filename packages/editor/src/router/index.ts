@@ -10,7 +10,11 @@ import Template from '@/views/template/index.vue';
 
 const routes: Array<RouteRecordRaw> = [
   { path: '/', name: ROUTER.HOME, component: Home },
-  { path: '/workbanch', name: ROUTER.WORKBANCH, component: Workbanch },
+  {
+    path: '/workbanch',
+    name: ROUTER.WORKBANCH,
+    component: Workbanch,
+  },
   { path: '/preview', name: ROUTER.PREVIEW, component: Preview },
   { path: '/login', name: ROUTER.LOGIN, component: Login },
   { path: '/p', name: ROUTER.P, component: P },

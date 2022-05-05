@@ -19,7 +19,9 @@
       <div class="info">
         <div class="info__title">{{ page.name }}</div>
         <div class="info__desc">{{ page.description }}</div>
-        <div class="info__time">最后编辑时间: {{ timeFormatter(page.updatedAt) }}</div>
+        <div class="info__time">
+          最后编辑时间: {{ timeFormatter(page.updatedAt) }}
+        </div>
       </div>
 
       <div class="actions">
@@ -190,6 +192,10 @@ export default defineComponent({
   &:hover {
     box-shadow: var(--x-shadow-medium);
     transition: box-shadow 0.3s;
+  }
+
+  /deep/ .fect-image img {
+    object-fit: cover;
   }
 }
 </style>

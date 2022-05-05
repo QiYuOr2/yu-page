@@ -184,5 +184,8 @@ export default defineComponent({
     box-shadow: var(--x-shadow-medium);
     transition: box-shadow 0.3s;
   }
+  /deep/ .fect-image img {
+    object-fit: cover;
+  }
 }
 </style>

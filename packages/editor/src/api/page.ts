@@ -6,12 +6,14 @@ export type Page = {
   name: string;
   description: string;
   isPublish: boolean;
+  isTemplate: boolean;
   isPublic?: boolean;
   userId?: number;
+  thumb?: string;
 };
 
-type CreatePageDto = Omit<Page, 'id' | 'isPublic' | 'userId'>;
-type ModifyPageDto = Partial<Omit<Page, 'id' | 'isPublic' | 'userId'>>;
+type CreatePageDto = Omit<Page, 'id' | 'userId'>;
+type ModifyPageDto = Partial<Omit<Page, 'id' | 'userId'>>;
 
 export const page = {
   async get(id: string) {
@@ -22,11 +24,19 @@ export const page = {
     });
   },
 
-  async list(userId: number) {
+  async list(userId: number, title?: string, sort = 0) {
     return yuRequest<Page[]>({
       url: 'page/list',
       method: 'get',
-      data: { userId },
+      data: { userId, title, sort },
+    });
+  },
+
+  async templates(userId?: number, title?: string) {
+    return yuRequest<Page[]>({
+      url: 'page/templates',
+      method: 'get',
+      data: { userId, title },
     });
   },
 

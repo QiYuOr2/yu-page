@@ -45,7 +45,8 @@ export function useFrameAction(id: string) {
   });
 
   const frameDoc = () =>
-    (document.getElementById(id) as HTMLIFrameElement).contentWindow?.document!;
+    (document.getElementById(id) as HTMLIFrameElement)?.contentWindow
+      ?.document!;
 
   const frameView = () => frameDoc().getElementById(FRAME.VIEW_ID);
 
@@ -55,9 +56,10 @@ export function useFrameAction(id: string) {
   const resetFrameHeight = (addBlank: boolean | number = true) => {
     const iframe = document.getElementById(id) as HTMLIFrameElement;
     const body = frameDoc().body;
-    console.log(body.scrollHeight);
+    // console.log(body.scrollHeight);
     iframe.height = `${
-      body.scrollHeight + (addBlank ? (typeof addBlank === 'number' ? addBlank : 300) : 0)
+      body.scrollHeight +
+      (addBlank ? (typeof addBlank === 'number' ? addBlank : 300) : 0)
     }px`;
     return iframe.height;
   };
@@ -120,7 +122,9 @@ export function useFrameAction(id: string) {
         if (currentId.indexOf(FRAME.YU_COMPONENT_ID_PREFIX) >= 0) {
           setStyle(StyleType.Active, el(node).height(), el(node).top());
 
-          setCurrentComponent(contentInFrame, currentId, (index) => afterSelect('click', index));
+          setCurrentComponent(contentInFrame, currentId, (index) =>
+            afterSelect('click', index)
+          );
         }
       });
     });
@@ -167,7 +171,11 @@ export function useFrameAction(id: string) {
             ) as HTMLElement;
 
             if (activeNode) {
-              setStyle(StyleType.Active, el(activeNode).height(), el(activeNode).top());
+              setStyle(
+                StyleType.Active,
+                el(activeNode).height(),
+                el(activeNode).top()
+              );
               setStyle(StyleType.Hover, '0px', -1000);
             }
           }
@@ -189,13 +197,15 @@ export function useFrameAction(id: string) {
       parseFloat(el(container).height()) + contentInFrame.offsetTop
     );
     editorState.containerHeight =
-      containerHeight > FRAME.CONTAINER_HEIGHT ? containerHeight : FRAME.CONTAINER_HEIGHT;
+      containerHeight > FRAME.CONTAINER_HEIGHT
+        ? containerHeight
+        : FRAME.CONTAINER_HEIGHT;
 
     // 初始化activeStyle
     if (index === -1) return;
-    const node = contentInFrame.querySelectorAll(`[id^=${FRAME.YU_COMPONENT_ID_PREFIX}]`)[
-      index
-    ] as HTMLElement;
+    const node = contentInFrame.querySelectorAll(
+      `[id^=${FRAME.YU_COMPONENT_ID_PREFIX}]`
+    )[index] as HTMLElement;
 
     const currentId = node?.getAttribute('id') ?? '';
     // setStyle(StyleType.Active, el(node).height(), el(node).top());
@@ -227,10 +237,14 @@ export function useFrameAction(id: string) {
   const setFixedStyle = (index: number) => {
     const contentInFrame = frameView();
     editorState.dragableComponents = [];
-    (Array.from(contentInFrame?.childNodes || []) as Array<HTMLElement>).forEach((_node) => {
+    (
+      Array.from(contentInFrame?.childNodes || []) as Array<HTMLElement>
+    ).forEach((_node) => {
       if (_node.getAttribute('data-layout') === 'fixed') {
         const el = _node.childNodes[0];
-        const { left, top, width, height } = getComputedStyle(el as HTMLElement);
+        const { left, top, width, height } = getComputedStyle(
+          el as HTMLElement
+        );
         editorState.dragableComponents.push({
           x: parseInt(left),
           y: parseInt(top),
@@ -243,7 +257,8 @@ export function useFrameAction(id: string) {
   };
 
   const postMessage = <T>(msg: T) => {
-    const iframe = (document.getElementById(id) as HTMLIFrameElement).contentWindow;
+    const iframe = (document.getElementById(id) as HTMLIFrameElement)
+      .contentWindow;
     iframe?.postMessage(msg);
   };
 

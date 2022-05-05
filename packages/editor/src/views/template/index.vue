@@ -11,6 +11,7 @@
       <fe-button size="small" auto>搜索</fe-button>
     </div>
     <div class="mine-page__list">
+      <div class="blank" v-if="!pages.length">暂无数据</div>
       <template-card
         class="page"
         v-for="(p, i) in pages"
@@ -34,18 +35,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance, onMounted, reactive, ref } from 'vue';
+import { defineComponent, onMounted, reactive, ref, watch } from 'vue';
 import { Page, page } from '@/api';
 import { cookie } from '@/common/utils';
 import { COOKIE, ROUTER } from '@/common/constants';
-import { useNav } from '@/hooks';
+import { useNav, useToast } from '@/hooks';
 
 import TemplateCard from './components/template-card.vue';
 
 export default defineComponent({
   components: { TemplateCard },
   setup() {
-    const { proxy } = getCurrentInstance()!;
+    const toast = useToast();
     const { to } = useNav();
 
     const toEditor = () => {
@@ -54,17 +55,31 @@ export default defineComponent({
 
     const pages = ref<Page[]>([]);
 
-    const getPages = async () => {
-      const { status, data } = await page.list(cookie.get(COOKIE.UID));
+    const filterOptions = reactive({
+      sortType: 'asc',
+      keywords: '',
+      currentTab: 'all',
+    });
+
+    const getTemplates = async () => {
+      const { status, data } = await page.templates(
+        filterOptions.currentTab === 'mine' ? cookie.get(COOKIE.UID) : undefined
+      );
       if (status.code === 0) {
-        console.log(data);
         pages.value = data;
       }
     };
 
     onMounted(() => {
-      getPages();
+      getTemplates();
     });
+
+    watch(
+      () => filterOptions.currentTab,
+      () => {
+        getTemplates();
+      }
+    );
 
     const removeDialog = reactive({
       id: '',
@@ -80,16 +95,10 @@ export default defineComponent({
     const removePage = async () => {
       const { status } = await page.remove(removeDialog.id);
       if (status.code === 0) {
-        proxy?.$toast({ text: '删除成功' });
-        getPages();
+        toast.normal('删除成功');
+        getTemplates();
       }
     };
-
-    const filterOptions = reactive({
-      sortType: 'asc',
-      keywords: '',
-      currentTab: 'all',
-    });
 
     return {
       toEditor,
@@ -116,6 +125,15 @@ export default defineComponent({
     width: 1200px;
     margin: 0 auto;
     padding-top: 2rem;
+
+    .blank {
+      width: 100%;
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     .page {
       width: 280px;
       margin-bottom: 2rem;

@@ -17,6 +17,7 @@ app.use(cookieParser());
 app.use(jwt());
 
 console.log(process.env.NODE_ENV);
+app.use('/upload-image', Express.static(path.join(__dirname, '../upload')));
 if (process.env.NODE_ENV === 'prod') {
   app.use('/template', Express.static(path.join(__dirname, '../template')));
   app.use('/editor', Express.static(path.join(__dirname, '../editor')));
