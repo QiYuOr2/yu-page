@@ -15,6 +15,7 @@
         >
           {{ r.label }}
         </fe-link>
+        <fe-link @click="logout">退出登录</fe-link>
       </nav>
     </fe-col>
   </fe-row>
@@ -24,6 +25,8 @@
 import { computed, defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
 import { ROUTER } from '@/common/constants';
+import { cookie } from '@/common/utils';
+import { user } from '@/api';
 
 const routes = [
   { label: '我的页面', to: { name: ROUTER.HOME } },
@@ -45,7 +48,13 @@ export default defineComponent({
         .includes(r.currentRoute.value.name as string);
     });
 
-    return { routes, isActive, isNavShow };
+    const logout = async () => {
+      await user.logout();
+
+      r.push({ name: ROUTER.LOGIN });
+    };
+
+    return { routes, isActive, isNavShow, logout };
   },
 });
 </script>

@@ -63,7 +63,7 @@ export const PageController = createRouter('/page', (r) => {
       const options = {
         isDelete: false,
         isTemplate: true,
-        ...(isEmpty(userId) ? {} : { userId }),
+        ...(isEmpty(userId) ? { isPublic: true } : { userId }),
         ...(req.query.title
           ? {
               name: {

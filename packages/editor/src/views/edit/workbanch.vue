@@ -90,7 +90,7 @@
                 <fe-form-item label="网页封面">
                   <fe-upload
                     :limit="2"
-                    :assets="thumb"
+                    :assets="pageConfig.thumb"
                     @exceed="() => {}"
                     accept="image/png, image/jpeg"
                     :before-read="beforeReadHandler"
@@ -99,7 +99,7 @@
                     <fe-button size="mini" auto>上传</fe-button>
                   </fe-upload>
                   <fe-spacer />
-                  <template v-for="(src, i) in thumb">
+                  <template v-for="(src, i) in pageConfig.thumb">
                     <img v-if="src" class="thumb-image" :key="i" :src="src" />
                   </template>
                 </fe-form-item>
@@ -138,6 +138,14 @@ import ComponentSelector from './components/component-selector.vue';
 import { cookie, fork, local } from '@/common/utils';
 import { page, upload } from '@/api';
 
+type PageConfig = {
+  title: string;
+  description: string;
+  isPublic: boolean;
+  isTemplate: boolean;
+  thumb: string[];
+};
+
 export default defineComponent({
   components: {
     ComponentSelector,
@@ -151,12 +159,12 @@ export default defineComponent({
     const activeTab = ref(0);
     const { back, to, getQuery, isFromPreview } = useNav();
 
-    const pageConfig = reactive({
+    const pageConfig = reactive<PageConfig>({
       title: '',
       description: '默认页面描述',
       isPublic: false,
       isTemplate: false,
-      thumb: [''],
+      thumb: [],
     });
 
     const state = reactive({
@@ -195,7 +203,7 @@ export default defineComponent({
           pageConfig.description = data.description;
           pageConfig.isPublic = data.isPublic ?? false;
           pageConfig.isTemplate = data.isTemplate;
-          thumb.value = [data.thumb];
+          pageConfig.thumb = [data.thumb || ''];
         }
 
         postMessage({
@@ -211,7 +219,7 @@ export default defineComponent({
       pageConfig.description = data.description;
       pageConfig.isPublic = data.isPublic ?? false;
       pageConfig.isTemplate = data.isTemplate;
-      thumb.value = [data.thumb];
+      pageConfig.thumb = [data.thumb || ''];
 
       const components = local.get('preview::components');
 
@@ -386,7 +394,6 @@ export default defineComponent({
     };
 
     //#region 封面上传
-    const thumb = ref<any[]>([]);
     const fileReader = (blob: any) => {
       return new Promise((resolve) => {
         const reader = new FileReader();
@@ -397,7 +404,7 @@ export default defineComponent({
       });
     };
     const beforeReadHandler = () => {
-      thumb.value = [];
+      pageConfig.thumb = [];
       return true;
     };
     const afterReadHandler = async (e: any) => {
@@ -408,7 +415,6 @@ export default defineComponent({
         if (status.code === 0) {
           pageConfig.thumb = [data];
         }
-        thumb.value = [r];
       } catch (error) {}
     };
     //#endregion
@@ -450,7 +456,6 @@ export default defineComponent({
 
       removeComponents,
 
-      thumb,
       beforeReadHandler,
       afterReadHandler,
     };

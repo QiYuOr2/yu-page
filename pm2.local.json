@@ -1,0 +1,12 @@
+{
+  "apps": [
+    {
+      "namespace": "yu-page",
+      "name": "@yu-page/app",
+      "script": "scripts/prod.js",
+      "env": {
+        "NODE_ENV": "local"
+      }
+    }
+  ]
+}

@@ -26,6 +26,13 @@ export const user = {
     });
   },
 
+  async logout() {
+    return yuRequest({
+      url: 'user/logout',
+      method: 'post',
+    });
+  },
+
   async update(id: number, user: CreateAndUpdateUserDto) {
     return yuRequest({
       url: 'user/update',

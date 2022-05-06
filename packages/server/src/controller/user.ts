@@ -49,6 +49,16 @@ export const UserController = createRouter('/user', (r) => {
   ).comment('登录');
 
   r.post(
+    '/logout',
+    catchAsyncErr(async (req, res) => {
+      res.clearCookie('token');
+      res.clearCookie('uid');
+
+      res.json(Yu.success(null));
+    })
+  ).comment('退出');
+
+  r.post(
     '/update',
     catchAsyncErr(async (req, res) => {
       let { id, account, password } = req.body;
